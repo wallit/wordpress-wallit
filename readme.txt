@@ -16,6 +16,7 @@ iMoneza with your site. It will add iMoneza's paywall to your site and allow you
 within WordPress.
 
 iMoneza provides:
+
 * Instant paywall. The iMoneza paywall snaps into your site seamlessly.
 * Flexible pricing. iMoneza lets you price your content however you want.
 * A la carte purchases. You can allow users to purchase individual pages for as low as $0.01.
