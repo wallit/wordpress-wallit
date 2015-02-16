@@ -1,14 +1,14 @@
 <?php
 /**
  * @package imoneza
- * @version 1.0.4
+ * @version 1.0.5
  */
 /*
 Plugin Name: iMoneza
 Plugin URI: https://www.imoneza.com/wordpress-plugin/
 Description: This plugin lets you provide paid access control mechanisms on your WordPress by using iMoneza, a micro-transaction paywall provider.
 Author: iMoneza
-Version: 1.0.4
+Version: 1.0.5
 */
 
 // Make sure we don't expose any info if called directly
@@ -32,7 +32,6 @@ $imoneza = new iMoneza();
 if (is_admin()) {
 	require_once(IMONEZA__PLUGIN_DIR . 'class.imoneza-admin.php');
     require_once(IMONEZA__PLUGIN_DIR . 'class.imoneza-restfulrequest.php');
-    require_once(IMONEZA__PLUGIN_DIR . 'class.imoneza-restfulresponse.php');
     require_once(IMONEZA__PLUGIN_DIR . 'class.imoneza-resourcemanagement.php');
     $imoneza_admin = new iMoneza_Admin();
 }
