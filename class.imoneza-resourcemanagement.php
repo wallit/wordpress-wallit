@@ -21,7 +21,12 @@ class iMoneza_ResourceManagement {
         $request->uri = '/api/Property/' . $this->publicKey;
 
         $response = $request->getResponse();
-        return json_decode($response['body'], true);
+
+        if ($response['response']['code'] == '404') {
+            throw new Exception('An error occurred with the Resource Management API key. Make sure you have valid Resource Management API keys set in the iMoneza plugin settings.');
+        } else {
+            return json_decode($response['body'], true);
+        }
     }
 
     public function getResource($externalKey, $includePropertyData = false)

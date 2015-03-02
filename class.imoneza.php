@@ -29,31 +29,69 @@ class iMoneza {
     // Adds the iMoneza JavaScript snippet to the HTML head of a page
     public function create_snippet()
     {
-        $this_post = get_post();
         $public_api_key = $this->options['ra_api_key_public'];
-        $id = $this_post->ID;
 
-        echo '
-            <script src="' . IMONEZA__RA_UI_URL . '/assets/imoneza.js"></script>
-            <script type="text/javascript">
-                iMoneza.ResourceAccess.init({
-                    ApiKey: "' . $public_api_key . '",
-                    ResourceKey: ' . $id . '
-                });
-            </script>
-        ';
+        $key = '';
+        $name = '';
+        $title = '';
+        $description = '';
+        $publicationDate = '';
+        
+        if (is_page() || is_single()) {
+            $this_post = get_post();
 
-        if (!isset($this->options['no_dynamic']) || $this->options['no_dynamic'] == '0') {
+            $key = $this_post->ID;
+            $name = $this_post->post_title;
+            $title = $this_post->post_title;
+            $description = $this_post->post_excerpt;
+            $publicationDate = $this_post->post_date;
+        } else if (is_category()) {
+            $cat = get_query_var('cat');
+            $this_category = get_category($cat);
+
+            $key = 'Category-' . $this_category->cat_ID;
+            $name = $this_category->cat_name;
+            $title = $this_category->cat_name;
+        } else if (is_front_page()) {
+            $key = 'FrontPage';
+            $name = 'Front Page';
+            $title = 'Front Page';
+        } else if (is_tag()) {
+            $tag = get_query_var('tag');
+            $this_tag = get_term_by('name', $tag, 'post_tag');
+
+            $key = 'Tag-' . $this_tag->term_id;
+            $name = $this_tag->name;
+            $title = $this_tag->name;
+            $description = $this_tag->description;
+        }
+
+        // Ignore archive pages
+        // Ignore feeds
+
+        if ($key != '') {
             echo '
-                <script type="application/imoneza">
-                    <Resource>
-                        <Name>' . $this_post->post_title . '</Name>
-                        <Title>' . $this_post->post_title . '</Title>
-                        <Description>' . $this_post->post_excerpt . '</Description>
-                        <PublicationDate>' . $this_post->post_date . '</PublicationDate>
-                    </Resource>
+                <script src="' . IMONEZA__RA_UI_URL . '/assets/imoneza.js"></script>
+                <script type="text/javascript">
+                    iMoneza.ResourceAccess.init({
+                        ApiKey: "' . $public_api_key . '",
+                        ResourceKey: "' . $key . '"
+                    });
                 </script>
             ';
+
+            if (!isset($this->options['no_dynamic']) || $this->options['no_dynamic'] == '0') {
+                echo '
+                    <script type="application/imoneza">
+                        <Resource>
+                            <Name>' . $name . '</Name>
+                            <Title>' . $title . '</Title>' .
+                            ($description == '' ? '' :  '<Description>' . $description . '</Description>') . 
+                            ($publicationDate == '' ? '' : '<PublicationDate>' . $publicationDate . '</PublicationDate>') .
+                        '</Resource>
+                    </script>
+                ';
+            }
         }
     }
 }

@@ -69,7 +69,7 @@ class iMoneza_RestfulRequest {
         ));
 
         if (is_a($rawResponse, WP_Error)) {
-            $exMessage = "An error occurred connecting to the iMoneza Resource Management API.";
+            $exMessage = "An error occurred connecting to the iMoneza Resource Management API. This may be a temporary connectivity issue; refresh the page to try again.";
             if (IMONEZA__DEBUG) {
                 $exMessage .= "\r\n\r\nResponse: " . var_export($rawResponse, TRUE);
             }

@@ -52,10 +52,11 @@ class iMoneza_Admin {
 
             $isManaged = $resource['IsManaged'] == 1 && $resource['Active'] == 1;
 
-            if (!$isManaged)
+            if (!$isManaged) {
                 $property = $resourceManagement->getProperty();
-            else
+            } else {
                 $property = $resource['Property'];
+            }
 
             if (IMONEZA__DEBUG) {
                 echo '<p><a onclick="document.getElementById(\'imonezaDebugProperty\').style.display = document.getElementById(\'imonezaDebugProperty\').style.display == \'none\' ? \'block\' : \'none\';">Property</a></p>';
@@ -295,7 +296,7 @@ class iMoneza_Admin {
     public function add_plugin_page()
     {
         // This page will be under "Settings"
-        add_options_page('iMoneza Settings', 'iMoneza Settings', 'manage_options', 'imoneza-settings-admin', array( $this, 'create_admin_page' ));
+        add_options_page('iMoneza', 'iMoneza', 'manage_options', 'imoneza-settings-admin', array( $this, 'create_admin_page' ));
     }
 
     /**
@@ -359,12 +360,12 @@ class iMoneza_Admin {
         register_setting('imoneza_settings', 'imoneza_options', array( $this, 'sanitize' ));
 
         add_settings_section('imoneza_settings_ra_api_key', 'Resource Access API', array($this, 'print_section_info_ra_api'), 'imoneza-settings-admin');  
-        add_settings_field('ra_api_key_public', 'Public API Key', array( $this, 'ra_api_key_public_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
-        add_settings_field('ra_api_key_private', 'Private API Key', array( $this, 'ra_api_key_private_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
+        add_settings_field('ra_api_key_public', 'Access Key', array( $this, 'ra_api_key_public_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
+        add_settings_field('ra_api_key_private', 'Secret Key', array( $this, 'ra_api_key_private_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
 
         add_settings_section('imoneza_settings_rm_api_key', 'Resource Management API', array($this, 'print_section_info_rm_api'), 'imoneza-settings-admin');
-        add_settings_field('rm_api_key_public', 'Public API Key', array( $this, 'rm_api_key_public_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
-        add_settings_field('rm_api_key_private', 'Private API Key', array( $this, 'rm_api_key_private_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
+        add_settings_field('rm_api_key_public', 'Access Key', array( $this, 'rm_api_key_public_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
+        add_settings_field('rm_api_key_private', 'Secret Key', array( $this, 'rm_api_key_private_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
 
         add_settings_section('imoneza_settings_options', 'Options', array($this, 'print_section_info_options'), 'imoneza-settings-admin');
         add_settings_field('no_snippet', 'Do not add JavaScript snippet to every page automatically', array( $this, 'no_snippet_callback' ), 'imoneza-settings-admin', 'imoneza_settings_options');
@@ -409,12 +410,12 @@ class iMoneza_Admin {
      */
     public function print_section_info_ra_api()
     {
-        print 'You must provide the public and private Resource Access API keys.';
+        print 'You must provide a Resource Access API access key and secret key.';
     }
 
     public function print_section_info_rm_api()
     {
-        print 'You must provide the public and private Resource Management API keys.';
+        print 'You must provide a Resource Management API access key and secret key. Note that these two keys should be different from the Resource Access API access key and secret key.';
     }
 
     public function ra_api_key_public_callback()
