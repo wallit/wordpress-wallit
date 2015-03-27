@@ -5,6 +5,8 @@ class iMoneza_Admin {
 
     public function __construct()
     {
+        session_start();
+
         $this->options = get_option('imoneza_options');
 
         add_action('admin_menu', array( $this, 'add_plugin_page'));
@@ -12,7 +14,7 @@ class iMoneza_Admin {
         add_action('admin_notices', array($this, 'admin_notices'));
 
         // If Management API public and private keys are set, then add the iMoneza metabox
-        if (isset($this->options['rm_api_key_public']) && $this->options['rm_api_key_public'] != '' && isset($this->options['rm_api_key_private']) && $this->options['rm_api_key_private'] != '') {
+        if (isset($this->options['rm_api_key_access']) && $this->options['rm_api_key_access'] != '' && isset($this->options['rm_api_key_secret']) && $this->options['rm_api_key_secret'] != '') {
             add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
             add_action('save_post', array($this, 'imoneza_save_meta_box_data'));
         }
@@ -117,8 +119,10 @@ class iMoneza_Admin {
                 var c0 = r.insertCell(0);
                 var c1 = r.insertCell(1);
                 var c2 = r.insertCell(2);
+                if (label == \'minutes\')
+                    label = \'<select name="imoneza_tier_price_multiplier[]"><option value="1">minutes</option><option value="60">hours</option><option value="1440">days</option></select>\';
                 c0.innerHTML = "<input type=\"text\" size=\"5\" name=\"imoneza_tier[]\" /> " + label;
-                c1.innerHTML = "<input type=\"text\" name=\"imoneza_price[]\" />";
+                c1.innerHTML = "<input type=\"text\" name=\"imoneza_tier_price[]\" />";
                 c2.innerHTML = "<a href=\"#\" onclick=\"return imoneza_remove_tier(this);\">Remove</a>";
                 
                 return false;
@@ -190,9 +194,22 @@ class iMoneza_Admin {
             echo '<tr class="' . $rowClass . ' ' . $priceTierClass . '"' . $priceTierStyleAttr . '><td colspan="2"><strong>Pricing Tiers</strong></td><td><small>You must have at least one tier, and there must be one tier of 0 minutes or 0 views.</small></td></tr>';
             echo '<tr class="' . $rowClass . ' ' . $priceTierClass . '"' . $priceTierStyleAttr . '><td colspan="3"><table id="imoneza_tiers"><tbody><tr><th>Tier</th><th>Price</th></tr>';
             foreach ($resource['ResourcePricingTiers'] as $tier) {
-                echo '<tr><td><input type="text" value="' . $tier['Tier'] . '" name="imoneza_tier[]" size="5" />' . ($resource['PricingModel'] == 'ViewTiered' ? ' views' : ' minutes') . '</td><td><input type="text" value="' . number_format($tier['Price'], 2) . '" name="imoneza_price[]" /></td><td>' . ($tier['Tier'] > 0 ? '<a href="#" onclick="return imoneza_remove_tier(this);">Remove Tier</a>' : '') . '</td></tr>';
+                $label = ' views';
+                $value = $tier['Tier'];
+                if ($resource['PricingModel'] == 'TimeTiered') {
+                    $label = 'minutes';
+                    if ($value > 0 && $value % 1440 == 0) {
+                        $label = 'days';
+                        $value = $value / 1440;
+                    } else if ($value > 0 && $value % 60 == 0) {
+                        $label = 'hours';
+                        $value = $value / 60;
+                    }
+                    $label = '<select name="imoneza_tier_price_multiplier[]"><option value="1"' . ($label == 'minutes' ? ' selected' : '') . '>minutes</option><option value="60"' . ($label == 'hours' ? ' selected' : '') . '>hours</option><option value="1440"' . ($label == 'days' ? ' selected' : '') . '>days</option></select>';
+                }
+                echo '<tr><td><input type="text" value="' . $value . '" name="imoneza_tier[]" size="5" />' . $label . '</td><td><input type="text" value="' . number_format($tier['Price'], 2) . '" name="imoneza_tier_price[]" /></td><td>' . ($tier['Tier'] > 0 ? '<a href="#" onclick="return imoneza_remove_tier(this);">Remove Tier</a>' : '') . '</td></tr>';
             }
-            echo '<tr><td width="160"></td><td width="220"></td><td><a href="#" onclick="return imoneza_add_tier(\'' . ($resource['PricingModel'] == 'ViewTiered' ? 'views' : 'minutes') . '\');">Add Tier</a></td></tr>';
+            echo '<tr><td width="220"></td><td width="160"></td><td><a href="#" onclick="return imoneza_add_tier(\'' . ($resource['PricingModel'] == 'ViewTiered' ? 'views' : 'minutes') . '\');">Add Tier</a></td></tr>';
             echo '</tbody></table></td></tr>';
 
             echo '</tbody></table>';
@@ -276,10 +293,11 @@ class iMoneza_Admin {
 
         if ($_POST['imoneza_pricingModel'] == 'ViewTiered' || $_POST['imoneza_pricingModel'] == 'TimeTiered') {
             $tiers = $_POST['imoneza_tier'];
-            $prices = $_POST['imoneza_price'];
+            $prices = $_POST['imoneza_tier_price'];
+            $multiplier = $_POST['imoneza_tier_price_multiplier'];
             $vals = array();
             for ($i = 0; $i < count($tiers); ++$i)
-                $vals[] = array('Tier' => $tiers[$i], 'Price' => $prices[$i]);
+                $vals[] = array('Tier' => $tiers[$i] * (isset($multiplier) ? $multiplier[$i] : 1), 'Price' => $prices[$i]);
 
             $data['ResourcePricingTiers'] = $vals;
         }
@@ -332,8 +350,6 @@ class iMoneza_Admin {
     }
 
     public function admin_notices() {
-        session_start();
-         
         if (isset($_SESSION['iMoneza_UpdatedNotice']) && $_SESSION['iMoneza_UpdatedNotice'] != '') {
             ?>
                 <div class="updated">
@@ -360,17 +376,21 @@ class iMoneza_Admin {
         register_setting('imoneza_settings', 'imoneza_options', array( $this, 'sanitize' ));
 
         add_settings_section('imoneza_settings_ra_api_key', 'Resource Access API', array($this, 'print_section_info_ra_api'), 'imoneza-settings-admin');  
-        add_settings_field('ra_api_key_public', 'Access Key', array( $this, 'ra_api_key_public_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
-        add_settings_field('ra_api_key_private', 'Secret Key', array( $this, 'ra_api_key_private_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
+        add_settings_field('ra_api_key_access', 'Access Key', array( $this, 'ra_api_key_access_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
+        add_settings_field('ra_api_key_secret', 'Secret Key', array( $this, 'ra_api_key_secret_callback' ), 'imoneza-settings-admin', 'imoneza_settings_ra_api_key');
 
         add_settings_section('imoneza_settings_rm_api_key', 'Resource Management API', array($this, 'print_section_info_rm_api'), 'imoneza-settings-admin');
-        add_settings_field('rm_api_key_public', 'Access Key', array( $this, 'rm_api_key_public_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
-        add_settings_field('rm_api_key_private', 'Secret Key', array( $this, 'rm_api_key_private_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
+        add_settings_field('rm_api_key_access', 'Access Key', array( $this, 'rm_api_key_access_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
+        add_settings_field('rm_api_key_secret', 'Secret Key', array( $this, 'rm_api_key_secret_callback' ), 'imoneza-settings-admin', 'imoneza_settings_rm_api_key');
 
-        add_settings_section('imoneza_settings_options', 'Options', array($this, 'print_section_info_options'), 'imoneza-settings-admin');
-        add_settings_field('no_snippet', 'Do not add JavaScript snippet to every page automatically', array( $this, 'no_snippet_callback' ), 'imoneza-settings-admin', 'imoneza_settings_options');
-        add_settings_field('no_dynamic', 'Do not include dynamic resource creation block on every page automatically', array( $this, 'no_dynamic_callback' ), 'imoneza-settings-admin', 'imoneza_settings_options');
+        add_settings_section('imoneza_settings_dynamic_resource_creation', 'Dynamic Resource Creation', array($this, 'print_section_info_dynamic_resource_creation'), 'imoneza-settings-admin');
+        add_settings_field('no_dynamic', 'Do not include dynamic resource creation block on every page', array( $this, 'no_dynamic_callback' ), 'imoneza-settings-admin', 'imoneza_settings_dynamic_resource_creation');
 
+        add_settings_section('imoneza_access_control', 'Access Control', array($this, 'print_section_info_access_control'), 'imoneza-settings-admin');
+        add_settings_field('access_control', 'Access Control Method', array( $this, 'access_control_callback' ), 'imoneza-settings-admin', 'imoneza_access_control');
+        add_settings_field('access_control_excluded_user_agents', 'Excluded User Agents', array( $this, 'access_control_excluded_user_agents_callback' ), 'imoneza-settings-admin', 'imoneza_access_control');
+
+        add_settings_section('imoneza_help', 'Help', array($this, 'print_section_info_help'), 'imoneza-settings-admin');
     }
 
     /**
@@ -382,25 +402,31 @@ class iMoneza_Admin {
     {
         $new_input = array();
 
-        if (isset($input['rm_api_key_public']))
-            $new_input['rm_api_key_public'] = sanitize_text_field($input['rm_api_key_public']);
-        if (isset($input['rm_api_key_private']))
-            $new_input['rm_api_key_private'] = sanitize_text_field($input['rm_api_key_private']);
+        if (isset($input['rm_api_key_access']))
+            $new_input['rm_api_key_access'] = sanitize_text_field($input['rm_api_key_access']);
+        if (isset($input['rm_api_key_secret']))
+            $new_input['rm_api_key_secret'] = sanitize_text_field($input['rm_api_key_secret']);
 
-        if (isset($input['ra_api_key_public']))
-            $new_input['ra_api_key_public'] = sanitize_text_field($input['ra_api_key_public']);
-        if (isset($input['ra_api_key_private']))
-            $new_input['ra_api_key_private'] = sanitize_text_field($input['ra_api_key_private']);
-
-        if (isset($input['no_snippet']) && $input['no_snippet'] == '1')
-            $new_input['no_snippet'] = '1';
-        else
-            $new_input['no_snippet'] = '0';
+        if (isset($input['ra_api_key_access']))
+            $new_input['ra_api_key_access'] = sanitize_text_field($input['ra_api_key_access']);
+        if (isset($input['ra_api_key_secret']))
+            $new_input['ra_api_key_secret'] = sanitize_text_field($input['ra_api_key_secret']);
 
         if (isset($input['no_dynamic']) && $input['no_dynamic'] == '1')
             $new_input['no_dynamic'] = '1';
         else
             $new_input['no_dynamic'] = '0';
+
+        if (isset($input['use_access_control']) && $input['use_access_control'] == '1')
+            $new_input['use_access_control'] = '1';
+        else
+            $new_input['use_access_control'] = '0';
+
+        if (isset($input['access_control']))
+            $new_input['access_control'] = sanitize_text_field($input['access_control']);
+
+        if (isset($input['access_control_excluded_user_agents']))
+            $new_input['access_control_excluded_user_agents'] = implode("\n", array_map('sanitize_text_field', str_replace("\r", "", explode("\n", $input['access_control_excluded_user_agents']))));
 
         return $new_input;
     }
@@ -418,43 +444,63 @@ class iMoneza_Admin {
         print 'You must provide a Resource Management API access key and secret key. Note that these two keys should be different from the Resource Access API access key and secret key.';
     }
 
-    public function ra_api_key_public_callback()
+    public function print_section_info_dynamic_resource_creation()
+    {
+        print 'Dynamic resource creation allows pages on your site to be added to iMoneza automatically when users first hit them. To use this feature, make sure the checkbox below is unchecked and that you\'ve checked "Dynamically Create Resources" on the <a href="https://manageui.imoneza.com/Property/Edit#tab_advanced">Property Settings</a> page.';
+    }
+
+    public function print_section_info_access_control()
+    {
+        print 'The access control method specifies how your site will communicate with iMoneza, determine if a user has access to the resource they\'re trying to access, and display the paywall if needed.' .
+               '<ul>' .
+               '<li><strong>None:</strong> No access control is enforced. Visitors to your site will not interact with iMoneza and will never see a paywall. Essentially, iMoneza won\'t be used on your site.</li>' .
+               '<li><strong>Client-side:</strong> The JavaScript Library is run in your users\'s web browsers. You can set whether the paywall appears in a modal window or not on the <a href="https://manageui.imoneza.com/Property/Edit#tab_paywall">Property Settings</a> page.</li>' .
+               '<li><strong>Server-side:</strong> User access is verified on your web server. This is more secure than the client-side approach. If you choose this option, you can also exclude certain user agents (like search engine bots) from being redirected to the paywall.</li>' .
+               '</ul>' .
+               '<p>If you specify user agents to exclude, you can specify one user agent per line.</p>';
+    }
+
+    public function print_section_info_help()
+    {
+        print 'The <a href="https://www.imoneza.com/wordpress-plugin/" target="_blank">iMoneza website</a> has additional information about these settings.';
+        print '<script>' .
+               'function imoneza_update_controls() {' .
+               '  document.getElementById("access_control_excluded_user_agents").disabled = !document.getElementById("access_control_ss").checked; ' .
+               '} ' .
+               'imoneza_update_controls(); ' .
+               '</script>';
+
+    }
+
+    public function ra_api_key_access_callback()
     {
         printf(
-            '<input type="text" id="ra_api_key_public" name="imoneza_options[ra_api_key_public]" value="%s" />',
-            isset($this->options['ra_api_key_public']) ? esc_attr( $this->options['ra_api_key_public']) : ''
+            '<input type="text" id="ra_api_key_access" name="imoneza_options[ra_api_key_access]" value="%s" />',
+            isset($this->options['ra_api_key_access']) ? esc_attr( $this->options['ra_api_key_access']) : ''
         );
     }
 
-    public function ra_api_key_private_callback()
+    public function ra_api_key_secret_callback()
     {
         printf(
-            '<input type="text" id="ra_api_key_private" name="imoneza_options[ra_api_key_private]" value="%s" />',
-            isset($this->options['ra_api_key_private']) ? esc_attr( $this->options['ra_api_key_private']) : ''
+            '<input type="text" id="ra_api_key_secret" name="imoneza_options[ra_api_key_secret]" value="%s" />',
+            isset($this->options['ra_api_key_secret']) ? esc_attr( $this->options['ra_api_key_secret']) : ''
         );
     }
 
-    public function rm_api_key_public_callback()
+    public function rm_api_key_access_callback()
     {
         printf(
-            '<input type="text" id="rm_api_key_public" name="imoneza_options[rm_api_key_public]" value="%s" />',
-            isset($this->options['rm_api_key_public']) ? esc_attr( $this->options['rm_api_key_public']) : ''
+            '<input type="text" id="rm_api_key_access" name="imoneza_options[rm_api_key_access]" value="%s" />',
+            isset($this->options['rm_api_key_access']) ? esc_attr( $this->options['rm_api_key_access']) : ''
         );
     }
 
-    public function rm_api_key_private_callback()
+    public function rm_api_key_secret_callback()
     {
         printf(
-            '<input type="text" id="rm_api_key_private" name="imoneza_options[rm_api_key_private]" value="%s" />',
-            isset($this->options['rm_api_key_private']) ? esc_attr( $this->options['rm_api_key_private']) : ''
-        );
-    }
-
-    public function no_snippet_callback()
-    {
-        printf(
-            '<input type="checkbox" id="no_snippet" name="imoneza_options[no_snippet]" value="1" %s/>',
-            isset($this->options['no_snippet']) && $this->options['no_snippet'] == '1' ? ' checked' : ''
+            '<input type="text" id="rm_api_key_secret" name="imoneza_options[rm_api_key_secret]" value="%s" />',
+            isset($this->options['rm_api_key_secret']) ? esc_attr( $this->options['rm_api_key_secret']) : ''
         );
     }
 
@@ -463,6 +509,30 @@ class iMoneza_Admin {
         printf(
             '<input type="checkbox" id="no_dynamic" name="imoneza_options[no_dynamic]" value="1" %s/>',
             isset($this->options['no_dynamic']) && $this->options['no_dynamic'] == '1' ? ' checked' : ''
+        );
+    }
+
+    public function access_control_callback()
+    {
+        printf(
+            '<input type="radio" id="access_control_none" name="imoneza_options[access_control]" value="None" onclick="imoneza_update_controls();" %s/><label for="access_control_none">None</label><br />',
+            isset($this->options['access_control']) && $this->options['access_control'] == 'None' ? ' checked' : ''
+        );
+        printf(
+            '<input type="radio" id="access_control_js" name="imoneza_options[access_control]" value="JS" onclick="imoneza_update_controls();" %s/><label for="access_control_js">Client-side (JavaScript Library)</label><br />',
+            isset($this->options['access_control']) && $this->options['access_control'] == 'JS' ? ' checked' : ''
+        );
+        printf(
+            '<input type="radio" id="access_control_ss" name="imoneza_options[access_control]" value="SS" onclick="imoneza_update_controls();" %s/><label for="access_control_ss">Server-side</label><br />',
+            isset($this->options['access_control']) && $this->options['access_control'] == 'SS' ? ' checked' : ''
+        );
+    }
+
+    public function access_control_excluded_user_agents_callback()
+    {
+        printf(
+            '<textarea id="access_control_excluded_user_agents" name="imoneza_options[access_control_excluded_user_agents]" rows="5" cols="80">%s</textarea>',
+            isset($this->options['access_control_excluded_user_agents']) ? esc_attr($this->options['access_control_excluded_user_agents']) : ''
         );
     }
 }

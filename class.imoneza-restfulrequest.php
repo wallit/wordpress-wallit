@@ -2,7 +2,7 @@
 
 class iMoneza_RestfulRequest {
 
-    private $resourceManagement;
+    private $api;
     
     public $method;
     public $uri;
@@ -11,9 +11,9 @@ class iMoneza_RestfulRequest {
     public $body;
     public $contentType;
 
-    public function __construct($resourceManagement)
+    public function __construct($api)
     {
-        $this->resourceManagement = $resourceManagement;
+        $this->api = $api;
         $this->getParameters = array();
         $this->method = 'GET';
         $this->accept = 'application/json';
@@ -45,14 +45,14 @@ class iMoneza_RestfulRequest {
         $paramStrings = $this->getParamString($sortedParams);
 
         $baseString = implode("\n", array($this->method, $timestamp, strtolower($this->uri), $paramStrings));
-        $hash = base64_encode(hash_hmac('sha256', $baseString, $this->resourceManagement->privateKey, true));
+        $hash = base64_encode(hash_hmac('sha256', $baseString, $this->api->secretKey, true));
 
-        $url = $this->resourceManagement->server . $this->uri;
+        $url = $this->api->server . $this->uri;
         if (count($this->getParameters) > 0)
         {
             $getParamStrings = array();
             foreach ($this->getParameters as $key => $value)
-                $getParamStrings[] = $key . '=' . $value;
+                $getParamStrings[] = $key . '=' . rawurlencode($value);
 
             $url .= '?' . implode('&', $getParamStrings);
         }
@@ -62,14 +62,14 @@ class iMoneza_RestfulRequest {
             'body' => $this->body,
             'headers' => array(
                 'Timestamp' => $timestamp,
-                'Authentication' => $this->resourceManagement->publicKey . ':' . $hash,
+                'Authentication' => $this->api->accessKey . ':' . $hash,
                 'Accept' => $this->accept,
                 'Content-Type' => $this->contentType
             )
         ));
 
         if (is_a($rawResponse, WP_Error)) {
-            $exMessage = "An error occurred connecting to the iMoneza Resource Management API. This may be a temporary connectivity issue; refresh the page to try again.";
+            $exMessage = "An error occurred connecting to an iMoneza API. This may be a temporary connectivity issue; refresh the page to try again.";
             if (IMONEZA__DEBUG) {
                 $exMessage .= "\r\n\r\nResponse: " . var_export($rawResponse, TRUE);
             }
@@ -85,7 +85,7 @@ class iMoneza_RestfulRequest {
         $sortedParams = array();
         // This won't handle conflicting GET/POST params the same way as the .NET module
         foreach ($this->getParameters as $key => $value)
-            $sortedParams[strtolower($key)] = $value;
+            $sortedParams[strtolower($key)] = strtolower($value);
         ksort($sortedParams);
 
         return $sortedParams;

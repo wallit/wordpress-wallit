@@ -3,7 +3,7 @@ Contributors: chrisatnws
 Tags: ecommerce, e-commerce, integration, plugin, store, commerce
 Requires at least: 3.9
 Tested up to: 4.1
-Stable tag: 1.0.6
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,3 +36,6 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 
 = 1.0 =
 * Initial public release.
+
+= 1.1 =
+* Added support for server-side access control

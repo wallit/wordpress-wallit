@@ -1,24 +1,18 @@
 <?php
     
-class iMoneza_ResourceManagement {
-	public $options;
-    public $privateKey;
-    public $publicKey;
-    public $server;
+class iMoneza_ResourceManagement extends iMoneza_API {
 
     public function __construct()
     {
-        $this->options = get_option('imoneza_options');
-        $this->publicKey = $this->options['rm_api_key_public'];
-        $this->privateKey = $this->options['rm_api_key_private'];
-        $this->server = IMONEZA__RM_API_URL;
+        $options = get_option('imoneza_options');
+        parent::__construct($options, $options['rm_api_key_access'], $options['rm_api_key_secret'], IMONEZA__RM_API_URL);
     }
 
     public function getProperty()
     {
         $request = new iMoneza_RestfulRequest($this);
         $request->method = 'GET';
-        $request->uri = '/api/Property/' . $this->publicKey;
+        $request->uri = '/api/Property/' . $this->accessKey;
 
         $response = $request->getResponse();
 
@@ -33,7 +27,7 @@ class iMoneza_ResourceManagement {
     {
         $request = new iMoneza_RestfulRequest($this);
         $request->method = 'GET';
-        $request->uri = '/api/Property/' . $this->publicKey . '/Resource/' . $externalKey;
+        $request->uri = '/api/Property/' . $this->accessKey . '/Resource/' . $externalKey;
 
         if ($includePropertyData)
             $request->getParameters['includePropertyData'] = 'true';
@@ -53,7 +47,7 @@ class iMoneza_ResourceManagement {
     {
         $request = new iMoneza_RestfulRequest($this);
         $request->method = 'PUT';
-        $request->uri = '/api/Property/' . $this->publicKey . '/Resource/' . $externalKey;
+        $request->uri = '/api/Property/' . $this->accessKey . '/Resource/' . $externalKey;
         $request->body = json_encode($data);
         $request->contentType = 'application/json';
 
