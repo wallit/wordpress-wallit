@@ -36,7 +36,12 @@ class iMoneza_ResourceAccess extends iMoneza_API {
             }
 
             $userToken = $resourceAccessData['UserToken'];
-            setcookie('iMonezaUT', $userToken, time() + $this->cookieExpiration);
+            setcookie('iMonezaUT', $userToken, time() + $this->cookieExpiration, '/');
+
+            // Prevent major caching plugins (WP Super Cache, W3 Total Cache) from caching the page if it's an iMoneza-managed resource
+            if ($resourceAccessData['AccessReason'] == 'Deny' || $resourceAccessData['AccessReason'] == 'Quota' || $resourceAccessData['AccessReason'] == 'Subscription' || $resourceAccessData['AccessReason'] == 'Purchase' || $resourceAccessData['AccessReason'] == 'Free' || $resourceAccessData['AccessReason'] == 'PropertyUser') {
+                define('DONOTCACHEPAGE', TRUE);
+            }
 
             if ($resourceAccessData['AccessActionURL'] && strlen($resourceAccessData['AccessActionURL']) > 0)
             {
