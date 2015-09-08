@@ -63,6 +63,7 @@ class iMoneza_ResourceAccess extends iMoneza_API {
         $request->uri = '/api/Resource/' . $this->accessKey . '/' . $externalKey;
         $request->getParameters['ResourceURL'] = $resourceURL;
         $request->getParameters['UserToken'] = $userToken;
+        $request->getParameters['IP'] = $this->getClientIP();
 
         $response = $request->getResponse();
 
@@ -79,6 +80,7 @@ class iMoneza_ResourceAccess extends iMoneza_API {
         $request->uri = '/api/TemporaryUserToken/' . $this->accessKey . '/' . $temporaryUserToken;
         $request->getParameters['ResourceKey'] = $externalKey;
         $request->getParameters['ResourceURL'] = $resourceURL;
+        $request->getParameters['IP'] = $this->getClientIP();
 
         $response = $request->getResponse();
 
@@ -87,6 +89,30 @@ class iMoneza_ResourceAccess extends iMoneza_API {
         } else {
             return json_decode($response['body'], true);
         }
+    }
+
+    private function getClientIP() {
+        $ipAddress = '';
+        if (getenv('HTTP_CLIENT_IP'))
+            $ipAddress = getenv('HTTP_CLIENT_IP');
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
+            $ipAddress = getenv('HTTP_X_FORWARDED_FOR');
+        else if (getenv('HTTP_X_FORWARDED'))
+            $ipAddress = getenv('HTTP_X_FORWARDED');
+        else if (getenv('HTTP_FORWARDED_FOR'))
+            $ipAddress = getenv('HTTP_FORWARDED_FOR');
+        else if (getenv('HTTP_FORWARDED'))
+           $ipAddress = getenv('HTTP_FORWARDED');
+        else if (getenv('REMOTE_ADDR'))
+            $ipAddress = getenv('REMOTE_ADDR');
+
+        // Strip out the port number on an IPv4 address
+        if (substr_count($ipAddress, '.') == 3 && strpos($ipAddress, ':') > 0) {
+            $parts = explode(':', $ipAddress, 2);
+            $ipAddress = $parts[0];
+        }
+            
+        return $ipAddress;
     }
 }
 ?>
