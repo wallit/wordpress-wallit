@@ -81,6 +81,21 @@ class iMoneza_Admin {
                 );
             }
 
+            $rowClass = 'imoneza_row';
+            $priceRowClass = ' imoneza_row_price';
+            $expirationValueClass = ' imoneza_row_price_expiration';
+            $targetConversionRowClass = ' imoneza_row_target_conversion';
+            $priceTierClass = 'imoneza_row_price_tier';
+            $timeTieredClass = 'imoneza_time_tiered';
+            $viewTieredClass = 'imoneza_view_tiered';
+            $isHidden = FALSE;
+
+            $styleAttr = '';
+            $priceStyleAttr = '';
+            $expirationStyleAttr = '';
+            $priceTierStyleAttr = '';
+            $targetConversionStyleAttr = '';
+
             echo '
             <script type="text/javascript">
             function imoneza_update_display() {
@@ -97,30 +112,40 @@ class iMoneza_Admin {
                 if (document.getElementById("imoneza_isManaged").checked) {
                     var pm = document.getElementById("imoneza_pricingModel");
                     var selectedPricingModel = pm.options[pm.selectedIndex].value;
-                    imoneza_toggle_class(".imoneza_row_price", (selectedPricingModel == "FixedPrice" || selectedPricingModel == "VariablePrice"));
+                    imoneza_toggle_class(".imoneza_row_price", (selectedPricingModel == "FixedPrice" || selectedPricingModel == "VariablePrice" || selectedPricingModel == "TargetConversion"));
                     imoneza_toggle_class(".imoneza_row_price_tier", (selectedPricingModel == "TimeTiered" || selectedPricingModel == "ViewTiered"));
+                    imoneza_toggle_class(".imoneza_row_target_conversion", (selectedPricingModel == "TargetConversion"));
+                    imoneza_toggle_specific_class(".imoneza_time_tiered", (selectedPricingModel == "TimeTiered"), "inline", "none");
+                    imoneza_toggle_specific_class(".imoneza_view_tiered", (selectedPricingModel == "ViewTiered"), "inline", "none");
 
                     var epu = document.getElementById("imoneza_expirationPeriodUnit");
                     var expirationPeriodUnit = epu.options[epu.selectedIndex].value;
-                    imoneza_toggle_class(".imoneza_row_price_expiration", (selectedPricingModel == "FixedPrice" || selectedPricingModel == "VariablePrice") && (expirationPeriodUnit != "Never"));
+                    imoneza_toggle_class(".imoneza_row_price_expiration", (selectedPricingModel == "FixedPrice" || selectedPricingModel == "VariablePrice" || selectedPricingModel == "TargetConversion") && (expirationPeriodUnit != "Never"));
                 }
             }
 
             function imoneza_toggle_class(className, isVisible) {
+                imoneza_toggle_specific_class(className, isVisible, "table-row", "none");
+            }
+
+            function imoneza_toggle_specific_class(className, isVisible, visibleStyle, hiddenStyle) {
                 var els = document.querySelectorAll(className);
                 for (var i = 0; i < els.length; ++i) {
-                    els[i].style.display = (isVisible ? "table-row" : "none");
+                    els[i].style.display = (isVisible ? visibleStyle : hiddenStyle);
                 }
             }
 
-            function imoneza_add_tier(label) {
+            function imoneza_add_tier(selectedPricingModel) {
                 var t = document.getElementById("imoneza_tiers");
                 var r = t.insertRow(t.rows.length - 1);
                 var c0 = r.insertCell(0);
                 var c1 = r.insertCell(1);
                 var c2 = r.insertCell(2);
-                if (label == \'minutes\')
-                    label = \'<select name="imoneza_tier_price_multiplier[]"><option value="1">minutes</option><option value="60">hours</option><option value="1440">days</option></select>\';
+
+                label = \'<span class="' . $viewTieredClass . '" \' + (selectedPricingModel == \'ViewTiered\' ? \'\' : \'style="display:none;"\') + \'> views</span>\';
+                label += \'<span class="' . $timeTieredClass . '" \' + (selectedPricingModel == \'TimeTiered\' ? \'\' : \'style="display:none;"\') + \'>\';
+                label += \'<select name="imoneza_tier_price_multiplier[]"><option value="1">minutes</option><option value="60">hours</option><option value="1440">days</option></select>\';
+                label += \'</span>\';
                 c0.innerHTML = "<input type=\"text\" size=\"5\" name=\"imoneza_tier[]\" /> " + label;
                 c1.innerHTML = "<input type=\"text\" name=\"imoneza_tier_price[]\" />";
                 c2.innerHTML = "<a href=\"#\" onclick=\"return imoneza_remove_tier(this);\">Remove</a>";
@@ -136,28 +161,20 @@ class iMoneza_Admin {
             }
             </script>';
 
-            $rowClass = 'imoneza_row';
-            $priceRowClass = ' imoneza_row_price';
-            $expirationValueClass = ' imoneza_row_price_expiration';
-            $priceTierClass = 'imoneza_row_price_tier';
-            $isHidden = FALSE;
-
-            $styleAttr = '';
-            $priceStyleAttr = '';
-            $expirationStyleAttr = '';
-            $priceTierStyleAttr = '';
-
             if (!$isManaged)
                 $styleAttr .= ' style="display:none;"';
 
-            if (!$isManaged || ($resource['PricingModel'] != 'FixedPrice' && $resource['PricingModel'] != 'VariablePrice'))
+            if (!$isManaged || ($resource['PricingModel'] != 'FixedPrice' && $resource['PricingModel'] != 'VariablePrice' && $resource['PricingModel'] != 'TargetConversion'))
                 $priceStyleAttr = ($styleAttr == '' ? ' style="display:none;"' : $styleAttr);
 
-            if (!$isManaged || ($resource['PricingModel'] != 'FixedPrice' && $resource['PricingModel'] != 'VariablePrice') || $resource['ExpirationPeriodUnit'] == 'Never')
+            if (!$isManaged || ($resource['PricingModel'] != 'FixedPrice' && $resource['PricingModel'] != 'VariablePrice' && $resource['PricingModel'] != 'TargetConversion') || $resource['ExpirationPeriodUnit'] == 'Never')
                 $expirationStyleAttr = ($priceStyleAttr == '' ? ' style="display:none;"' : $priceStyleAttr);
 
             if (!$isManaged || ($resource['PricingModel'] != 'TimeTiered' && $resource['PricingModel'] != 'ViewTiered'))
                 $priceTierStyleAttr = ($priceStyleAttr == '' ? ' style="display:none;"' : $priceStyleAttr);
+
+            if (!$isManaged || $resource['PricingModel'] != 'TargetConversion')
+                $targetConversionStyleAttr = ' style="display:none;"';
 
             echo '<table><tbody>';
 	        echo '<tr><td width="120"><input type="hidden" id="imoneza_isManaged_original" name="imoneza_isManaged_original" value="' . ($isManaged ? '1' : '0') . '" /><input onclick="imoneza_update_display()" type="checkbox" id="imoneza_isManaged" name="imoneza_isManaged" value="1"' . ($isManaged ? ' checked' : '') . ' /></td><td colspan="2"><label for="imoneza_isManaged">Use iMoneza to manage access to this resource</label></td></tr>';
@@ -177,11 +194,12 @@ class iMoneza_Admin {
                 '<option value="VariablePrice"' . ($resource['PricingModel'] == 'VariablePrice' ? ' selected="selected"' : '') . '>Variable Price</option>' .
                 '<option value="TimeTiered"' . ($resource['PricingModel'] == 'TimeTiered' ? ' selected="selected"' : '') . '>Time Tiered</option>' .
                 '<option value="ViewTiered"' . ($resource['PricingModel'] == 'ViewTiered' ? ' selected="selected"' : '') . '>View Tiered</option>' .
+                '<option value="TargetConversion"' . ($resource['PricingModel'] == 'TargetConversion' ? ' selected="selected"' : '') . '>Target Conversion Pricing</option>' .
                 '<option value="SubscriptionOnly"' . ($resource['PricingModel'] == 'SubscriptionOnly' ? ' selected="selected"' : '') . '>Subscription Only</option>' .
                 '</select></td></tr>';
 
             echo '<tr class="' . $rowClass . $priceRowClass . '"' . $priceStyleAttr . '><td colspan="3"><strong>Custom Pricing</strong></td></tr>';
-	        echo '<tr class="' . $rowClass . $priceRowClass . '"' . $priceStyleAttr . '><td><label for="imoneza_price">Price</label></td><td><input type="text" id="imoneza_price" name="imoneza_price" value="' . esc_attr($resource['Price']) . '" size="25" /></td></tr>';
+	        echo '<tr class="' . $rowClass . $priceRowClass . '"' . $priceStyleAttr . '><td><label for="imoneza_price">Price</label></td><td><input type="text" id="imoneza_price" name="imoneza_price" value="' . esc_attr($resource['Price']) . '" size="8" /></td></tr>';
 	        echo '<tr class="' . $rowClass . $priceRowClass . '"' . $priceStyleAttr . '><td><label for="imoneza_expirationPeriodUnit">Expiration Period</label></td><td><select id="imoneza_expirationPeriodUnit" name="imoneza_expirationPeriodUnit" onchange="imoneza_update_display()">' .
                 '<option value="Never"' . ($resource['ExpirationPeriodUnit'] == 'Never' ? ' selected="selected"' : '') . '>Never</option>' .
                 '<option value="Years"' . ($resource['ExpirationPeriodUnit'] == 'Years' ? ' selected="selected"' : '') . '>Years</option>' .
@@ -191,25 +209,32 @@ class iMoneza_Admin {
                 '</select></td></tr>';
 	        echo '<tr class="' . $rowClass . $priceRowClass . $expirationValueClass . '"' . $expirationStyleAttr . '><td><label for="imoneza_expirationPeriodValue">Expiration Duration</label></td><td><input type="text" id="imoneza_expirationPeriodValue" name="imoneza_expirationPeriodValue" value="' . esc_attr($resource['ExpirationPeriodValue']) . '" size="25" /></td></tr>';
 
+            echo '<tr class="' . $rowClass . $targetConversionRowClass . '"' . $targetConversionStyleAttr . '><td colspan="3"><strong>Target Conversion Algorithm</strong></td></tr>';
+            echo '<tr class="' . $rowClass . $targetConversionRowClass . '"' . $targetConversionStyleAttr . '><td><label for="imoneza_targetConversionRate">Target Conversion Rate</label></td><td><input type="text" id="imoneza_targetConversionRate" name="imoneza_targetConversionRate" value="' . esc_attr($resource['TargetConversionRate']) . '" size="8" /></td><td><small>The targeted percentage of purchase hits among all hits. For instance, a value of 0.20 means that 20% of hits are from users who have paid for the resource. Example: 0.20</small></td></tr>';
+            echo '<tr class="' . $rowClass . $targetConversionRowClass . '"' . $targetConversionStyleAttr . '><td><label for="imoneza_targetConversionPriceFloor">Price Floor</label></td><td><input type="text" id="imoneza_targetConversionPriceFloor" name="imoneza_targetConversionPriceFloor" value="' . esc_attr($resource['TargetConversionPriceFloor']) . '" size="8" /></td><td><small>The lowest the price will ever drop. Example: 0.05.</small></td></tr>';
+            echo '<tr class="' . $rowClass . $targetConversionRowClass . '"' . $targetConversionStyleAttr . '><td><label for="imoneza_targetConversionHitsPerRecalculationPeriod">Hits Per Recalculation Period</label></td><td><input type="text" id="imoneza_targetConversionHitsPerRecalculationPeriod" name="imoneza_targetConversionHitsPerRecalculationPeriod" value="' . esc_attr($resource['TargetConversionHitsPerRecalculationPeriod']) . '" size="8" /></td><td><small>The number of total hits that will trigger a recalculation. Example: 500.</tr>';
+
             echo '<tr class="' . $rowClass . ' ' . $priceTierClass . '"' . $priceTierStyleAttr . '><td colspan="2"><strong>Pricing Tiers</strong></td><td><small>You must have at least one tier, and there must be one tier of 0 minutes or 0 views.</small></td></tr>';
             echo '<tr class="' . $rowClass . ' ' . $priceTierClass . '"' . $priceTierStyleAttr . '><td colspan="3"><table id="imoneza_tiers"><tbody><tr><th>Tier</th><th>Price</th></tr>';
             foreach ($resource['ResourcePricingTiers'] as $tier) {
-                $label = ' views';
+                $timeLabel = 'minutes';
                 $value = $tier['Tier'];
+
                 if ($resource['PricingModel'] == 'TimeTiered') {
-                    $label = 'minutes';
                     if ($value > 0 && $value % 1440 == 0) {
-                        $label = 'days';
+                        $timeLabel = 'days';
                         $value = $value / 1440;
                     } else if ($value > 0 && $value % 60 == 0) {
-                        $label = 'hours';
+                        $timeLabel = 'hours';
                         $value = $value / 60;
                     }
-                    $label = '<select name="imoneza_tier_price_multiplier[]"><option value="1"' . ($label == 'minutes' ? ' selected' : '') . '>minutes</option><option value="60"' . ($label == 'hours' ? ' selected' : '') . '>hours</option><option value="1440"' . ($label == 'days' ? ' selected' : '') . '>days</option></select>';
                 }
+
+                $label = '<span class="' . $viewTieredClass . '" ' . ($resource['PricingModel'] == 'ViewTiered' ? '' : 'style="display:none;"') . '> views</span>';
+                $label .= '<span class="' . $timeTieredClass . '" ' . ($resource['PricingModel'] == 'TimeTiered' ? '' : 'style="display:none;"') . '><select name="imoneza_tier_price_multiplier[]"><option value="1"' . ($timeLabel == 'minutes' ? ' selected' : '') . '>minutes</option><option value="60"' . ($timeLabel == 'hours' ? ' selected' : '') . '>hours</option><option value="1440"' . ($timeLabel == 'days' ? ' selected' : '') . '>days</option></select></span>';
                 echo '<tr><td><input type="text" value="' . $value . '" name="imoneza_tier[]" size="5" />' . $label . '</td><td><input type="text" value="' . number_format($tier['Price'], 2) . '" name="imoneza_tier_price[]" /></td><td>' . ($tier['Tier'] > 0 ? '<a href="#" onclick="return imoneza_remove_tier(this);">Remove Tier</a>' : '') . '</td></tr>';
             }
-            echo '<tr><td width="220"></td><td width="160"></td><td><a href="#" onclick="return imoneza_add_tier(\'' . ($resource['PricingModel'] == 'ViewTiered' ? 'views' : 'minutes') . '\');">Add Tier</a></td></tr>';
+            echo '<tr><td width="220"></td><td width="160"></td><td><a href="#" onclick="return imoneza_add_tier(document.getElementById(\'imoneza_pricingModel\')[document.getElementById(\'imoneza_pricingModel\').selectedIndex].value);">Add Tier</a></td></tr>';
             echo '</tbody></table></td></tr>';
 
             echo '</tbody></table>';
@@ -284,7 +309,7 @@ class iMoneza_Admin {
             'PricingModel' => sanitize_text_field($_POST['imoneza_pricingModel'])
         );
 
-        if ($_POST['imoneza_pricingModel'] == 'FixedPrice' || $_POST['imoneza_pricingModel'] == 'VariablePrice') {
+        if ($_POST['imoneza_pricingModel'] == 'FixedPrice' || $_POST['imoneza_pricingModel'] == 'VariablePrice' || $_POST['imoneza_pricingModel'] == 'TargetConversion') {
             $data['Price'] = sanitize_text_field($_POST['imoneza_price']);
             $data['ExpirationPeriodUnit'] = sanitize_text_field($_POST['imoneza_expirationPeriodUnit']);
             if ($_POST['imoneza_expirationPeriodUnit'] != 'Never')
@@ -297,9 +322,15 @@ class iMoneza_Admin {
             $multiplier = $_POST['imoneza_tier_price_multiplier'];
             $vals = array();
             for ($i = 0; $i < count($tiers); ++$i)
-                $vals[] = array('Tier' => $tiers[$i] * (isset($multiplier) ? $multiplier[$i] : 1), 'Price' => $prices[$i]);
+                $vals[] = array('Tier' => $tiers[$i] * ($_POST['imoneza_pricingModel'] == 'TimeTiered' && isset($multiplier) ? $multiplier[$i] : 1), 'Price' => $prices[$i]);
 
             $data['ResourcePricingTiers'] = $vals;
+        }
+
+        if ($_POST['imoneza_pricingModel'] == 'TargetConversion') {
+            $data['TargetConversionRate'] = sanitize_text_field($_POST['imoneza_targetConversionRate']);
+            $data['TargetConversionPriceFloor'] = sanitize_text_field($_POST['imoneza_targetConversionPriceFloor']);
+            $data['TargetConversionHitsPerRecalculationPeriod'] = sanitize_text_field($_POST['imoneza_targetConversionHitsPerRecalculationPeriod']);
         }
 
         $resourceManagement = new iMoneza_ResourceManagement();
