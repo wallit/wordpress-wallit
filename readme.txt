@@ -1,5 +1,5 @@
 === iMoneza ===
-Contributors: chrisatnws
+Contributors: aaronsaray, chrisatnws
 Tags: ecommerce, e-commerce, integration, plugin, store, commerce
 Requires at least: 3.9
 Tested up to: 4.2
@@ -34,16 +34,16 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 
 == Changelog ==
 
-= 1.0 =
-* Initial public release.
-
-= 1.1 =
-* Added support for server-side access control
+= 1.2.0 =
+* Added support for target conversion pricing
+* Added support for server-side IP address logging
 
 = 1.1.1 =
 * Fixed bug with escaped text fields
 * Set caching plugins to ignore iMoneza-managed resources
 
-= 1.2.0 =
-* Added support for target conversion pricing
-* Added support for server-side IP address logging
+= 1.1 =
+* Added support for server-side access control
+
+= 1.0 =
+* Initial public release.
