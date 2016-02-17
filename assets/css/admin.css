@@ -1,0 +1,35 @@
+.text-center {
+    text-align: center;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.row > * {
+    padding: 1rem;
+}
+.row > *:first-child {
+    padding-left: 0;
+}
+.row > *:last-child {
+    padding-right: 0;
+}
+.row > div {
+    flex-grow: 2;
+}
+.row > aside {
+    flex-grow: 1;
+}
+
+.i-card {
+    background-color: #ffffff;
+    padding: 0.1rem 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    margin: 0.5rem auto;
+}
+
+h2.branded-header img {
+    height: 2rem;
+    margin-right: 0.3rem;
+    vertical-align: bottom;
+}
