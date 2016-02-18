@@ -1,0 +1,20 @@
+{
+    "name": "imoneza/wordpress-imoneza-pro",
+    "description": "Wordpress iMoneza PRO plugin",
+    "authors": [
+        {
+            "name": "iMoneza",
+            "email": "info@imoneza.com"
+        },
+        {
+            "name": "Aaron Saray",
+            "email": "aaron@aaronsaray.com"
+        }
+    ],
+    "require": {
+        "imoneza/imoneza-php-api": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {"iMonezaPRO\\": "src"}
+    }
+}
