@@ -32,6 +32,8 @@ class Admin
         add_action('admin_init', function() {
             register_setting('imoneza-settings', 'imoneza-management-api-key');
             register_setting('imoneza-settings', 'imoneza-management-api-secret');
+            register_setting('imoneza-settings', 'imoneza-property-title');
+
         });
 
         add_action('admin_menu', function() use ($firstTime) {

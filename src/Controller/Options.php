@@ -30,6 +30,7 @@ class Options
      */
     public function __invoke()
     {
-        View::render('options/dashboard');
+        $propertyTitle = get_option('imoneza-property-title');
+        View::render('options/dashboard', ['propertyTitle' => $propertyTitle]);
     }
 }

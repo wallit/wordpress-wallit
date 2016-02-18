@@ -16,14 +16,15 @@
                     <input type="hidden" name="action" value="first-time-settings" />
                     <div class="form-row">
                         <label for="api_key">Resource Management API Key:</label>
-                        <input id="api_key" type="text" name="resource-management-api-key" required />
+                        <input id="api_key" type="text" name="imoneza-management-api-key" required />
                     </div>
                     <div class="form-row">
                         <label for="api_secret">Resource Management API Secret:</label>
-                        <input id="api_secret" type="text" name="resource-management-api-secret" required />
+                        <input id="api_secret" type="text" name="imoneza-management-api-secret" required />
                     </div>
                     <?php submit_button('Verify Access'); ?>
                 </form>
+                <div id="error-item" class="error-box"></div>
             </div>
         </div>
         <aside>

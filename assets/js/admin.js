@@ -20,6 +20,9 @@
                     if (response.success) {
                         window.location.reload(true);
                     }
+                    else {
+                        $('#error-item').html(response.data).slideDown();
+                    }
                 }
             });
         });

@@ -13,7 +13,7 @@ use iMonezaPRO\View;
  * Class FirstTimeOptions
  * @package iMonezaPRO\Controller
  */
-class FirstTimeOptions
+class FirstTimeOptions extends ControllerAbstract
 {
     /**
      * Options constructor.
@@ -30,16 +30,26 @@ class FirstTimeOptions
      */
     public function __invoke()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $iMoneza = new iMoneza();
+        if ($this->isPost()) {
+            $managementApiKey = trim($this->getPost('imoneza-management-api-key'));
+            $managementApiSecret = trim($this->getPost('imoneza-management-api-secret'));
+            $results = [];
 
-            $success = false;
-            if ($iMoneza->noop()) {
-                $success = true;
-                update_option('imoneza-management-api-key', 'something');
-                update_option('imoneza-management-api-secret', 'else');
+            $iMoneza = new iMoneza($managementApiKey, $managementApiSecret);
+            if ($propertyTitle = $iMoneza->getPropertyTitle()) {
+                update_option('imoneza-management-api-key', $managementApiKey);
+                update_option('imoneza-management-api-secret', $managementApiSecret);
+                update_option('imoneza-property-title', $propertyTitle);
+
+                $results['success'] = true;
+                $results['propertyTitle'] = $propertyTitle;
             }
-            View::render('options/first-time-json-response', ['success'=>$success]);
+            else {
+                $results['success'] = false;
+                $results['error'] = "Uh oh! Something's wrong... check your API Key and Secret.  If those look fine, you should contact us.";
+            }
+
+            View::render('options/first-time-json-response', $results);
         }
         else {
             View::render('options/first-time');

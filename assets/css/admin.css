@@ -27,7 +27,17 @@
 .row > aside {
     flex: 1;
 }
-
+#error-item {
+    display: none;
+    margin-bottom: 1rem;
+}
+.error-box {
+    background: #ff0000;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+}
 .form-row {
     margin-bottom: 1.4rem;
 }
