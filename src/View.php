@@ -16,8 +16,9 @@ class View
     /**
      * Renders the view to the screen basically by including the view file
      * @param $view
+     * @param array $params
      */
-    public static function render($view)
+    public static function render($view, array $params = [])
     {
         /**
          * Helper for showing assets
@@ -28,6 +29,7 @@ class View
         {
             return WP_PLUGIN_URL . '/imoneza-pro/assets' . $assetUrl;
         };
+        extract($params);
 
         require __DIR__ . '/View/' . $view . '.php';
     }

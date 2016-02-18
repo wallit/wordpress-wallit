@@ -23,18 +23,19 @@ class Admin
      */
     public function __construct()
     {
-        $firstTime = true;
+        $firstTime = empty(get_option('imoneza-management-api-key'));
 
         if ($firstTime) {
             $this->addAdminNoticeConfigNeeded();
         }
 
         add_action('admin_init', function() {
-            register_setting('imoneza-settings', 'resource-access-api-key');
+            register_setting('imoneza-settings', 'imoneza-management-api-key');
+            register_setting('imoneza-settings', 'imoneza-management-api-secret');
         });
 
         add_action('admin_menu', function() use ($firstTime) {
-            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? new Controller\FirstTimeOptions() : null);
+            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? new Controller\FirstTimeOptions() : new Controller\Options());
         });
         add_action('wp_ajax_first-time-settings', function() {
             $controller = new Controller\FirstTimeOptions();

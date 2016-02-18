@@ -6,6 +6,7 @@
  */
 
 namespace iMonezaPRO\Controller;
+use iMonezaPRO\Service\iMoneza;
 use iMonezaPRO\View;
 
 /**
@@ -30,7 +31,15 @@ class FirstTimeOptions
     public function __invoke()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            View::render('options/first-time-json-response');
+            $iMoneza = new iMoneza();
+
+            $success = false;
+            if ($iMoneza->noop()) {
+                $success = true;
+                update_option('imoneza-management-api-key', 'something');
+                update_option('imoneza-management-api-secret', 'else');
+            }
+            View::render('options/first-time-json-response', ['success'=>$success]);
         }
         else {
             View::render('options/first-time');
