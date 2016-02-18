@@ -9,10 +9,10 @@ namespace iMonezaPRO\Controller;
 use iMonezaPRO\View;
 
 /**
- * Class Options
+ * Class FirstTimeOptions
  * @package iMonezaPRO\Controller
  */
-class Options
+class FirstTimeOptions
 {
     /**
      * Options constructor.
@@ -29,6 +29,6 @@ class Options
      */
     public function __invoke()
     {
-        View::render('options/first-time-setup');
+        View::render('options/first-time');
     }
 }

@@ -21,7 +21,7 @@ class Admin
         $this->addAdminNoticeConfigNeeded();
 
         add_action('admin_menu', function() {
-            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', 'imoneza-pro', new Controller\Options());
+            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', 'imoneza-pro', new Controller\FirstTimeOptions());
         });
 
         add_action('admin_enqueue_scripts', function() {

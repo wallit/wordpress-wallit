@@ -1,5 +1,12 @@
+* {
+    box-sizing: border-box;
+}
 .text-center {
     text-align: center;
+}
+.vertical-spacing-lg {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
 }
 .row {
     display: flex;
@@ -15,10 +22,21 @@
     padding-right: 0;
 }
 .row > div {
-    flex-grow: 2;
+    flex: 2;
 }
 .row > aside {
-    flex-grow: 1;
+    flex: 1;
+}
+
+.form-row {
+    margin-bottom: 1.4rem;
+}
+.form-row label {
+    font-weight: bold;
+    display: inline-block;
+    text-align: right;
+    vertical-align: text-bottom;
+    padding-right: 0.5rem;
 }
 
 .i-card {
@@ -28,8 +46,32 @@
     margin: 0.5rem auto;
 }
 
+
 h2.branded-header img {
     height: 2rem;
     margin-right: 0.3rem;
     vertical-align: bottom;
+}
+h2.logo-header {
+    text-align: center;
+    background-color: #414143;
+}
+.logo-header img {
+    height: 3rem;
+}
+
+
+/** first time **/
+#first-form {
+    width: 30rem;
+    margin: 2rem auto 0 auto;
+}
+#first-form label {
+    width: 10rem;
+}
+#first-form input[type=text] {
+    width: 19rem;
+}
+#first-form p.submit {
+    padding-left: 10.2rem;
 }
