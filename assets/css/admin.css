@@ -35,7 +35,7 @@
     font-weight: bold;
     display: inline-block;
     text-align: right;
-    vertical-align: text-bottom;
+    vertical-align: sub;
     padding-right: 0.5rem;
 }
 
@@ -71,6 +71,8 @@ h2.logo-header {
 }
 #first-form input[type=text] {
     width: 19rem;
+    font-size: 1.5rem;
+    padding: 0.5rem;
 }
 #first-form p.submit {
     padding-left: 10.2rem;

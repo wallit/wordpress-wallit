@@ -8,14 +8,19 @@
             <div class="i-card">
                 <h3>Time to do a little configuration</h3>
                 <p>
-                    Right now, all we need is your API access key.  This will help
+                    Right now, all we need is your Resource Management API key and secret.  This will help
                     us custom tailor the rest of the plugin options for you.
                 </p>
                 <form method="post" id="first-form">
-                    <?php settings_fields( 'imoneza-pro-settings-group' ); ?>
+                    <?php wp_nonce_field('imoneza-settings'); ?>
+                    <input type="hidden" name="action" value="first-time-settings" />
                     <div class="form-row">
-                        <label for="access_api_key">API Access Key:</label>
-                        <input id="access_api_key" type="text" name="access_api_key" required />
+                        <label for="api_key">Resource Management API Key:</label>
+                        <input id="api_key" type="text" name="resource-management-api-key" required />
+                    </div>
+                    <div class="form-row">
+                        <label for="api_secret">Resource Management API Secret:</label>
+                        <input id="api_secret" type="text" name="resource-management-api-secret" required />
                     </div>
                     <?php submit_button('Verify Access'); ?>
                 </form>

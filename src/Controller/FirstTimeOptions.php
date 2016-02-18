@@ -29,6 +29,11 @@ class FirstTimeOptions
      */
     public function __invoke()
     {
-        View::render('options/first-time');
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            View::render('options/first-time-json-response');
+        }
+        else {
+            View::render('options/first-time');
+        }
     }
 }
