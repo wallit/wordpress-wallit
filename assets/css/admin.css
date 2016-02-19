@@ -39,6 +39,9 @@
 .imoneza-form .form-row {
     margin-bottom: 1.4rem;
 }
+.imoneza-form .form-row-spacing-top {
+    margin-top: 1.4rem;
+}
 .imoneza-form label {
     font-weight: bold;
     display: inline-block;
@@ -52,6 +55,54 @@
     padding: 0.5rem;
     width: 64%;
 }
+.imoneza-form .toggle label {
+    width: auto;
+}
+.imoneza-form .toggle-label {
+    margin-top: 6px;
+    vertical-align: top;
+}
+.toggle {
+    overflow: hidden;
+    display: inline-block;
+}
+.toggle input {
+    display: none;
+}
+.toggle label {
+    float: left;
+    display: inline-block;
+    width: 60px;
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition:    all 0.1s ease-in-out;
+    -ms-transition:     all 0.1s ease-in-out;
+    -o-transition:      all 0.1s ease-in-out;
+    transition:         all 0.1s ease-in-out;
+}
+.toggle label:hover {
+    cursor: pointer;
+}
+.toggle input:checked + label {
+    background-color: #A5DC86;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.toggle label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+.toggle label:last-of-type {
+    border-radius: 0 4px 4px 0;
+}
 
 /** card layouts **/
 .i-card {
@@ -62,6 +113,9 @@
 }
 .i-card .success {
     color: #00AD2A;
+}
+.i-card .error {
+    color: #E90000;
 }
 .i-card .large {
     font-size: 1.5rem;
@@ -106,4 +160,9 @@ h2.logo-header {
     padding-left: 10.2rem;
 }
 
+/** options form **/
+#submit-message {
+    padding: 0.2rem 1rem;
+    display: inline-block;
+}
 

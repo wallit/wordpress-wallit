@@ -14,6 +14,16 @@ namespace iMonezaPRO\Controller;
 abstract class ControllerAbstract
 {
     /**
+     * ControllerAbstract constructor.
+     */
+    public function __construct()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(__( 'You do not have sufficient permissions to access this page.', 'iMoneza'), 403);
+        }
+    }
+
+    /**
      * @return bool
      */
     protected function isPost()

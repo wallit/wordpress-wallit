@@ -42,15 +42,22 @@ class Admin
             register_setting('imoneza-settings', 'imoneza-management-api-key');
             register_setting('imoneza-settings', 'imoneza-management-api-secret');
             register_setting('imoneza-settings', 'imoneza-property-title');
-
+            register_setting('imoneza-settings', 'imoneza-access-api-key');
+            register_setting('imoneza-settings', 'imoneza-access-api-secret');
+            register_setting('imoneza-settings', 'imoneza-access-control');
         });
 
         add_action('admin_menu', function() use ($firstTime, $di) {
-            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : new Controller\Options());
+            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : $di['controller.options']);
         });
         add_action('wp_ajax_first-time-settings', function() use ($di) {
             /** @var \iMonezaPRO\Controller\FirstTimeOptions $controller */
             $controller = $di['controller.first-time-options'];
+            $controller();
+        });
+        add_action('wp_ajax_settings', function() use ($di) {
+            /** @var \iMonezaPRO\Controller\Options $controller */
+            $controller = $di['controller.options'];
             $controller();
         });
 

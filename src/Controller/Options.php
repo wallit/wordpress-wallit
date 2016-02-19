@@ -6,6 +6,7 @@
  */
 
 namespace iMonezaPRO\Controller;
+use iMonezaPRO\Service\iMoneza;
 use iMonezaPRO\View;
 
 /**
@@ -15,13 +16,18 @@ use iMonezaPRO\View;
 class Options extends ControllerAbstract
 {
     /**
-     * Options constructor.
+     * @var iMoneza
      */
-    public function __construct()
+    protected $iMonezaService;
+
+    /**
+     * Options constructor.
+     * @param iMoneza $iMonezaService
+     */
+    public function __construct(iMoneza $iMonezaService)
     {
-        if (!current_user_can('manage_options')) {
-            wp_die(__( 'You do not have sufficient permissions to access this page.', 'iMoneza'), 403);
-        }
+        parent::__construct();
+        $this->iMonezaService = $iMonezaService;
     }
 
     /**
@@ -29,15 +35,63 @@ class Options extends ControllerAbstract
      */
     public function __invoke()
     {
-        $parameters = [
-            'firstTimeSuccess'  =>  boolval($this->getGet('first-time')),
-            'propertyTitle'     =>  get_option('imoneza-property-title'),
-            'options'   =>  [
-                'imoneza-management-api-key'    =>  get_option('imoneza-management-api-key'),
-                'imoneza-management-api-secret' =>  get_option('imoneza-management-api-secret')
-            ]
-        ];
+        if ($this->isPost()) {
+            $managementApiKey = trim($this->getPost('imoneza-management-api-key'));
+            $managementApiSecret = trim($this->getPost('imoneza-management-api-secret'));
+            $accessApiKey = trim($this->getPost('imoneza-access-api-key'));
+            $accessApiSecret = trim($this->getPost('imoneza-access-api-secret'));
+            $accessControl = trim($this->getPost('imoneza-access-control'));
 
-        View::render('options/dashboard', $parameters);
+            $errors = [];
+            $this->iMonezaService->setManagementApiKey($managementApiKey)->setManagementApiSecret($managementApiSecret);
+            if (!($propertyTitle = $this->iMonezaService->getPropertyTitle())) {
+                $errors[] = $this->iMonezaService->getLastError();
+            }
+            if (!in_array($accessControl, ['S', 'C'])) {
+                $errors[] = 'The access control somehow is not a valid value.';
+            }
+
+            $results = [];
+            if (empty($errors)) {
+                // do updates
+                update_option('imoneza-management-api-key', $managementApiKey);
+                update_option('imoneza-management-api-secret', $managementApiSecret);
+                update_option('imoneza-access-api-key', $accessApiKey);
+                update_option('imoneza-access-api-secret', $accessApiSecret);
+                update_option('imoneza-property-title', $propertyTitle);
+                update_option('imoneza-access-control', $accessControl);
+                $results['success'] = true;
+            }
+            else {
+                $results['success'] = false;
+                $results['error'] = array_reduce($errors, function($errorString, $error) {
+                    if (empty($errorString)) {
+                        $errorString = $error;
+                    }
+                    else {
+                        $concatAdverbish = ['Also', 'Then', 'In addition'];
+                        $errorString .= ' ' . $concatAdverbish[array_rand($concatAdverbish)] . ', ' . lcfirst($error);
+                    }
+                    return $errorString;
+                });
+            }
+
+            View::render('options/json-response', $results);
+        }
+        else {
+            $parameters = [
+                'firstTimeSuccess' => boolval($this->getGet('first-time')),
+                'propertyTitle' => get_option('imoneza-property-title'),
+                'options' => [
+                    'imoneza-management-api-key' => get_option('imoneza-management-api-key'),
+                    'imoneza-management-api-secret' => get_option('imoneza-management-api-secret'),
+                    'imoneza-access-api-key' => get_option('imoneza-access-api-key'),
+                    'imoneza-access-api-secret' => get_option('imoneza-access-api-secret'),
+                    'imoneza-access-control' => get_option('imoneza-access-control')
+                ]
+            ];
+
+            View::render('options/dashboard', $parameters);
+        }
     }
 }

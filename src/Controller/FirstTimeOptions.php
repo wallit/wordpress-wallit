@@ -26,10 +26,7 @@ class FirstTimeOptions extends ControllerAbstract
      */
     public function __construct(iMoneza $iMonezaService)
     {
-        if (!current_user_can('manage_options')) {
-            wp_die(__( 'You do not have sufficient permissions to access this page.', 'iMoneza'), 403);
-        }
-
+        parent::__construct();
         $this->iMonezaService = $iMonezaService;
     }
 
@@ -48,6 +45,7 @@ class FirstTimeOptions extends ControllerAbstract
                 update_option('imoneza-management-api-key', $managementApiKey);
                 update_option('imoneza-management-api-secret', $managementApiSecret);
                 update_option('imoneza-property-title', $propertyTitle);
+                update_option('imoneza-access-control', 'C');
 
                 $results['success'] = true;
                 $results['propertyTitle'] = $propertyTitle;
@@ -57,7 +55,7 @@ class FirstTimeOptions extends ControllerAbstract
                 $results['error'] = $this->iMonezaService->getLastError();
             }
 
-            View::render('options/first-time-json-response', $results);
+            View::render('options/json-response', $results);
         }
         else {
             View::render('options/first-time');
