@@ -37,14 +37,39 @@ class iMoneza
     protected $lastError = '';
 
     /**
-     * iMoneza constructor.
-     * @param $managementApiKey string
-     * @param $managementApiSecret string
+     * @return string
      */
-    public function __construct($managementApiKey, $managementApiSecret)
+    public function getManagementApiKey()
+    {
+        return $this->managementApiKey;
+    }
+
+    /**
+     * @param string $managementApiKey
+     * @return iMoneza
+     */
+    public function setManagementApiKey($managementApiKey)
     {
         $this->managementApiKey = $managementApiKey;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getManagementApiSecret()
+    {
+        return $this->managementApiSecret;
+    }
+
+    /**
+     * @param string $managementApiSecret
+     * @return iMoneza
+     */
+    public function setManagementApiSecret($managementApiSecret)
+    {
         $this->managementApiSecret = $managementApiSecret;
+        return $this;
     }
 
     /**

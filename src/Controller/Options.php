@@ -6,14 +6,13 @@
  */
 
 namespace iMonezaPRO\Controller;
-use iMonezaPRO\Service\iMoneza;
 use iMonezaPRO\View;
 
 /**
  * Class Options
  * @package iMonezaPRO\Controller
  */
-class Options
+class Options extends ControllerAbstract
 {
     /**
      * Options constructor.
@@ -30,7 +29,15 @@ class Options
      */
     public function __invoke()
     {
-        $propertyTitle = get_option('imoneza-property-title');
-        View::render('options/dashboard', ['propertyTitle' => $propertyTitle]);
+        $parameters = [
+            'firstTimeSuccess'  =>  boolval($this->getGet('first-time')),
+            'propertyTitle'     =>  get_option('imoneza-property-title'),
+            'options'   =>  [
+                'imoneza-management-api-key'    =>  get_option('imoneza-management-api-key'),
+                'imoneza-management-api-secret' =>  get_option('imoneza-management-api-secret')
+            ]
+        ];
+
+        View::render('options/dashboard', $parameters);
     }
 }

@@ -18,7 +18,7 @@
                 success: function(response) {
                     $spinner.remove();
                     if (response.success) {
-                        window.location.reload(true);
+                        window.location = window.location.href + '&first-time=done';
                     }
                     else {
                         $('#error-item').text(response.data).slideDown();

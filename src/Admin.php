@@ -6,6 +6,7 @@
  */
 
 namespace iMonezaPRO;
+use Pimple\Container;
 
 /**
  * Class Admin
@@ -19,10 +20,18 @@ class Admin
     const SETTINGS_PAGE_IDENTIFIER = 'imoneza-pro-settings';
 
     /**
-     * App constructor.
+     * @var Container
      */
-    public function __construct()
+    protected $di;
+
+    /**
+     * App constructor.
+     * @param Container $di
+     */
+    public function __construct(Container $di)
     {
+        $this->di = $di;
+
         $firstTime = empty(get_option('imoneza-management-api-key'));
 
         if ($firstTime) {
@@ -36,11 +45,12 @@ class Admin
 
         });
 
-        add_action('admin_menu', function() use ($firstTime) {
-            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? new Controller\FirstTimeOptions() : new Controller\Options());
+        add_action('admin_menu', function() use ($firstTime, $di) {
+            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : new Controller\Options());
         });
-        add_action('wp_ajax_first-time-settings', function() {
-            $controller = new Controller\FirstTimeOptions();
+        add_action('wp_ajax_first-time-settings', function() use ($di) {
+            /** @var \iMonezaPRO\Controller\FirstTimeOptions $controller */
+            $controller = $di['controller.first-time-options'];
             $controller();
         });
 

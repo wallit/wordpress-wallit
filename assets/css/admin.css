@@ -4,16 +4,12 @@
 .text-center {
     text-align: center;
 }
-.vertical-spacing-lg {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
-}
 .row {
     display: flex;
     flex-direction: row;
 }
 .row > * {
-    padding: 1rem;
+    padding: 0.5rem;
 }
 .row > *:first-child {
     padding-left: 0;
@@ -38,25 +34,48 @@
     text-align: center;
     padding: 1rem;
 }
-.form-row {
+
+/** generic forms **/
+.imoneza-form .form-row {
     margin-bottom: 1.4rem;
 }
-.form-row label {
+.imoneza-form label {
     font-weight: bold;
     display: inline-block;
     text-align: right;
-    vertical-align: sub;
-    padding-right: 0.5rem;
+    padding-right: 1%;
+    vertical-align: super;
+    width: 33%;
+}
+.imoneza-form input[type=text] {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    width: 64%;
 }
 
+/** card layouts **/
 .i-card {
     background-color: #ffffff;
     padding: 0.1rem 1rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     margin: 0.5rem auto;
 }
+.i-card .success {
+    color: #00AD2A;
+}
+.i-card .large {
+    font-size: 1.5rem;
+}
+.i-card hr {
+    margin: 2rem 0;
+}
 
-
+/** header and text size things **/
+.large .dashicons {
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+}
 h2.branded-header img {
     height: 2rem;
     margin-right: 0.3rem;
@@ -78,12 +97,13 @@ h2.logo-header {
 }
 #first-form label {
     width: 10rem;
+    vertical-align: sub;
 }
 #first-form input[type=text] {
     width: 19rem;
-    font-size: 1.5rem;
-    padding: 0.5rem;
 }
 #first-form p.submit {
     padding-left: 10.2rem;
 }
+
+
