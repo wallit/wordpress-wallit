@@ -46,7 +46,7 @@ class FirstTimeOptions extends ControllerAbstract
             }
             else {
                 $results['success'] = false;
-                $results['error'] = "Uh oh! Something's wrong... check your API Key and Secret.  If those look fine, you should contact us.";
+                $results['error'] = $iMoneza->getLastError();
             }
 
             View::render('options/first-time-json-response', $results);

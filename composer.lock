@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "44286c737362b037ba439f65a93c058c",
-    "content-hash": "1dbbd90edbdfd59c98b8c9b566e9f4ba",
+    "hash": "dab511025fc23d167163b2b411c78eb5",
+    "content-hash": "5eca7e633ca3de5d2b93939ced16e4cd",
     "packages": [
         {
             "name": "imoneza/imoneza-php-api",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iMoneza/imoneza-php-api.git",
-                "reference": "7fdd0def40c44276a755624cfb411e00ae11774d"
+                "reference": "82cd3ef19dc5ee10d465c8db8609fe53242e8bd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/7fdd0def40c44276a755624cfb411e00ae11774d",
-                "reference": "7fdd0def40c44276a755624cfb411e00ae11774d",
+                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/82cd3ef19dc5ee10d465c8db8609fe53242e8bd4",
+                "reference": "82cd3ef19dc5ee10d465c8db8609fe53242e8bd4",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "api",
                 "imoneza"
             ],
-            "time": "2016-02-18 16:32:23"
+            "time": "2016-02-19 14:52:12"
         },
         {
             "name": "monolog/monolog",
@@ -171,7 +171,59 @@
             "time": "2012-12-21 11:40:51"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "vlucas/phpdotenv",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vlucas/phpdotenv.git",
+                "reference": "9caf304153dc2288e4970caec6f1f3b3bc205412"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/9caf304153dc2288e4970caec6f1f3b3bc205412",
+                "reference": "9caf304153dc2288e4970caec6f1f3b3bc205412",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dotenv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "http://www.vancelucas.com"
+                }
+            ],
+            "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
+            "homepage": "http://github.com/vlucas/phpdotenv",
+            "keywords": [
+                "dotenv",
+                "env",
+                "environment"
+            ],
+            "time": "2015-12-29 15:10:30"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {

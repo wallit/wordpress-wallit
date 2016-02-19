@@ -37,3 +37,5 @@
         </aside>
     </section>
 </div>
+<?php
+var_dump(WP_DEBUG);

@@ -21,7 +21,7 @@
                         window.location.reload(true);
                     }
                     else {
-                        $('#error-item').html(response.data).slideDown();
+                        $('#error-item').text(response.data).slideDown();
                     }
                 }
             });

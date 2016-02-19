@@ -51,7 +51,6 @@ class Admin
             wp_enqueue_script('jquery-form');
             wp_enqueue_script('imoneza-admin-js', WP_PLUGIN_URL . '/imoneza-pro/assets/js/admin.js', [], false, true);
         });
-
     }
 
     /**
