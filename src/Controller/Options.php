@@ -43,12 +43,20 @@ class Options extends ControllerAbstract
             $accessControl = trim($this->getPost('imoneza-access-control'));
 
             $errors = [];
-            $this->iMonezaService->setManagementApiKey($managementApiKey)->setManagementApiSecret($managementApiSecret);
+            $this->iMonezaService
+                ->setManagementApiKey($managementApiKey)
+                ->setManagementApiSecret($managementApiSecret)
+                ->setAccessApiKey($accessApiKey)
+                ->setAccessApiSecret($accessApiSecret);
+
             if (!($propertyTitle = $this->iMonezaService->getPropertyTitle())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
             if (!in_array($accessControl, ['S', 'C'])) {
                 $errors[] = 'The access control somehow is not a valid value.';
+            }
+            if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {
+                $errors[] = $this->iMonezaService->getLastError();
             }
 
             $results = [];

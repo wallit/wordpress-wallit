@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iMoneza/imoneza-php-api.git",
-                "reference": "82cd3ef19dc5ee10d465c8db8609fe53242e8bd4"
+                "reference": "b3c95745acea9fba17b9d427be2b5bcd8ef5ceb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/82cd3ef19dc5ee10d465c8db8609fe53242e8bd4",
-                "reference": "82cd3ef19dc5ee10d465c8db8609fe53242e8bd4",
+                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/b3c95745acea9fba17b9d427be2b5bcd8ef5ceb6",
+                "reference": "b3c95745acea9fba17b9d427be2b5bcd8ef5ceb6",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "api",
                 "imoneza"
             ],
-            "time": "2016-02-19 14:52:12"
+            "time": "2016-02-19 22:04:38"
         },
         {
             "name": "monolog/monolog",

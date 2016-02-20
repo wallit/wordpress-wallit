@@ -45,7 +45,7 @@
                 success: function(response) {
                     $spinner.remove();
                     if (response.success) {
-                        $submitMessage.html('<span class="dashicons dashicons-yes"></span> Your settings have been saved!').removeClass('success').addClass('success');
+                        $submitMessage.html('<span class="dashicons dashicons-yes"></span> Your settings have been saved!').removeClass('error').addClass('success');
                         setTimeout(function() {
                             $submitMessage.fadeOut('slow', function() {
                                 $submitMessage.html('').show();
