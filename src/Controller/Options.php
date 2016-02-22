@@ -47,7 +47,7 @@ class Options extends ControllerAbstract
                 ->setAccessApiKey($postOptions['access-api-key'])
                 ->setAccessApiSecret($postOptions['access-api-secret']);
 
-            if (!($propertyTitle = $this->iMonezaService->getPropertyTitle())) {
+            if (!$this->iMonezaService->getProperty()) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
             if (!in_array($postOptions['access-control'], ['S', 'C'])) {
@@ -79,7 +79,7 @@ class Options extends ControllerAbstract
                 });
             }
 
-            View::render('options/json-response', $results);
+            View::render('admin/options/json-response', $results);
         }
         else {
             $parameters = [
@@ -87,7 +87,7 @@ class Options extends ControllerAbstract
                 'options' => $options
             ];
 
-            View::render('options/dashboard', $parameters);
+            View::render('admin/options/dashboard', $parameters);
         }
     }
 }

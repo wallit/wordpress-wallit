@@ -40,11 +40,12 @@ class FirstTimeOptions extends ControllerAbstract
             $results = $this->getGenericAjaxResultsObject();
 
             $this->iMonezaService->setManagementApiKey($options['management-api-key'])->setManagementApiSecret($options['management-api-secret']);
-            if ($propertyTitle = $this->iMonezaService->getPropertyTitle()) {
+            if ($propertyOptions = $this->iMonezaService->getProperty()) {
                 $firstTimeOptions = [
                     'management-api-key'    =>  $options['management-api-key'],
                     'management-api-secret' => $options['management-api-secret'],
-                    'property-title'    =>  $propertyTitle,
+                    'property-title'    =>  $propertyOptions->getTitle(),
+                    'dynamically-create-resources'  =>  $propertyOptions->isDynamicallyCreateResources(),
                     'access-control'    =>  'C'
                 ];
                 update_option('imoneza-options', $firstTimeOptions);
@@ -56,10 +57,10 @@ class FirstTimeOptions extends ControllerAbstract
                 $results['data']['message'] = $this->iMonezaService->getLastError();
             }
 
-            View::render('options/json-response', $results);
+            View::render('admin/options/json-response', $results);
         }
         else {
-            View::render('options/first-time');
+            View::render('admin/options/first-time');
         }
     }
 }

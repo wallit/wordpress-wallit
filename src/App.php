@@ -40,7 +40,8 @@ class App
     public function __invoke()
     {
         $di = $this->di;
-        $firstTime = empty($this->getOptions());
+        $options = $this->getOptions();
+        $firstTime = empty($options);
 
         // this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
         add_action('imoneza_hourly', function() use ($di) {
@@ -67,6 +68,19 @@ class App
 
             add_action('admin_menu', function () use ($firstTime, $di) {
                 add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : $di['controller.options']);
+            });
+
+            add_action('add_meta_boxes', function() use ($options) {
+                if (array_key_exists('dynamically-create-resources', $options)) { //if this doesn't exist - we don't even know what we should say about it.
+                    add_meta_box('imoneza-price-post', __('iMoneza', 'imoneza'), function($post) use ($options) {
+                        if ($options['dynamically-create-resources']) {
+                            View::render('post/dynamically-created-notification');
+                        }
+                        else {
+                            echo '<p>Hi there! Lets choose some options!</p>';
+                        }
+                    }, 'post');
+                }
             });
 
             add_action('wp_ajax_first-time-settings', function () use ($di) {
@@ -104,7 +118,7 @@ class App
 
         if (!($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == self::SETTINGS_PAGE_IDENTIFIER)) {
             add_action('admin_notices', function() {
-                View::render('notify-config-needed');
+                View::render('admin/notify-config-needed');
             });
         }
     }

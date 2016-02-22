@@ -102,9 +102,9 @@ class iMoneza
     }
 
     /**
-     * @return bool|string
+     * @return \iMoneza\Data\Property|false
      */
-    public function getPropertyTitle()
+    public function getProperty()
     {
         $this->lastError = '';
         $api = $this->getConnectionInstance();
@@ -116,9 +116,8 @@ class iMoneza
 
         $result = false;
         try {
-            /** @var \iMoneza\Data\Property $data */
-            $data = $api->request($options, new \iMoneza\Data\Property());
-            $result = $data->getTitle();
+            /** @var \iMoneza\Data\Property $result */
+            $result = $api->request($options, new \iMoneza\Data\Property());
         }
         catch (Exception\NotFound $e) {
             $this->lastError = "Oh no!  Looks like your Management API Key isn't working. You might want to check that out again.";

@@ -42,18 +42,18 @@ class RefreshOptions extends ControllerAbstract
             ->setManagementApiKey($options['management-api-key'])
             ->setManagementApiSecret($options['management-api-secret']);
 
-        if ($propertyTitle = $this->iMonezaService->getPropertyTitle()) {
-            $options['property-title'] = $propertyTitle;
+        if ($propertyOptions = $this->iMonezaService->getProperty()) {
+            $options['property-title'] = $propertyOptions->getTitle();
+            $options['dynamically-create-resources'] = $propertyOptions->isDynamicallyCreateResources();
             update_option('imoneza-options', $options);
             $results['success'] = true;
             $results['data']['message'] = 'You have successfully refreshed your options.';
-            $results['data']['title'] = $propertyTitle;
+            $results['data']['title'] = $propertyOptions->getTitle();
         }
         else {
             $results['success'] = false;
             $results['data']['message'] = $this->iMonezaService->getLastError();
         }
-        error_log(var_export($results, true));
-        View::render('options/json-response', $results);
+        View::render('admin/options/json-response', $results);
     }
 }
