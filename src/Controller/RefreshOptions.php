@@ -35,8 +35,22 @@ class RefreshOptions extends ControllerAbstract
      */
     public function __invoke()
     {
-        $results = ['success'=>true, 'data'=>['message'=>'You have successfully refreshed your options.', 'title'=>'MY NEW TITLE']];
-        View::render('options/json-response', $results);
+        $options = $this->getOptions();
+        $results = $this->getGenericAjaxResultsObject();
 
+        $this->iMonezaService
+            ->setManagementApiKey($options['management-api-key'])
+            ->setManagementApiSecret($options['management-api-secret']);
+
+        if ($propertyTitle = $this->iMonezaService->getPropertyTitle()) {
+            $results['success'] = true;
+            $results['data']['message'] = 'You have successfully refreshed your options.';
+            $results['data']['title'] = $propertyTitle;
+        }
+        else {
+            $results['success'] = false;
+            $results['data']['message'] = $this->iMonezaService->getLastError();
+        }
+        View::render('options/json-response', $results);
     }
 }

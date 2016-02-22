@@ -7,6 +7,8 @@
 
 namespace iMonezaPRO;
 use Pimple\Container;
+use iMonezaPRO\Traits;
+
 
 /**
  * Class Admin
@@ -14,6 +16,8 @@ use Pimple\Container;
  */
 class Admin
 {
+    use Traits\Options;
+
     /**
      * @var string used to indicate it's the settings page
      */
@@ -32,7 +36,7 @@ class Admin
     {
         $this->di = $di;
 
-        $firstTime = empty(get_option('imoneza-options'));
+        $firstTime = empty($this->getOptions());
 
         if ($firstTime) {
             $this->addAdminNoticeConfigNeeded();

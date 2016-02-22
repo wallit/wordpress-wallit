@@ -6,6 +6,7 @@
  */
 
 namespace iMonezaPRO\Controller;
+use iMonezaPRO\Traits;
 
 /**
  * Class ControllerAbstract
@@ -13,6 +14,8 @@ namespace iMonezaPRO\Controller;
  */
 abstract class ControllerAbstract
 {
+    use Traits\Options;
+
     /**
      * ControllerAbstract constructor.
      */

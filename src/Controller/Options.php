@@ -35,7 +35,7 @@ class Options extends ControllerAbstract
      */
     public function __invoke()
     {
-        $options = get_option('imoneza-options');
+        $options = $this->getOptions();
 
         if ($this->isPost()) {
             $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
