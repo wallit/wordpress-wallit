@@ -32,9 +32,5 @@ $di['controller.refresh-options'] = function($di) {
 /**
  * Run the proper "app"
  */
-if (is_admin()) {
-    new \iMonezaPRO\Admin($di);
-}
-else {
-    new \iMonezaPRO\App($di);
-}
+$app = new \iMonezaPRO\App($di);
+$app();

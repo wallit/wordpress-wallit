@@ -14,10 +14,15 @@ namespace iMonezaPRO\Traits;
 trait Options
 {
     /**
+     * @var string the key for options
+     */
+    protected static $optionsKey = 'imoneza-options';
+
+    /**
      * @return mixed|void
      */
     protected function getOptions()
     {
-        return get_option('imoneza-options');
+        return get_option(self::$optionsKey);
     }
 }
