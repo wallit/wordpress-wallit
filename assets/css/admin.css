@@ -1,6 +1,14 @@
 * {
     box-sizing: border-box;
 }
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
 .text-center {
     text-align: center;
 }
@@ -103,6 +111,13 @@
 .toggle label:last-of-type {
     border-radius: 0 4px 4px 0;
 }
+.imoneza-admin-spinner {
+    visibility: visible;
+}
+.imoneza-result-message {
+    padding: 0.2rem 1rem 0 0;
+    display: inline-block;
+}
 
 /** card layouts **/
 .i-card {
@@ -145,18 +160,18 @@ h2.logo-header {
 
 
 /** first time **/
-#first-form {
+#imoneza-first-form {
     width: 30rem;
     margin: 2rem auto 0 auto;
 }
-#first-form label {
+#imoneza-first-form label {
     width: 10rem;
     vertical-align: sub;
 }
-#first-form input[type=text] {
+#imoneza-first-form input[type=text] {
     width: 19rem;
 }
-#first-form p.submit {
+#imoneza-first-form p.submit {
     padding-left: 10.2rem;
 }
 

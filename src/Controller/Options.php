@@ -59,7 +59,12 @@ class Options extends ControllerAbstract
                 $errors[] = $this->iMonezaService->getLastError();
             }
 
-            $results = [];
+            $results = [
+                'success'   =>  false,
+                'data'  =>  [
+                    'message'   =>  ''
+                ]
+            ];
             if (empty($errors)) {
                 // do updates
                 update_option('imoneza-management-api-key', $managementApiKey);
@@ -69,10 +74,11 @@ class Options extends ControllerAbstract
                 update_option('imoneza-property-title', $propertyTitle);
                 update_option('imoneza-access-control', $accessControl);
                 $results['success'] = true;
+                $results['data']['message'] = 'Your settings have been saved!';
             }
             else {
                 $results['success'] = false;
-                $results['error'] = array_reduce($errors, function($errorString, $error) {
+                $results['data']['message'] = array_reduce($errors, function($errorString, $error) {
                     if (empty($errorString)) {
                         $errorString = $error;
                     }

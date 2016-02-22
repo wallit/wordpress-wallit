@@ -2,7 +2,7 @@
     <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Configuration</h2>
 
     <div class="i-card text-center">
-        <h3><?= esc_html($propertyTitle) ?></h3>
+        <h3 id="imoneza-property-title"><?= esc_html($propertyTitle) ?></h3>
     </div>
     <?php if ($firstTimeSuccess) : ?>
         <div class="i-card" id="first-time-success-message">
@@ -80,9 +80,13 @@
             </aside>
         </section>
         <div class="i-card">
-            <div class="form-row form-row-spacing-top">
+            <div class="form-row form-row-spacing-top clearfix">
+                <span class="alignleft">
                 <?php submit_button('Save Settings', 'primary', 'submit', false); ?>
-                <span id="submit-message"></span>
+                </span>
+                <span class="alignright">
+                    <a href="#" class="button alignright" id="imoneza-refresh-settings">Refresh Options from iMoneza.com</a>
+                </span>
             </div>
         </div>
     </form>

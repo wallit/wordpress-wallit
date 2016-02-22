@@ -27,6 +27,9 @@ $di['controller.first-time-options'] = function($di) {
 $di['controller.options'] = function($di) {
     return new \iMonezaPRO\Controller\Options($di['service.imoneza']);
 };
+$di['controller.refresh-options'] = function($di) {
+    return new \iMonezaPRO\Controller\RefreshOptions($di['service.imoneza']);
+};
 
 /**
  * Run the proper "app"

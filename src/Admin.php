@@ -60,6 +60,11 @@ class Admin
             $controller = $di['controller.options'];
             $controller();
         });
+        add_action('wp_ajax_refresh_settings', function() use ($di) {
+            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
+            $controller = $di['controller.refresh-options'];
+            $controller();
+        });
 
         add_action('admin_enqueue_scripts', function() {
             wp_register_style('imoneza-admin-css', WP_PLUGIN_URL . '/imoneza-pro/assets/css/admin.css');

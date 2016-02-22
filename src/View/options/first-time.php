@@ -11,7 +11,7 @@
                     Right now, all we need is your Resource Management API key and secret.  This will help
                     us custom tailor the rest of the plugin options for you.
                 </p>
-                <form method="post" id="first-form" class="imoneza-form">
+                <form method="post" id="imoneza-first-form" class="imoneza-form">
                     <?php wp_nonce_field('imoneza-settings'); ?>
                     <input type="hidden" name="action" value="first-time-settings" />
                     <div class="form-row">
