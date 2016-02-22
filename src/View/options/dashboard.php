@@ -2,18 +2,19 @@
     <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Configuration</h2>
 
     <div class="i-card text-center">
-        <h3 id="imoneza-property-title"><?= esc_html($propertyTitle) ?></h3>
+        <h3 id="imoneza-property-title"><?= esc_html($options['property-title']) ?></h3>
     </div>
+
     <?php if ($firstTimeSuccess) : ?>
         <div class="i-card" id="first-time-success-message">
             <p class="text-center success large">
                 <span class="dashicons dashicons-thumbs-up"></span> Way to go!  Now, let's finish this up!
             </p>
-
         </div>
     <?php endif; ?>
+
     <form method="post" id="imoneza-options-form" class="imoneza-form">
-        <?php wp_nonce_field('imoneza-settings'); ?>
+        <?php wp_nonce_field('imoneza-options'); ?>
         <input type="hidden" name="action" value="settings" />
 
         <section class="row">
@@ -22,20 +23,20 @@
                     <h3><span class="dashicons dashicons-shield"></span> API Access Credentials</h3>
                     <div class="form-row">
                         <label for="management_api_key">Resource Management API Key:</label>
-                        <input id="management_api_key" type="text" name="imoneza-management-api-key" value="<?= esc_attr($options['imoneza-management-api-key']) ?>" required />
+                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options['management-api-key']) ?>" required />
                     </div>
                     <div class="form-row">
                         <label for="management_api_secret">Resource Management API Secret:</label>
-                        <input id="management_api_secret" type="text" name="imoneza-management-api-secret" value="<?= esc_attr($options['imoneza-management-api-secret']) ?>"required />
+                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options['management-api-secret']) ?>"required />
                     </div>
                     <hr>
                     <div class="form-row">
                         <label for="access_api_key">Resource Access API Key:</label>
-                        <input id="access_api_key" type="text" name="imoneza-access-api-key" value="<?= esc_attr($options['imoneza-access-api-key']) ?>" required />
+                        <input id="access_api_key" type="text" name="imoneza-options[access-api-key]" value="<?= esc_attr($options['access-api-key']) ?>" required />
                     </div>
                     <div class="form-row">
                         <label for="access_api_secret">Resource Access API Secret:</label>
-                        <input id="access_api_secret" type="text" name="imoneza-access-api-secret" value="<?= esc_attr($options['imoneza-access-api-secret']) ?>" required />
+                        <input id="access_api_secret" type="text" name="imoneza-options[access-api-secret]" value="<?= esc_attr($options['access-api-secret']) ?>" required />
                     </div>
                 </div>
             </div>
@@ -61,9 +62,9 @@
                     <div class="form-row">
                         <label class="toggle-label">Select an Access Control:</label>
                         <span class="toggle">
-                            <input type="radio" id="access_control_client" name="imoneza-access-control" value="C"<?php if ($options['imoneza-access-control'] == 'C') echo " checked"; ?>>
+                            <input type="radio" id="access_control_client" name="imoneza-options[access-control]" value="C"<?php if ($options['access-control'] == 'C') echo " checked"; ?>>
                             <label for="access_control_client">Client Side</label>
-                            <input type="radio" id="access_control_server" name="imoneza-access-control" value="S"<?php if ($options['imoneza-access-control'] == 'S') echo " checked"; ?>>
+                            <input type="radio" id="access_control_server" name="imoneza-options[access-control]" value="S"<?php if ($options['access-control'] == 'S') echo " checked"; ?>>
                             <label for="access_control_server">Server Side</label>
                         </span>
                     </div>

@@ -24,6 +24,19 @@ abstract class ControllerAbstract
     }
 
     /**
+     * @return array the most generic of responses
+     */
+    protected function getGenericAjaxResultsObject()
+    {
+        return [
+            'success'   =>  false,
+            'data'  =>  [
+                'message'   =>  ''
+            ]
+        ];
+    }
+
+    /**
      * @return bool
      */
     protected function isPost()

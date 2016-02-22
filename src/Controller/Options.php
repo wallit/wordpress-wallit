@@ -35,44 +35,33 @@ class Options extends ControllerAbstract
      */
     public function __invoke()
     {
+        $options = get_option('imoneza-options');
+
         if ($this->isPost()) {
-            $managementApiKey = trim($this->getPost('imoneza-management-api-key'));
-            $managementApiSecret = trim($this->getPost('imoneza-management-api-secret'));
-            $accessApiKey = trim($this->getPost('imoneza-access-api-key'));
-            $accessApiSecret = trim($this->getPost('imoneza-access-api-secret'));
-            $accessControl = trim($this->getPost('imoneza-access-control'));
+            $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
 
             $errors = [];
             $this->iMonezaService
-                ->setManagementApiKey($managementApiKey)
-                ->setManagementApiSecret($managementApiSecret)
-                ->setAccessApiKey($accessApiKey)
-                ->setAccessApiSecret($accessApiSecret);
+                ->setManagementApiKey($postOptions['management-api-key'])
+                ->setManagementApiSecret($postOptions['management-api-secret'])
+                ->setAccessApiKey($postOptions['access-api-key'])
+                ->setAccessApiSecret($postOptions['access-api-secret']);
 
             if (!($propertyTitle = $this->iMonezaService->getPropertyTitle())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
-            if (!in_array($accessControl, ['S', 'C'])) {
+            if (!in_array($postOptions['access-control'], ['S', 'C'])) {
                 $errors[] = 'The access control somehow is not a valid value.';
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
 
-            $results = [
-                'success'   =>  false,
-                'data'  =>  [
-                    'message'   =>  ''
-                ]
-            ];
+            $results = $this->getGenericAjaxResultsObject();
+
             if (empty($errors)) {
-                // do updates
-                update_option('imoneza-management-api-key', $managementApiKey);
-                update_option('imoneza-management-api-secret', $managementApiSecret);
-                update_option('imoneza-access-api-key', $accessApiKey);
-                update_option('imoneza-access-api-secret', $accessApiSecret);
-                update_option('imoneza-property-title', $propertyTitle);
-                update_option('imoneza-access-control', $accessControl);
+                $options = array_merge($options, $postOptions);
+                update_option('imoneza-options', $options);
                 $results['success'] = true;
                 $results['data']['message'] = 'Your settings have been saved!';
             }
@@ -95,14 +84,7 @@ class Options extends ControllerAbstract
         else {
             $parameters = [
                 'firstTimeSuccess' => boolval($this->getGet('first-time')),
-                'propertyTitle' => get_option('imoneza-property-title'),
-                'options' => [
-                    'imoneza-management-api-key' => get_option('imoneza-management-api-key'),
-                    'imoneza-management-api-secret' => get_option('imoneza-management-api-secret'),
-                    'imoneza-access-api-key' => get_option('imoneza-access-api-key'),
-                    'imoneza-access-api-secret' => get_option('imoneza-access-api-secret'),
-                    'imoneza-access-control' => get_option('imoneza-access-control')
-                ]
+                'options' => $options
             ];
 
             View::render('options/dashboard', $parameters);

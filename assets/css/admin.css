@@ -113,9 +113,10 @@
 }
 .imoneza-admin-spinner {
     visibility: visible;
+    float: none;
 }
 .imoneza-result-message {
-    padding: 0.2rem 1rem 0 0;
+    padding: 0.2rem 1rem 0 1rem;
     display: inline-block;
 }
 

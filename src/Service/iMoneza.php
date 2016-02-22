@@ -106,6 +106,7 @@ class iMoneza
      */
     public function getPropertyTitle()
     {
+        $this->lastError = '';
         $api = $this->getConnectionInstance();
 
         $options = new Property();
@@ -138,6 +139,8 @@ class iMoneza
      */
     public function validateResourceAccessApiCredentials()
     {
+        $this->lastError = '';
+
         $api = $this->getConnectionInstance();
 
         $options = new ResourceFromResourceKey();

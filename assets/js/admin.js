@@ -3,7 +3,7 @@
  * @author iMoneza
  * @author Aaron Saray
  */
-;(function($) {
+;(function($, history) {
     "use strict";
 
     /**
@@ -24,8 +24,9 @@
         this.settings = $.extend({
             url: ajaxurl,
             beforeSend: function() {
+                this.settings.beforeCustomCallback();
                 $anchor.after($spinner);
-            },
+            }.bind(this),
             complete: function() {
                 $spinner.remove();
             },
@@ -49,6 +50,8 @@
                 }
             }.bind(this),
             successCustomCallback: function(response) { // custom for if we have additional non-ui things to do
+            },
+            beforeCustomCallback: function() { // custom for additional non-ui things
             }
         }, options);
 
@@ -91,11 +94,17 @@
                 $('#imoneza-property-title').text(response.data.title);
             }
         });
-        $('#imoneza-options-form').imonezaAdminAjax();
+        $('#imoneza-options-form').imonezaAdminAjax({
+            beforeCustomCallback: function() {
+                history.replaceState(null, null, window.location.href.replace('&first-time=done', ''));
+                $('#first-time-success-message').slideUp();
+            }
+        });
         $('#imoneza-first-form').imonezaAdminAjax({
             successCustomCallback: function() {
                 window.location = window.location.href + '&first-time=done';
             }
         });
     });
-})(jQuery);
+
+})(jQuery, window.history);

@@ -32,19 +32,14 @@ class Admin
     {
         $this->di = $di;
 
-        $firstTime = empty(get_option('imoneza-management-api-key'));
+        $firstTime = empty(get_option('imoneza-options'));
 
         if ($firstTime) {
             $this->addAdminNoticeConfigNeeded();
         }
 
         add_action('admin_init', function() {
-            register_setting('imoneza-settings', 'imoneza-management-api-key');
-            register_setting('imoneza-settings', 'imoneza-management-api-secret');
-            register_setting('imoneza-settings', 'imoneza-property-title');
-            register_setting('imoneza-settings', 'imoneza-access-api-key');
-            register_setting('imoneza-settings', 'imoneza-access-api-secret');
-            register_setting('imoneza-settings', 'imoneza-access-control');
+            register_setting('imoneza-options', 'imoneza-options');
         });
 
         add_action('admin_menu', function() use ($firstTime, $di) {

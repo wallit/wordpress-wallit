@@ -36,23 +36,23 @@ class FirstTimeOptions extends ControllerAbstract
     public function __invoke()
     {
         if ($this->isPost()) {
-            $managementApiKey = trim($this->getPost('imoneza-management-api-key'));
-            $managementApiSecret = trim($this->getPost('imoneza-management-api-secret'));
-            $results = [];
+            $options = array_filter($this->getPost('imoneza-options', []), 'trim');
+            $results = $this->getGenericAjaxResultsObject();
 
-            $this->iMonezaService->setManagementApiKey($managementApiKey)->setManagementApiSecret($managementApiSecret);
+            $this->iMonezaService->setManagementApiKey($options['management-api-key'])->setManagementApiSecret($options['management-api-secret']);
             if ($propertyTitle = $this->iMonezaService->getPropertyTitle()) {
-                update_option('imoneza-management-api-key', $managementApiKey);
-                update_option('imoneza-management-api-secret', $managementApiSecret);
-                update_option('imoneza-property-title', $propertyTitle);
-                update_option('imoneza-access-control', 'C');
-
+                $firstTimeOptions = [
+                    'management-api-key'    =>  $options['management-api-key'],
+                    'management-api-secret' => $options['management-api-secret'],
+                    'property-title'    =>  $propertyTitle,
+                    'access-control'    =>  'C'
+                ];
+                update_option('imoneza-options', $firstTimeOptions);
                 $results['success'] = true;
-                $results['propertyTitle'] = $propertyTitle;
             }
             else {
                 $results['success'] = false;
-                $results['error'] = $this->iMonezaService->getLastError();
+                $results['data']['message'] = $this->iMonezaService->getLastError();
             }
 
             View::render('options/json-response', $results);
