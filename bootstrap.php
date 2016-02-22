@@ -7,10 +7,8 @@
 require 'vendor/autoload.php';
 
 /** for development, I use env files.  You shouldn't need to worry about this */
-if (class_exists('\Dotenv\Dotenv')) {
-    $dotenv = new \Dotenv\Dotenv(__DIR__);
-    $dotenv->load();
-}
+$dotenv = new \Dotenv\Dotenv(__DIR__);
+$dotenv->load();
 
 /********************** DI *******************************************/
 $di = new \Pimple\Container();
@@ -36,4 +34,7 @@ $di['controller.refresh-options'] = function($di) {
  */
 if (is_admin()) {
     new \iMonezaPRO\Admin($di);
+}
+else {
+    new \iMonezaPRO\App($di);
 }

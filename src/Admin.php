@@ -72,6 +72,19 @@ class Admin
             wp_enqueue_script('jquery-form');
             wp_enqueue_script('imoneza-admin-js', WP_PLUGIN_URL . '/imoneza-pro/assets/js/admin.js', [], false, true);
         });
+
+        // this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
+        add_action('imoneza_hourly', function() use ($di) {
+            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
+            $controller = $di['controller.refresh-options'];
+            $controller();
+        });
+        register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($firstTime) {
+            if (!$firstTime) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
+        });
+        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
+            wp_clear_scheduled_hook('imoneza_hourly');
+        });
     }
 
     /**

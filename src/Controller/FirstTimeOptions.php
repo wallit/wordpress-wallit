@@ -48,6 +48,7 @@ class FirstTimeOptions extends ControllerAbstract
                     'access-control'    =>  'C'
                 ];
                 update_option('imoneza-options', $firstTimeOptions);
+                wp_schedule_event(strtotime('+15 minutes'), 'hourly', 'imoneza_hourly');
                 $results['success'] = true;
             }
             else {

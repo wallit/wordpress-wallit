@@ -26,8 +26,8 @@ class RefreshOptions extends ControllerAbstract
      */
     public function __construct(iMoneza $iMonezaService)
     {
-        parent::__construct();
         $this->iMonezaService = $iMonezaService;
+        //no parent constructor because this is also called by cron
     }
 
     /**
@@ -43,6 +43,8 @@ class RefreshOptions extends ControllerAbstract
             ->setManagementApiSecret($options['management-api-secret']);
 
         if ($propertyTitle = $this->iMonezaService->getPropertyTitle()) {
+            $options['property-title'] = $propertyTitle;
+            update_option('imoneza-options', $options);
             $results['success'] = true;
             $results['data']['message'] = 'You have successfully refreshed your options.';
             $results['data']['title'] = $propertyTitle;
@@ -51,6 +53,7 @@ class RefreshOptions extends ControllerAbstract
             $results['success'] = false;
             $results['data']['message'] = $this->iMonezaService->getLastError();
         }
+        error_log(var_export($results, true));
         View::render('options/json-response', $results);
     }
 }
