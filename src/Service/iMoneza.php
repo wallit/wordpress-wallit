@@ -102,6 +102,17 @@ class iMoneza
     }
 
     /**
+     * @param \WP_Post $post
+     * @return bool
+     */
+    public function createResource(\WP_Post $post)
+    {
+        $this->lastError = '';
+
+        return true;
+    }
+
+    /**
      * @return \iMoneza\Data\Property|false
      */
     public function getProperty()

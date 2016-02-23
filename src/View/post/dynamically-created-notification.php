@@ -1,1 +1,0 @@
-<p>This post is automatically created and managed by <img src="<?= $assetUrl('/images/logo-rectangle-small') ?>" alt="iMoneza" style="height: 1rem; vertical-align: bottom;"></p>

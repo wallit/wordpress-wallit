@@ -57,11 +57,14 @@ class App
             wp_clear_scheduled_hook('imoneza_hourly');
         });
 
-        if ($firstTime) {
-            $this->addAdminNoticeConfigNeeded();
-        }
 
         if (is_admin()) {
+            if ($firstTime) {
+                $this->addAdminNoticeConfigNeeded();
+            }
+
+            $dynamicallyCreateResources = array_key_exists('dynamically-create-resources', $options) && $options['dynamically-create-resources'];
+
             add_action('admin_init', function () {
                 register_setting(self::$optionsKey, self::$optionsKey);
             });
@@ -70,16 +73,19 @@ class App
                 add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : $di['controller.options']);
             });
 
-            add_action('add_meta_boxes', function() use ($options) {
-                if (array_key_exists('dynamically-create-resources', $options)) { //if this doesn't exist - we don't even know what we should say about it.
-                    add_meta_box('imoneza-price-post', __('iMoneza', 'imoneza'), function($post) use ($options) {
-                        if ($options['dynamically-create-resources']) {
-                            View::render('post/dynamically-created-notification');
-                        }
-                        else {
-                            echo '<p>Hi there! Lets choose some options!</p>';
-                        }
-                    }, 'post');
+            add_action('add_meta_boxes', function() use ($dynamicallyCreateResources) {
+                $title = sprintf('<img src="%s" style="height: 16px; vertical-align: middle">', WP_PLUGIN_URL . '/imoneza-pro/assets/images/logo-rectangle-small.png');
+                add_meta_box('imoneza-post-pricing', $title, function($post) use ($dynamicallyCreateResources) {
+                    View::render('post/post-pricing', ['dynamicallyCreateResources'=>$dynamicallyCreateResources]);
+                }, 'post');
+            });
+
+            add_action('save_post', function($postId) use ($di, $dynamicallyCreateResources) {
+                $post = get_post($postId);
+                if ($dynamicallyCreateResources && !wp_is_post_revision($post) && !wp_is_post_autosave($post)) {
+                    /** @var \iMonezaPRO\Service\iMoneza $service */
+                    $service = $di['service.imoneza'];
+                    $service->createResource($post);
                 }
             });
 
