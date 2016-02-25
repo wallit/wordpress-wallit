@@ -41,7 +41,7 @@ class App
     {
         $di = $this->di;
         $options = $this->getOptions();
-        $firstTime = empty($options);
+        $firstTime = !$options->isInitialized();
 
         // this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
         add_action('imoneza_hourly', function() use ($di) {
@@ -63,8 +63,6 @@ class App
                 $this->addAdminNoticeConfigNeeded();
             }
 
-            $dynamicallyCreateResources = array_key_exists('dynamically-create-resources', $options) && $options['dynamically-create-resources'];
-
             add_action('admin_init', function () {
                 register_setting(self::$optionsKey, self::$optionsKey);
             });
@@ -73,10 +71,10 @@ class App
                 add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : $di['controller.options']);
             });
 
-            add_action('add_meta_boxes', function() use ($dynamicallyCreateResources) {
+            add_action('add_meta_boxes', function() use ($options) {
                 $title = sprintf('<img src="%s" style="height: 16px; vertical-align: middle">', WP_PLUGIN_URL . '/imoneza-pro/assets/images/logo-rectangle-small.png');
-                add_meta_box('imoneza-post-pricing', $title, function($post) use ($dynamicallyCreateResources) {
-                    View::render('post/post-pricing', ['dynamicallyCreateResources'=>$dynamicallyCreateResources]);
+                add_meta_box('imoneza-post-pricing', $title, function($post) use ($options) {
+                    View::render('post/post-pricing', ['dynamicallyCreateResources'=>$options->isDynamicallyCreateResources()]);
                 }, 'post');
             });
 

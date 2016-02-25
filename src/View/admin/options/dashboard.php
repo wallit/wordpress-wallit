@@ -1,8 +1,12 @@
+<?php
+/** @var $options \iMonezaPRO\Model\Options */
+$options;
+?>
 <div class="wrap">
     <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Configuration</h2>
 
     <div class="i-card text-center">
-        <h3 id="imoneza-property-title"><?= esc_html($options['property-title']) ?></h3>
+        <h3 id="imoneza-property-title"><?= esc_html($options->getPropertyTitle()) ?></h3>
     </div>
 
     <?php if ($firstTimeSuccess) : ?>
@@ -23,20 +27,20 @@
                     <h3><span class="dashicons dashicons-shield"></span> API Access Credentials</h3>
                     <div class="form-row">
                         <label for="management_api_key">Resource Management API Key:</label>
-                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options['management-api-key']) ?>" required />
+                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options->getManagementApiKey()) ?>" required />
                     </div>
                     <div class="form-row">
                         <label for="management_api_secret">Resource Management API Secret:</label>
-                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options['management-api-secret']) ?>"required />
+                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options->getManagementApiSecret()) ?>"required />
                     </div>
                     <hr>
                     <div class="form-row">
                         <label for="access_api_key">Resource Access API Key:</label>
-                        <input id="access_api_key" type="text" name="imoneza-options[access-api-key]" value="<?= esc_attr($options['access-api-key']) ?>" required />
+                        <input id="access_api_key" type="text" name="imoneza-options[access-api-key]" value="<?= esc_attr($options->getAccessApiKey()) ?>" required />
                     </div>
                     <div class="form-row">
                         <label for="access_api_secret">Resource Access API Secret:</label>
-                        <input id="access_api_secret" type="text" name="imoneza-options[access-api-secret]" value="<?= esc_attr($options['access-api-secret']) ?>" required />
+                        <input id="access_api_secret" type="text" name="imoneza-options[access-api-secret]" value="<?= esc_attr($options->getAccessApiSecret()) ?>" required />
                     </div>
                 </div>
             </div>
@@ -62,9 +66,9 @@
                     <div class="form-row">
                         <label class="toggle-label">Select an Access Control:</label>
                         <span class="toggle">
-                            <input type="radio" id="access_control_client" name="imoneza-options[access-control]" value="C"<?php if ($options['access-control'] == 'C') echo " checked"; ?>>
+                            <input type="radio" id="access_control_client" name="imoneza-options[access-control]" value="C"<?php if ($options->isAccessControlClient()) echo " checked"; ?>>
                             <label for="access_control_client">Client Side</label>
-                            <input type="radio" id="access_control_server" name="imoneza-options[access-control]" value="S"<?php if ($options['access-control'] == 'S') echo " checked"; ?>>
+                            <input type="radio" id="access_control_server" name="imoneza-options[access-control]" value="S"<?php if ($options->isAccessControlServer()) echo " checked"; ?>>
                             <label for="access_control_server">Server Side</label>
                         </span>
                     </div>

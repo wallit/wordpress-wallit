@@ -6,6 +6,7 @@
  */
 
 namespace iMonezaPRO\Controller;
+use iMonezaPRO\Model\Options;
 use iMonezaPRO\Service\iMoneza;
 use iMonezaPRO\View;
 
@@ -36,19 +37,20 @@ class FirstTimeOptions extends ControllerAbstract
     public function __invoke()
     {
         if ($this->isPost()) {
-            $options = array_filter($this->getPost('imoneza-options', []), 'trim');
+            $postedOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
             $results = $this->getGenericAjaxResultsObject();
 
-            $this->iMonezaService->setManagementApiKey($options['management-api-key'])->setManagementApiSecret($options['management-api-secret']);
+            $this->iMonezaService->setManagementApiKey($postedOptions['management-api-key'])->setManagementApiSecret($postedOptions['management-api-secret']);
             if ($propertyOptions = $this->iMonezaService->getProperty()) {
-                $firstTimeOptions = [
-                    'management-api-key'    =>  $options['management-api-key'],
-                    'management-api-secret' => $options['management-api-secret'],
-                    'property-title'    =>  $propertyOptions->getTitle(),
-                    'dynamically-create-resources'  =>  $propertyOptions->isDynamicallyCreateResources(),
-                    'access-control'    =>  'C'
-                ];
-                update_option('imoneza-options', $firstTimeOptions);
+                $options = $this->getOptions();
+                $options->setManagementApiKey($postedOptions['management-api-key'])
+                    ->setManagementApiSecret($postedOptions['management-api-secret'])
+                    ->setPropertyTitle($propertyOptions->getTitle())
+                    ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())
+                    ->setAccessControl(Options::ACCESS_CONTROL_CLIENT)
+                    ->setPricingGroups($propertyOptions->getPricingGroups());
+                $this->saveOptions($options);
+
                 wp_schedule_event(strtotime('+15 minutes'), 'hourly', 'imoneza_hourly');
                 $results['success'] = true;
             }

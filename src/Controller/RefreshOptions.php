@@ -39,13 +39,15 @@ class RefreshOptions extends ControllerAbstract
         $results = $this->getGenericAjaxResultsObject();
 
         $this->iMonezaService
-            ->setManagementApiKey($options['management-api-key'])
-            ->setManagementApiSecret($options['management-api-secret']);
+            ->setManagementApiKey($options->getManagementApiKey())
+            ->setManagementApiSecret($options->getManagementApiSecret());
 
         if ($propertyOptions = $this->iMonezaService->getProperty()) {
-            $options['property-title'] = $propertyOptions->getTitle();
-            $options['dynamically-create-resources'] = $propertyOptions->isDynamicallyCreateResources();
-            update_option('imoneza-options', $options);
+            $options->setPricingGroups($propertyOptions->getPricingGroups())
+                ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())
+                ->setPropertyTitle($propertyOptions->getTitle());
+            $this->saveOptions($options);
+
             $results['success'] = true;
             $results['data']['message'] = 'You have successfully refreshed your options.';
             $results['data']['title'] = $propertyOptions->getTitle();

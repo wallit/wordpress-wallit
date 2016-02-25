@@ -47,7 +47,7 @@ class Options extends ControllerAbstract
                 ->setAccessApiKey($postOptions['access-api-key'])
                 ->setAccessApiSecret($postOptions['access-api-secret']);
 
-            if (!$this->iMonezaService->getProperty()) {
+            if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
             if (!in_array($postOptions['access-control'], ['S', 'C'])) {
@@ -60,8 +60,15 @@ class Options extends ControllerAbstract
             $results = $this->getGenericAjaxResultsObject();
 
             if (empty($errors)) {
-                $options = array_merge($options, $postOptions);
-                update_option('imoneza-options', $options);
+                $options->setAccessControl($postOptions['access-control'])
+                    ->setAccessApiKey($postOptions['access-api-key'])
+                    ->setAccessApiSecret($postOptions['access-api-secret'])
+                    ->setManagementApiKey($postOptions['management-api-key'])
+                    ->setManagementApiSecret($postOptions['management-api-secret'])
+                    ->setPricingGroups($property->getPricingGroups())
+                    ->setDynamicallyCreateResources($property->isDynamicallyCreateResources());
+                $this->saveOptions($options);
+
                 $results['success'] = true;
                 $results['data']['message'] = 'Your settings have been saved!';
             }

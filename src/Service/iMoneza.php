@@ -131,7 +131,7 @@ class iMoneza
             $result = $api->request($options, new \iMoneza\Data\Property());
         }
         catch (Exception\NotFound $e) {
-            $this->lastError = "Oh no!  Looks like your Management API Key isn't working. You might want to check that out again.";
+            $this->lastError = "Oh no!  Looks like your Management API Key isn't working. Look closely - does it look right?";
         }
         catch (Exception\AuthenticationFailure $e) {
             $this->lastError = "Well, we have good news and bad news.  Good news is - got an idea of who you are.  Bad news?  Looks like your Management API secret might be wrong.  Why don't you delete it and try again?  That would be swell!";
