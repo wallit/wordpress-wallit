@@ -9,11 +9,14 @@
 
 namespace iMonezaPRO\Service;
 use iMoneza\Connection;
+use iMoneza\Data\None;
 use iMoneza\Data\Resource;
 use iMoneza\Exception;
 use iMoneza\Helper;
 use iMoneza\Options\Access\ResourceFromResourceKey;
 use iMoneza\Options\Management\Property;
+use iMoneza\Options\Management\SaveResource;
+use iMoneza\Options\OptionsAbstract;
 use iMoneza\Request\Curl;
 use Monolog\Logger;
 
@@ -23,6 +26,16 @@ use Monolog\Logger;
  */
 class iMoneza
 {
+    /**
+     * @var int used to indicate the manage API
+     */
+    const API_TYPE_MANAGE = 1;
+
+    /**
+     * @var int used to indicate the access API
+     */
+    const API_TYPE_ACCESS = 2;
+
     /**
      * @var string
      */
@@ -103,13 +116,28 @@ class iMoneza
 
     /**
      * @param \WP_Post $post
+     * @param $pricingGroupId
      * @return bool
      */
-    public function createResource(\WP_Post $post)
+    public function createResource(\WP_Post $post, $pricingGroupId)
     {
-        $this->lastError = '';
+        $options = new SaveResource();
+        $options->setPricingGroupId($pricingGroupId)
+            ->setExternalKey('wp-' . $post->ID)
+            ->setName($post->post_title)
+            ->setTitle($post->post_title);
+        $this->prepareForPost($options);
 
-        return true;
+        $result = false;
+        try {
+            $this->getConnectionInstance()->request($options, new None());
+            $result = true;
+        }
+        catch (Exception\iMoneza $e) {
+            $this->lastError = sprintf('Something went wrong with the system: %s', $e->getMessage());
+        }
+
+        return $result;
     }
 
     /**
@@ -117,18 +145,13 @@ class iMoneza
      */
     public function getProperty()
     {
-        $this->lastError = '';
-        $api = $this->getConnectionInstance();
-
         $options = new Property();
-        if ($baseUrl = getenv('MANAGEMENT_API_URL')) {
-            $options->setApiBaseURL($baseUrl);
-        }
+        $this->prepareForPost($options);
 
         $result = false;
         try {
             /** @var \iMoneza\Data\Property $result */
-            $result = $api->request($options, new \iMoneza\Data\Property());
+            $result = $this->getConnectionInstance()->request($options, new \iMoneza\Data\Property());
         }
         catch (Exception\NotFound $e) {
             $this->lastError = "Oh no!  Looks like your Management API Key isn't working. Look closely - does it look right?";
@@ -149,20 +172,13 @@ class iMoneza
      */
     public function validateResourceAccessApiCredentials()
     {
-        $this->lastError = '';
-
-        $api = $this->getConnectionInstance();
-
         $options = new ResourceFromResourceKey();
         $options->setResourceURL('api-validation')->setResourceKey('api-validation')->setIP(Helper::getCurrentIP());
-
-        if ($baseUrl = getenv('ACCESS_API_URL')) {
-            $options->setApiBaseURL($baseUrl);
-        }
+        $this->prepareForPost($options, self::API_TYPE_ACCESS);
 
         $result = false;
         try {
-            $api->request($options, new Resource());
+            $this->getConnectionInstance()->request($options, new Resource());
             $result = true;
         }
         catch (Exception\NotFound $e) {
@@ -178,6 +194,9 @@ class iMoneza
         return $result;
     }
 
+    /**
+     * @return Connection
+     */
     protected function getConnectionInstance()
     {
         if (is_null($this->connection)) {
@@ -186,5 +205,17 @@ class iMoneza
         }
 
         return $this->connection;
+    }
+
+    /**
+     * @param OptionsAbstract $options
+     * @param int $type
+     */
+    protected function prepareForPost(OptionsAbstract $options, $type = self::API_TYPE_MANAGE)
+    {
+        $this->lastError = '';
+        if ($baseUrl = getenv($type == self::API_TYPE_MANAGE ? 'MANAGEMENT_API_URL' : 'ACCESS_API_URL')) {
+            $options->setApiBaseURL($baseUrl);
+        }
     }
 }

@@ -91,11 +91,12 @@ class App
 
             add_action('save_post', function($postId) use ($di, $options) {
                 $post = get_post($postId);
-                if ($options->isDynamicallyCreateResources() && !wp_is_post_revision($post) && !wp_is_post_autosave($post)) {
-                    $pricingGroup = $_POST['pricing-group-id'];
+                if ($options->isDynamicallyCreateResources() && $post->post_status == 'publish') {
+                    $pricingGroupId = $_POST['pricing-group-id'];
                     /** @var \iMonezaPRO\Service\iMoneza $service */
                     $service = $di['service.imoneza'];
-                    $service->createResource($post);
+                    $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
+                    $service->createResource($post, $pricingGroupId);
                 }
             });
 
