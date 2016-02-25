@@ -226,12 +226,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/iMoneza/imoneza-php-api.git",
-            "reference": "b4fd10faf967917d23f4b03d89a06f239bc28036"
+            "reference": "1b641f0fca3ab580f7e4238331f03984a59afb23"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/b4fd10faf967917d23f4b03d89a06f239bc28036",
-            "reference": "b4fd10faf967917d23f4b03d89a06f239bc28036",
+            "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/1b641f0fca3ab580f7e4238331f03984a59afb23",
+            "reference": "1b641f0fca3ab580f7e4238331f03984a59afb23",
             "shasum": ""
         },
         "require": {
@@ -243,7 +243,7 @@
             "phpunit/phpunit": "~4.5",
             "vlucas/phpdotenv": "^2.2"
         },
-        "time": "2016-02-25 16:10:34",
+        "time": "2016-02-25 20:18:47",
         "type": "library",
         "installation-source": "source",
         "autoload": {

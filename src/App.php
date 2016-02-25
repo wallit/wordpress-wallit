@@ -73,14 +73,26 @@ class App
 
             add_action('add_meta_boxes', function() use ($options) {
                 $title = sprintf('<img src="%s" style="height: 16px; vertical-align: middle">', WP_PLUGIN_URL . '/imoneza-pro/assets/images/logo-rectangle-small.png');
+
                 add_meta_box('imoneza-post-pricing', $title, function($post) use ($options) {
-                    View::render('post/post-pricing', ['dynamicallyCreateResources'=>$options->isDynamicallyCreateResources()]);
+                    $pricingGroups = $options->getPricingGroups();
+                    usort($pricingGroups, function($pricingGroupA, $pricingGroupB) {
+                        return $pricingGroupA->isDefault() ? -1 : 1;
+                    });
+                    $pricingGroupSelected = $pricingGroups[0];
+
+                    View::render('post/post-pricing', [
+                        'dynamicallyCreateResources'=>$options->isDynamicallyCreateResources(),
+                        'pricingGroupSelected'=>$pricingGroupSelected,
+                        'pricingGroups'=>$pricingGroups
+                    ]);
                 }, 'post');
             });
 
-            add_action('save_post', function($postId) use ($di, $dynamicallyCreateResources) {
+            add_action('save_post', function($postId) use ($di, $options) {
                 $post = get_post($postId);
-                if ($dynamicallyCreateResources && !wp_is_post_revision($post) && !wp_is_post_autosave($post)) {
+                if ($options->isDynamicallyCreateResources() && !wp_is_post_revision($post) && !wp_is_post_autosave($post)) {
+                    $pricingGroup = $_POST['pricing-group-id'];
                     /** @var \iMonezaPRO\Service\iMoneza $service */
                     $service = $di['service.imoneza'];
                     $service->createResource($post);

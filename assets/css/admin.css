@@ -182,3 +182,11 @@ h2.logo-header {
     display: inline-block;
 }
 
+/** post metabox **/
+#override-pricing {
+    display: none;
+}
+#override-pricing label {
+    display: inline-block;
+    width: 7rem;
+}

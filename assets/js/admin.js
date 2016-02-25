@@ -105,6 +105,16 @@
                 window.location = window.location.href + '&first-time=done';
             }
         });
+
+        var $overridePricing = $('#override-pricing');
+        $('#show-override-pricing').on('click', function(e) {
+            if ($(e.target).is(':checked')){
+                $overridePricing.slideDown();
+            }
+            else {
+                $overridePricing.slideUp();
+            }
+        });
     });
 
 })(jQuery, window.history);
