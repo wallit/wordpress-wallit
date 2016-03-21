@@ -91,12 +91,14 @@ class App
 
             add_action('save_post', function($postId) use ($di, $options) {
                 $post = get_post($postId);
-                if ($options->isDynamicallyCreateResources() && $post->post_status == 'publish') {
-                    $pricingGroupId = $_POST['pricing-group-id'];
-                    /** @var \iMonezaPRO\Service\iMoneza $service */
-                    $service = $di['service.imoneza'];
-                    $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
-                    $service->createResource($post, $pricingGroupId);
+                if ($post->post_status == 'publish') {
+                    if ($options->isDynamicallyCreateResources() || !empty($_POST['override-pricing'])) {
+                        $pricingGroupId = $_POST['pricing-group-id'];
+                        /** @var \iMonezaPRO\Service\iMoneza $service */
+                        $service = $di['service.imoneza'];
+                        $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
+                        $service->createResource($post, $pricingGroupId);
+                    }
                 }
             });
 
