@@ -22,10 +22,13 @@
         $anchor.after($resultMessage);
 
         this.settings = $.extend({
+            showIndications: true,
             url: ajaxurl,
             beforeSend: function() {
                 this.settings.beforeCustomCallback();
-                $anchor.after($spinner);
+                if (this.settings.showIndications) {
+                    $anchor.after($spinner);
+                }
             }.bind(this),
             complete: function() {
                 $spinner.remove();
@@ -33,20 +36,27 @@
             dataType: 'json',
             error: function() {
                 alert('There was an error with this request.');
-                $spinner.remove();
+                if (this.settings.showIndications) {
+                    $spinner.remove();
+                }
             },
             success: function(response) {
                 if (response.success) {
                     this.settings.successCustomCallback(response);
-                    $resultMessage.html('<span class="dashicons dashicons-yes"></span> ' + response.data.message).removeClass('error').addClass('success');
-                    setTimeout(function() {
-                        $resultMessage.fadeOut('slow', function() {
-                            $resultMessage.html('').show();
-                        });
-                    }, 5000);
+                    if (this.settings.showIndications) {
+                        $resultMessage.html('<span class="dashicons dashicons-yes"></span> ' + response.data.message).removeClass('error').addClass('success');
+                        setTimeout(function () {
+                            $resultMessage.fadeOut('slow', function () {
+                                $resultMessage.html('').show();
+                            });
+                        }, 5000);
+                    }
+
                 }
                 else {
-                    $resultMessage.text(response.data.message).removeClass('success').addClass('error');
+                    if (this.showIndications) {
+                        $resultMessage.text(response.data.message).removeClass('success').addClass('error');
+                    }
                 }
             }.bind(this),
             successCustomCallback: function(response) { // custom for if we have additional non-ui things to do
@@ -55,7 +65,7 @@
             }
         }, options);
 
-        $element.on(isForm ? 'submit' : 'click', function(e) {
+        $element.on(isForm ? 'submit' : 'click ajax', function(e) {
             e.preventDefault();
             this.handleRequest(isForm, $element);
         }.bind(this));
@@ -85,13 +95,80 @@
     $.fn.imonezaAdminAjax = Plugin;
 
 
+    /*******************************************************************************************************************/
+
+    /**
+     * Handles the pricing overrides on the admin post page
+     */
+    var overridePricing = function() {
+        var $pricingToggle = $('#show-override-pricing');
+        var $pricingPanel = $('#override-pricing');
+
+        /**
+         * The initializer basically
+         */
+        this.handle = function() {
+            if ($pricingToggle.length) {
+                addPanelHandler();
+                refreshAndPopulateData();
+            }
+        };
+
+        /**
+         * add the toggle for the panel box
+         */
+        function addPanelHandler() {
+            $pricingToggle.on('click', function (e) {
+                if ($(e.target).is(':checked')) {
+                    $pricingPanel.slideDown();
+                }
+                else {
+                    $pricingPanel.slideUp();
+                }
+            });
+        }
+
+        /**
+         * This is used to refresh the data for the property and then change any field values if necessary
+         */
+        function refreshAndPopulateData()
+        {
+            $pricingPanel.imonezaAdminAjax({
+                showIndications: false,
+                data: {
+                    action: "refresh_settings"
+                },
+                successCustomCallback: function(response) {
+                    var $autoDisplay = $('#message-automatically-manage'),
+                        $manualDisplay = $('#message-manually-manage'),
+                        $overrideSelectLabel = $('#show-override-pricing + span');
+
+                    if (response.data.options.dynamicallyCreateResources) {
+                        $autoDisplay.show();
+                        $manualDisplay.hide();
+                        $overrideSelectLabel.html($overrideSelectLabel.data('automatically-manage'));
+                    }
+                    else {
+                        $autoDisplay.hide();
+                        $manualDisplay.show();
+                        $overrideSelectLabel.html($overrideSelectLabel.data('manually-manage'));
+                    }
+                }
+            });
+            $pricingPanel.trigger('ajax');
+        }
+    };
+
+
+    /*******************************************************************************************************************/
+
     $(function() {
         $('#imoneza-refresh-settings').imonezaAdminAjax({
             data: {
                 action: "refresh_settings"
             },
             successCustomCallback: function(response) {
-                $('#imoneza-property-title').text(response.data.title);
+                $('#imoneza-property-title').text(response.data.options.propertyTitle);
             }
         });
         $('#imoneza-options-form').imonezaAdminAjax({
@@ -106,15 +183,8 @@
             }
         });
 
-        var $overridePricing = $('#override-pricing');
-        $('#show-override-pricing').on('click', function(e) {
-            if ($(e.target).is(':checked')){
-                $overridePricing.slideDown();
-            }
-            else {
-                $overridePricing.slideUp();
-            }
-        });
+        (new overridePricing).handle();
+
     });
 
 })(jQuery, window.history);

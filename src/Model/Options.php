@@ -11,7 +11,7 @@ namespace iMonezaPRO\Model;
  * Class Options
  * @package iMonezaPRO\Model
  */
-class Options
+class Options implements \JsonSerializable
 {
     /**
      * @var string for client side access control
@@ -67,6 +67,19 @@ class Options
      * @var \DateTime
      */
     protected $lastUpdated;
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'dynamicallyCreateResources'    =>  $this->dynamicallyCreateResources,
+            'accessControl' =>  $this->accessControl,
+            'propertyTitle' =>  $this->propertyTitle,
+            'pricingGroups' =>  $this->pricingGroups
+        ];
+    }
 
     /**
      * @return boolean

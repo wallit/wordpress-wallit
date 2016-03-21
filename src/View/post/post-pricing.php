@@ -1,14 +1,11 @@
+<p id="message-automatically-manage"<?php if (!$dynamicallyCreateResources) echo " style='display: none'"; ?>>iMoneza will automatically manage this resource for you using your default pricing options.</p>
+<p id="message-manually-manage"<?php if ($dynamicallyCreateResources) echo " style='display: none'"; ?>>iMoneza is not automatically managing your resources.</p>
 <?php
-if ($dynamicallyCreateResources) {
-    echo '<p>iMoneza will automatically manage this resource for you using your default pricing options.</p>';
-    $overrideLabel = 'Override Default Pricing Options';
-}
-else {
-    echo '<p>iMoneza is not automatically managing your resources.</p>';
-    $overrideLabel = 'Manage this resource with iMoneza';
-}
+$automaticallyManage = 'Override Default Pricing Options';
+$manuallyManage = 'Manage this resource with iMoneza';
+$display = $dynamicallyCreateResources ? $automaticallyManage : $manuallyManage;
 ?>
-<p><label><input type="checkbox" value="1" id="show-override-pricing" name="override-pricing" /><?= $overrideLabel ?></label></p>
+<p><label><input type="checkbox" value="1" id="show-override-pricing" name="override-pricing" /><span data-automatically-manage="<?= $automaticallyManage ?>" data-manually-manage="<?= $manuallyManage ?>"><?= $display ?></span></label></p>
 <div id="override-pricing">
     <label for="pricing-group-id">Pricing Group:</label>
     <select name="pricing-group-id" id="pricing-group-id">

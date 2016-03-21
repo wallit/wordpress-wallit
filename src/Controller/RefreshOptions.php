@@ -50,7 +50,7 @@ class RefreshOptions extends ControllerAbstract
 
             $results['success'] = true;
             $results['data']['message'] = 'You have successfully refreshed your options.';
-            $results['data']['title'] = $propertyOptions->getTitle();
+            $results['data']['options'] = $options;
         }
         else {
             $results['success'] = false;
