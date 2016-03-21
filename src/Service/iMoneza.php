@@ -18,6 +18,7 @@ use iMoneza\Options\Management\Property;
 use iMoneza\Options\Management\SaveResource;
 use iMoneza\Options\OptionsAbstract;
 use iMoneza\Request\Curl;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 /**
@@ -201,6 +202,9 @@ class iMoneza
     {
         if (is_null($this->connection)) {
             $logger = new Logger(__CLASS__);
+            if (WP_DEBUG_LOG) {
+                $logger->pushHandler(new StreamHandler('php://stderr'));
+            }
             $this->connection = new Connection($this->managementApiKey, $this->managementApiSecret, $this->accessApiKey, $this->accessApiSecret, new Curl(), $logger);
         }
 

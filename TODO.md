@@ -1,4 +1,6 @@
 # Todo
 
 - what happens if the user's API key starts failing...
-- understand how logging for wordpress should work
+- edit an item should show the proper information (perhaps cache this in meta data)
+- make sure edit item works
+- start controlling access
