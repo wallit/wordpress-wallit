@@ -133,7 +133,7 @@
          */
         function refreshAndPopulateData()
         {
-            $pricingPanel.imonezaAdminAjax({
+            $('<div />').imonezaAdminAjax({
                 showIndications: false,
                 data: {
                     action: "refresh_settings"
@@ -155,13 +155,14 @@
                         $overrideSelectLabel.html($overrideSelectLabel.data('manually-manage'));
                     }
 
+                    var selected = $pricingGroupSelect.val();
                     $pricingGroupSelect.empty();
                     $.each(response.data.options.pricingGroups, function(value, label) {
                         $pricingGroupSelect.append($('<option />').attr('value', value).text(label));
                     });
+                    $pricingGroupSelect.val(selected);
                 }
-            });
-            $pricingPanel.trigger('ajax');
+            }).trigger('ajax');
         }
     };
 

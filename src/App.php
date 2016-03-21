@@ -74,14 +74,18 @@ class App
             add_action('add_meta_boxes', function() use ($options) {
                 $title = sprintf('<img src="%s" style="height: 16px; vertical-align: middle">', WP_PLUGIN_URL . '/imoneza-pro/assets/images/logo-rectangle-small.png');
 
-                add_meta_box('imoneza-post-pricing', $title, function($post) use ($options) {
+                add_meta_box('imoneza-post-pricing', $title, function(\WP_Post $post) use ($options) {
+                    $editing = !empty($post->ID);
+
                     $pricingGroups = $options->getPricingGroups();
                     usort($pricingGroups, function($pricingGroupA, $pricingGroupB) {
                         return $pricingGroupA->isDefault() ? -1 : 1;
                     });
-                    $pricingGroupSelected = $pricingGroups[0];
+                    $pricingGroupSelected = $editing ? get_post_meta($post->ID, '_pricing-group-id', true) : $pricingGroups[0];
+                    $overrideChecked = get_post_meta($post->ID, '_override-pricing', true);
 
                     View::render('post/post-pricing', [
+                        'overrideChecked'   =>  $overrideChecked,
                         'dynamicallyCreateResources'=>$options->isDynamicallyCreateResources(),
                         'pricingGroupSelected'=>$pricingGroupSelected,
                         'pricingGroups'=>$pricingGroups
@@ -89,15 +93,27 @@ class App
                 }, 'post');
             });
 
-            add_action('save_post', function($postId) use ($di, $options) {
+            add_action('publish_post', function($postId) use ($di, $options) {
+                /** @var \WP_Post $post */
                 $post = get_post($postId);
-                if ($post->post_status == 'publish') {
-                    if ($options->isDynamicallyCreateResources() || !empty($_POST['override-pricing'])) {
-                        $pricingGroupId = $_POST['pricing-group-id'];
-                        /** @var \iMonezaPRO\Service\iMoneza $service */
-                        $service = $di['service.imoneza'];
-                        $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
-                        $service->createResource($post, $pricingGroupId);
+
+                $overridePricing = !empty($_POST['override-pricing']);
+                if ($options->isDynamicallyCreateResources() || $overridePricing) {
+                    $pricingGroupId = $_POST['pricing-group-id'];
+                    /** @var \iMonezaPRO\Service\iMoneza $service */
+                    $service = $di['service.imoneza'];
+                    $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
+                    $service->createOrUpdateResource($post, $pricingGroupId);
+
+                    $new = substr($_POST['_wp_http_referer'], -12) == 'post-new.php';
+
+                    if ($new) {
+                        add_post_meta($postId, '_override-pricing', $overridePricing, true);
+                        add_post_meta($postId, '_pricing-group-id', $pricingGroupId, true);
+                    }
+                    else {
+                        update_post_meta($postId, '_override-pricing', $overridePricing);
+                        update_post_meta($postId, '_pricing-group-id', $pricingGroupId);
                     }
                 }
             });

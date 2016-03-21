@@ -120,7 +120,7 @@ class iMoneza
      * @param $pricingGroupId
      * @return bool
      */
-    public function createResource(\WP_Post $post, $pricingGroupId)
+    public function createOrUpdateResource(\WP_Post $post, $pricingGroupId)
     {
         $options = new SaveResource();
         $options->setPricingGroupId($pricingGroupId)
