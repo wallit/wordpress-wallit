@@ -73,12 +73,26 @@ class Options implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
+        $array = [
             'dynamicallyCreateResources'    =>  $this->dynamicallyCreateResources,
             'accessControl' =>  $this->accessControl,
-            'propertyTitle' =>  $this->propertyTitle,
-            'pricingGroups' =>  $this->pricingGroups
+            'propertyTitle' =>  $this->propertyTitle
         ];
+
+        // build pricing groups
+        $pricingGroupsArray = [];
+        $pricingGroups = $this->pricingGroups;
+        usort($pricingGroups, function($pricingGroupA, $pricingGroupB) {
+            return $pricingGroupA->isDefault() ? -1 : 1;
+        });
+        /** @var \iMoneza\Data\PricingGroup $pricingGroup */
+        foreach ($pricingGroups as $pricingGroup) {
+            $pricingGroupsArray[$pricingGroup->getPricingGroupID()] = $pricingGroup->getName();
+        }
+
+        $array['pricingGroups'] = $pricingGroupsArray;
+
+        return $array;
     }
 
     /**

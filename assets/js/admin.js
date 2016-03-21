@@ -141,7 +141,8 @@
                 successCustomCallback: function(response) {
                     var $autoDisplay = $('#message-automatically-manage'),
                         $manualDisplay = $('#message-manually-manage'),
-                        $overrideSelectLabel = $('#show-override-pricing + span');
+                        $overrideSelectLabel = $('#show-override-pricing + span'),
+                        $pricingGroupSelect = $('#pricing-group-id');
 
                     if (response.data.options.dynamicallyCreateResources) {
                         $autoDisplay.show();
@@ -153,6 +154,11 @@
                         $manualDisplay.show();
                         $overrideSelectLabel.html($overrideSelectLabel.data('manually-manage'));
                     }
+
+                    $pricingGroupSelect.empty();
+                    $.each(response.data.options.pricingGroups, function(value, label) {
+                        $pricingGroupSelect.append($('<option />').attr('value', value).text(label));
+                    });
                 }
             });
             $pricingPanel.trigger('ajax');
