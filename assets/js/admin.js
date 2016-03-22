@@ -54,7 +54,7 @@
 
                 }
                 else {
-                    if (this.showIndications) {
+                    if (this.settings.showIndications) {
                         $resultMessage.text(response.data.message).removeClass('success').addClass('error');
                     }
                 }
@@ -176,6 +176,13 @@
             },
             successCustomCallback: function(response) {
                 $('#imoneza-property-title').text(response.data.options.propertyTitle);
+                var $dcrn = $('#dynamically-create-resources-notification');
+                if (response.data.options.dynamicallyCreateResources) {
+                    $dcrn.slideDown();
+                }
+                else {
+                    $dcrn.slideUp();
+                }
             }
         });
         $('#imoneza-options-form').imonezaAdminAjax({

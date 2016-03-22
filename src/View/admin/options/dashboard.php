@@ -84,6 +84,17 @@ $options;
                 </div>
             </aside>
         </section>
+        <?php
+        $dcrnStyle = sprintf('style="display:%s"', $options->isDynamicallyCreateResources() ? 'block' : 'none');
+        ?>
+        <section class="row" id="dynamically-create-resources-notification" <?= $dcrnStyle ?>>
+            <div>
+                <div class="i-card">
+                    <h3><span class="dashicons dashicons-migrate"></span> Dynamically Create Resources</h3>
+                    <p id="dcrn-success">Congratulations!  All of your content is managed by iMoneza.</p>
+                </div>
+            </div>
+        </section>
         <div class="i-card">
             <div class="form-row form-row-spacing-top clearfix">
                 <span class="alignleft">

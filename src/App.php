@@ -46,10 +46,16 @@ class App
         $firstTime = !$options->isInitialized();
 
         // this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
-        add_action('imoneza_hourly', function() use ($di) {
+        add_action('imoneza_hourly', function() use ($di, $options) {
+            // update options
             /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
             $controller = $di['controller.refresh-options'];
             $controller(RefreshOptions::DO_NOT_SHOW_VIEW);
+
+            // check for non managed scripts
+            if ($options->isDynamicallyCreateResources()) {
+                
+            }
         });
 
         register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($firstTime) {
