@@ -57,6 +57,15 @@ class App
 
         $this->addCron();
 
+        add_action('wp_head', function() use ($options) {
+            if ($options->isAccessControlClient() && $options->getAccessApiKey()) {
+                $post = is_single() ? get_post() : null;
+                if ($post) {
+                    View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>'wp-' . $post->ID]);
+                }
+            }
+        });
+
         if (is_admin()) {
             if ($firstTime) {
                 $this->addAdminNoticeConfigNeeded();
