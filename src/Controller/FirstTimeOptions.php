@@ -48,7 +48,7 @@ class FirstTimeOptions extends ControllerAbstract
                     ->setPropertyTitle($propertyOptions->getTitle())
                     ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())
                     ->setAccessControl(Options::ACCESS_CONTROL_CLIENT)
-                    ->setPricingGroups($propertyOptions->getPricingGroups());
+                    ->setPricingGroupsBubbleDefaultToTop($propertyOptions->getPricingGroups());
                 $this->saveOptions($options);
 
                 wp_schedule_event(strtotime('+15 minutes'), 'hourly', 'imoneza_hourly');

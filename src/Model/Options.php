@@ -6,6 +6,7 @@
  */
 
 namespace iMonezaPRO\Model;
+use iMoneza\Data\PricingGroup;
 
 /**
  * Class Options
@@ -235,6 +236,34 @@ class Options implements \JsonSerializable
     {
         $this->pricingGroups = $pricingGroups;
         return $this;
+    }
+
+    /**
+     * Sets the pricing groups with the default one in position 0
+     * @param array $pricingGroups
+     * @return Options
+     */
+    public function setPricingGroupsBubbleDefaultToTop(array $pricingGroups) {
+        usort($pricingGroups, function(PricingGroup $pricingGroupA, PricingGroup $pricingGroupB) {
+            return $pricingGroupA->isDefault() ? -1 : 1;
+        });
+        return $this->setPricingGroups($pricingGroups);
+    }
+
+    /**
+     * Shortcut to get the default pricing group
+     * 
+     * @return PricingGroup|null
+     */
+    public function getDefaultPricingGroup()
+    {
+        if ($this->pricingGroups[0]->isDefault()) return $this->pricingGroups[0];  // normally because of self::setPricingGroupsBubbleDefaultToTop
+
+        foreach ($this->pricingGroups as $pricingGroup) {
+            if ($pricingGroup->isDefault()) return $pricingGroup;
+        }
+
+        return null;
     }
 
     /**
