@@ -45,18 +45,7 @@ class App
         $options = $this->getOptions();
         $firstTime = !$options->isInitialized();
 
-        // this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
-        add_action('imoneza_hourly', function() use ($di, $options) {
-            // update options
-            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
-            $controller = $di['controller.refresh-options'];
-            $controller(RefreshOptions::DO_NOT_SHOW_VIEW);
-
-            // check for non managed scripts
-            if ($options->isDynamicallyCreateResources()) {
-                
-            }
-        });
+        $this->addCron();
 
         register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($firstTime) {
             if (!$firstTime) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
@@ -170,5 +159,61 @@ class App
                 View::render('admin/notify-config-needed');
             });
         }
+    }
+
+    /**
+     * this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
+     */
+    protected function addCron()
+    {
+        $di = $this->di;
+        $options = $this->getOptions();
+
+        add_action('imoneza_hourly', function() use ($di, $options) {
+            // update options
+            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
+            $controller = $di['controller.refresh-options'];
+            $controller(RefreshOptions::DO_NOT_SHOW_VIEW);
+
+            // check for non managed scripts
+            if ($options->isDynamicallyCreateResources()) {
+                // get all items that don't have a meta of _pricing-group-id (20 at a time - only use the first page)
+                $query = new \WP_Query([
+                    'post_type' =>  'post',
+                    'posts_per_page'    =>  20,
+                    'meta_query'    =>  [
+                        ['key'=>'_pricing-group-id', 'value'=>'', 'compare'=>'NOT EXISTS']
+                    ]
+                ]);
+
+                $service = $di['service.imoneza'];
+                $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
+                
+                // bad code :(
+                $defaultPricingGroupId = '';
+                /** @var \iMoneza\Data\PricingGroup $pricingGroup */
+                foreach ($options->getPricingGroups() as $pricingGroup) {
+                    if ($pricingGroup->isDefault()) {
+                        $defaultPricingGroupId = $pricingGroup->getPricingGroupID();
+                        break;
+                    }
+                }
+
+                // loop through this first page
+                while ($query->have_posts()) {
+                    try {
+                        $query->the_post();
+                        $post = get_post();
+
+                        $service->createOrUpdateResource($post, $defaultPricingGroupId);
+                        add_post_meta($post->ID, '_override-pricing', false, true);
+                        add_post_meta($post->ID, '_pricing-group-id', $defaultPricingGroupId, true);
+                    }
+                    catch (Exception\iMoneza $e) {
+                        trigger_error($e->getMessage(), E_USER_ERROR);
+                    }
+                }
+            }
+        });
     }
 }
