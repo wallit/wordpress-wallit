@@ -186,31 +186,28 @@ class App
                     ]
                 ]);
 
-                $service = $di['service.imoneza'];
-                $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
-                
-                // bad code :(
-                $defaultPricingGroupId = '';
-                /** @var \iMoneza\Data\PricingGroup $pricingGroup */
-                foreach ($options->getPricingGroups() as $pricingGroup) {
-                    if ($pricingGroup->isDefault()) {
-                        $defaultPricingGroupId = $pricingGroup->getPricingGroupID();
-                        break;
-                    }
-                }
+                if ($query->have_posts()) {
+                    $service = $di['service.imoneza'];
+                    $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
 
-                // loop through this first page
-                while ($query->have_posts()) {
-                    try {
+                    // bad code :(
+                    $defaultPricingGroupId = '';
+                    /** @var \iMoneza\Data\PricingGroup $pricingGroup */
+                    foreach ($options->getPricingGroups() as $pricingGroup) {
+                        if ($pricingGroup->isDefault()) {
+                            $defaultPricingGroupId = $pricingGroup->getPricingGroupID();
+                            break;
+                        }
+                    }
+
+                    // loop through this first page
+                    while ($query->have_posts()) {
                         $query->the_post();
                         $post = get_post();
 
                         $service->createOrUpdateResource($post, $defaultPricingGroupId);
                         add_post_meta($post->ID, '_override-pricing', false, true);
                         add_post_meta($post->ID, '_pricing-group-id', $defaultPricingGroupId, true);
-                    }
-                    catch (Exception\iMoneza $e) {
-                        trigger_error($e->getMessage(), E_USER_ERROR);
                     }
                 }
             }

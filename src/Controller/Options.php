@@ -89,9 +89,25 @@ class Options extends ControllerAbstract
             View::render('admin/options/json-response', $results);
         }
         else {
+            $postsQueuedForProcessing = 0;
+
+            if ($options->isDynamicallyCreateResources()) {
+                // @todo this is dupe code
+                $query = new \WP_Query([
+                    'post_type' =>  'post',
+                    'posts_per_page'    =>  20,
+                    'meta_query'    =>  [
+                        ['key'=>'_pricing-group-id', 'value'=>'', 'compare'=>'NOT EXISTS']
+                    ]
+                ]);
+
+                $postsQueuedForProcessing = $query->found_posts;
+            }
+
             $parameters = [
                 'firstTimeSuccess' => boolval($this->getGet('first-time')),
-                'options' => $options
+                'options' => $options,
+                'postsQueuedForProcessing'  =>  $postsQueuedForProcessing
             ];
 
             View::render('admin/options/dashboard', $parameters);

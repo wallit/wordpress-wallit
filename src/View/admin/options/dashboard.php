@@ -91,7 +91,14 @@ $options;
             <div>
                 <div class="i-card">
                     <h3><span class="dashicons dashicons-migrate"></span> Dynamically Create Resources</h3>
-                    <p id="dcrn-success">Congratulations!  All of your content is managed by iMoneza.</p>
+                    <?php
+                    if ($postsQueuedForProcessing) {
+                        echo '<p>Your resources are being added to iMoneza.  There ' . ngettext('is', 'are', $postsQueuedForProcessing) . ' ' . $postsQueuedForProcessing . ' remaining.</p>';
+                    }
+                    else {
+                        echo '<p>Congratulations!  All of your content is managed by iMoneza.</p>';
+                    }
+                    ?>
                 </div>
             </div>
         </section>
