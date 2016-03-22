@@ -16,6 +16,11 @@ use iMonezaPRO\View;
 class RefreshOptions extends ControllerAbstract
 {
     /**
+     * @var boolean do not show a view
+     */
+    const DO_NOT_SHOW_VIEW = false;
+
+    /**
      * @var iMoneza
      */
     protected $iMonezaService;
@@ -32,8 +37,9 @@ class RefreshOptions extends ControllerAbstract
 
     /**
      * Show Options items
+     * @param bool $showView
      */
-    public function __invoke()
+    public function __invoke($showView = true)
     {
         $options = $this->getOptions();
         $results = $this->getGenericAjaxResultsObject();
@@ -55,7 +61,8 @@ class RefreshOptions extends ControllerAbstract
         else {
             $results['success'] = false;
             $results['data']['message'] = $this->iMonezaService->getLastError();
+            if (!$showView) error_log($this->iMonezaService->getLastError());
         }
-        View::render('admin/options/json-response', $results);
+        if ($showView) View::render('admin/options/json-response', $results);
     }
 }

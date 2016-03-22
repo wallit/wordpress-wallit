@@ -39,7 +39,7 @@
                 if (this.settings.showIndications) {
                     $spinner.remove();
                 }
-            },
+            }.bind(this),
             success: function(response) {
                 if (response.success) {
                     this.settings.successCustomCallback(response);

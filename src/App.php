@@ -6,6 +6,8 @@
  */
 
 namespace iMonezaPRO;
+use iMoneza\Exception;
+use iMonezaPRO\Controller\RefreshOptions;
 use Pimple\Container;
 use iMonezaPRO\Traits;
 
@@ -47,7 +49,7 @@ class App
         add_action('imoneza_hourly', function() use ($di) {
             /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
             $controller = $di['controller.refresh-options'];
-            $controller();
+            $controller(RefreshOptions::DO_NOT_SHOW_VIEW);
         });
 
         register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($firstTime) {
@@ -103,7 +105,13 @@ class App
                     /** @var \iMonezaPRO\Service\iMoneza $service */
                     $service = $di['service.imoneza'];
                     $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
-                    $service->createOrUpdateResource($post, $pricingGroupId);
+
+                    try {
+                        $service->createOrUpdateResource($post, $pricingGroupId);
+                    }
+                    catch (Exception\iMoneza $e) {
+                        trigger_error($e->getMessage(), E_USER_ERROR);
+                    }
 
                     $new = substr($_POST['_wp_http_referer'], -12) == 'post-new.php';
 
