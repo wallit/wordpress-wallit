@@ -38,6 +38,8 @@ class Options extends ControllerAbstract
         $options = $this->getOptions();
 
         if ($this->isPost()) {
+            check_ajax_referer('imoneza-options');
+            
             $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
 
             $errors = [];
