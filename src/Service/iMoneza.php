@@ -15,6 +15,7 @@ use iMoneza\Data\ResourceAccess;
 use iMoneza\Exception;
 use iMoneza\Helper;
 use iMoneza\Options\Access\GetResourceFromResourceKey;
+use iMoneza\Options\Access\GetResourceFromTemporaryUserToken;
 use iMoneza\Options\Management\GetProperty;
 use iMoneza\Options\Management\SaveResource;
 use iMoneza\Options\OptionsAbstract;
@@ -121,18 +122,26 @@ class iMoneza
      * Gets a URL to redirect for access OR false if its granted
      *
      * @param \WP_Post $post
+     * @param null $iMonezaTUT
      * @return bool|string
      * @throws Exception\DecodingError
      * @throws Exception\TransferError
      */
-    public function getResourceAccessRedirectURL(\WP_Post $post)
+    public function getResourceAccessRedirectURL(\WP_Post $post, $iMonezaTUT = null)
     {
         $result = false;
-
         $keyFilter = new ExternalResourceKey();
-        $options = new GetResourceFromResourceKey();
+        
+        if ($iMonezaTUT) {
+            $options = new GetResourceFromTemporaryUserToken();
+            $options->setTemporaryUserToken($iMonezaTUT);
+        }
+        else {
+            $options = new GetResourceFromResourceKey();
+            $options->setUserToken($this->getUserTokenFromCookie());
+        }
+        
         $options->setResourceKey($keyFilter->filter($post))
-            ->setUserToken($this->getUserTokenFromCookie())
             ->setIP(Helper::getCurrentIP());
         $this->prepareForRequest($options, self::API_TYPE_ACCESS);
 
@@ -141,7 +150,7 @@ class iMoneza
 
         $this->setUserTokenCookie($data->getUserToken());
 
-        if ($data->getAccessAction() == ResourceAccess::ACCESS_ACTION_AUTHENTICATE) {
+        if ($data->getAccessAction() != ResourceAccess::ACCESS_ACTION_GRANT) {
             $result = $data->getAccessActionUrl();
         }
 

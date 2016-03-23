@@ -156,12 +156,15 @@ class App
             if ($options->isAccessControlServer() && $options->getAccessApiKey()) {
                 $post = is_single() ? get_post() : null;
                 if ($post) {
+                    $iMonezaTUT = isset($_GET['iMonezaTUT']) ? $_GET['iMonezaTUT'] : null;
+
                     /** @var \iMonezaPRO\Service\iMoneza $service */
                     $service = $di['service.imoneza'];
                     $service->setAccessApiKey($options->getAccessApiKey())->setAccessApiSecret($options->getAccessApiSecret());
-                    
-                    if ($redirectURL = $service->getResourceAccessRedirectURL($post)) {
-                        wp_redirect($redirectURL);
+
+                    if ($redirectURL = $service->getResourceAccessRedirectURL($post, $iMonezaTUT)) {
+                        $currentURL = sprintf('%s://%s%s', $_SERVER['SERVER_PROTOCOL'], $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI']);
+                        wp_redirect($redirectURL . '&originalURL=' . $currentURL);
                     }
                 }
             }
