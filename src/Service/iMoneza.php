@@ -11,10 +11,11 @@ namespace iMonezaPRO\Service;
 use iMoneza\Connection;
 use iMoneza\Data\None;
 use iMoneza\Data\Resource;
+use iMoneza\Data\ResourceAccess;
 use iMoneza\Exception;
 use iMoneza\Helper;
-use iMoneza\Options\Access\ResourceFromResourceKey;
-use iMoneza\Options\Management\Property;
+use iMoneza\Options\Access\GetResourceFromResourceKey;
+use iMoneza\Options\Management\GetProperty;
 use iMoneza\Options\Management\SaveResource;
 use iMoneza\Options\OptionsAbstract;
 use iMoneza\Request\Curl;
@@ -116,14 +117,35 @@ class iMoneza
         return $this->lastError;
     }
 
-    public function getResourceAccess(\WP_Post $post)
+    /**
+     * Gets a URL to redirect for access OR false if its granted
+     *
+     * @param \WP_Post $post
+     * @return bool|string
+     * @throws Exception\DecodingError
+     * @throws Exception\TransferError
+     */
+    public function getResourceAccessRedirectURL(\WP_Post $post)
     {
-//        $keyFilter = new ExternalResourceKey();
-//        $options = new ResourceFromResourceKey();
-//        $options->setResourceKey($keyFilter->filter($post))
-//            ->setIP(Helper::getCurrentIP());
+        $result = false;
 
+        $keyFilter = new ExternalResourceKey();
+        $options = new GetResourceFromResourceKey();
+        $options->setResourceKey($keyFilter->filter($post))
+            ->setUserToken($this->getUserTokenFromCookie())
+            ->setIP(Helper::getCurrentIP());
+        $this->prepareForRequest($options, self::API_TYPE_ACCESS);
 
+        /** @var \iMoneza\Data\ResourceAccess $data */
+        $data = $this->getConnectionInstance()->request($options, $options->getDataObject());
+
+        $this->setUserTokenCookie($data->getUserToken());
+
+        if ($data->getAccessAction() == ResourceAccess::ACCESS_ACTION_AUTHENTICATE) {
+            $result = $data->getAccessActionUrl();
+        }
+
+        return $result;
     }
 
     /**
@@ -139,7 +161,7 @@ class iMoneza
             ->setExternalKey($keyFilter->filter($post))
             ->setName($post->post_title)
             ->setTitle($post->post_title);
-        $this->prepareForPost($options);
+        $this->prepareForRequest($options);
 
         $result = false;
         try {
@@ -158,8 +180,8 @@ class iMoneza
      */
     public function getProperty()
     {
-        $options = new Property();
-        $this->prepareForPost($options);
+        $options = new GetProperty();
+        $this->prepareForRequest($options);
 
         $result = false;
         try {
@@ -185,9 +207,9 @@ class iMoneza
      */
     public function validateResourceAccessApiCredentials()
     {
-        $options = new ResourceFromResourceKey();
+        $options = new GetResourceFromResourceKey();
         $options->setResourceURL('api-validation')->setResourceKey('api-validation')->setIP(Helper::getCurrentIP());
-        $this->prepareForPost($options, self::API_TYPE_ACCESS);
+        $this->prepareForRequest($options, self::API_TYPE_ACCESS);
 
         $result = false;
         try {
@@ -227,11 +249,30 @@ class iMoneza
      * @param OptionsAbstract $options
      * @param int $type
      */
-    protected function prepareForPost(OptionsAbstract $options, $type = self::API_TYPE_MANAGE)
+    protected function prepareForRequest(OptionsAbstract $options, $type = self::API_TYPE_MANAGE)
     {
         $this->lastError = '';
         if ($baseUrl = getenv($type == self::API_TYPE_MANAGE ? 'MANAGEMENT_API_URL' : 'ACCESS_API_URL')) {
             $options->setApiBaseURL($baseUrl);
         }
+    }
+
+    /**
+     * Sets the user token cookie way in the future and HTTP only
+     * @param $userToken
+     */
+    protected function setUserTokenCookie($userToken)
+    {
+        setcookie('imoneza-user-token', $userToken, 1893456000, '/', null, null, true); // 01/01/20130 0:0:0
+    }
+
+    /**
+     * Get the current user token
+     *
+     * @return string|null
+     */
+    protected function getUserTokenFromCookie()
+    {
+        return isset($_COOKIE['imoneza-user-token']) ? $_COOKIE['imoneza-user-token'] : null;
     }
 }

@@ -160,8 +160,9 @@ class App
                     $service = $di['service.imoneza'];
                     $service->setAccessApiKey($options->getAccessApiKey())->setAccessApiSecret($options->getAccessApiSecret());
                     
-                    
-                    $service->getResourceAccess($post);
+                    if ($redirectURL = $service->getResourceAccessRedirectURL($post)) {
+                        wp_redirect($redirectURL);
+                    }
                 }
             }
         });
