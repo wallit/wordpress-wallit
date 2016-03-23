@@ -53,6 +53,7 @@ class App
         $this->registerActivationDeactivationHooks();
         $this->addCron();
         $this->addClientSideAccessControl();
+        $this->addServerSideAccessControl();
 
         if (is_admin()) {
             $this->addAdminNoticeConfigNeeded();
@@ -138,6 +139,29 @@ class App
                     $js = self::CLIENT_SIDE_JAVASCRIPT_URL;
                     if ($overrideJs = getenv('CLIENT_SIDE_JAVASCRIPT_URL')) $js = $overrideJs;
                     View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
+                }
+            }
+        });
+    }
+
+    /**
+     * If there is server side access, check the items here
+     */
+    protected function addServerSideAccessControl()
+    {
+        $options = $this->getOptions();
+        $di = $this->di;
+
+        add_action('wp', function() use ($options, $di) {
+            if ($options->isAccessControlServer() && $options->getAccessApiKey()) {
+                $post = is_single() ? get_post() : null;
+                if ($post) {
+                    /** @var \iMonezaPRO\Service\iMoneza $service */
+                    $service = $di['service.imoneza'];
+                    $service->setAccessApiKey($options->getAccessApiKey())->setAccessApiSecret($options->getAccessApiSecret());
+                    
+                    
+                    $service->getResourceAccess($post);
                 }
             }
         });

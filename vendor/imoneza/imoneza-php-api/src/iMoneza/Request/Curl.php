@@ -9,6 +9,8 @@ namespace iMoneza\Request;
 
 /**
  * Class CurlRequest
+ *
+ * Please note: there are a lot of code coverage ignore statements in here - but that's because this is a really tightly coupled proxy
  * @package iMoneza
  */
 class Curl implements RequestInterface
@@ -60,7 +62,7 @@ class Curl implements RequestInterface
     public function setRequestTypeAndPayload($requestType, $payload = '')
     {
         if ($requestType != 'get') {
-            $this->setOption(CURLOPT_POSTFIELDS, $payload);
+            if (!empty($payload)) $this->setOption(CURLOPT_POSTFIELDS, $payload);
             if ($requestType == 'post') {
                 $this->setOption(CURLOPT_POST, true);
             }
@@ -97,6 +99,7 @@ class Curl implements RequestInterface
 
     /**
      * Execute the request
+     * @codeCoverageIgnore
      * @return bool|string
      */
     public function execute()
@@ -109,7 +112,7 @@ class Curl implements RequestInterface
 
     /**
      * Get all the response info for this request
-     *
+     * @codeCoverageIgnore
      * @return mixed
      */
     public function getResponseInfo()
@@ -118,6 +121,7 @@ class Curl implements RequestInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return integer the response code
      */
     public function getResponseHTTPCode()
@@ -126,6 +130,7 @@ class Curl implements RequestInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return string the potential error string
      */
     public function getErrorString()
@@ -134,6 +139,7 @@ class Curl implements RequestInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @return int the error code
      */
     public function getErrorCode()
@@ -143,6 +149,7 @@ class Curl implements RequestInterface
 
     /**
      * Set curl option
+     * @codeCoverageIgnore
      *
      * @param $name
      * @param $value

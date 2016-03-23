@@ -116,6 +116,16 @@ class iMoneza
         return $this->lastError;
     }
 
+    public function getResourceAccess(\WP_Post $post)
+    {
+//        $keyFilter = new ExternalResourceKey();
+//        $options = new ResourceFromResourceKey();
+//        $options->setResourceKey($keyFilter->filter($post))
+//            ->setIP(Helper::getCurrentIP());
+
+
+    }
+
     /**
      * @param \WP_Post $post
      * @param $pricingGroupId

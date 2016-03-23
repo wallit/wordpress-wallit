@@ -87,4 +87,10 @@ class TestOptions extends OptionsAbstract
      */
     public function hasAccessKey()
     {}
+
+    /**
+     * @return object
+     */
+    public function getDataObject()
+    {}
 }

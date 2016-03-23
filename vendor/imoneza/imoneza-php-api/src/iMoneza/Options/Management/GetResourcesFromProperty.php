@@ -1,20 +1,22 @@
 <?php
 /**
- * Get the property
+ * Get the property's resources
  *
  * @author Aaron Saray
  */
 
 namespace iMoneza\Options\Management;
 
+use iMoneza\Data\Property;
+use iMoneza\Data\ResourceCollection;
 use iMoneza\Options\ConfigurationTrait;
 use iMoneza\Options\OptionsAbstract;
 
 /**
- * Class Property
+ * Class GetResourcesFromProperty
  * @package iMoneza\Options\Management
  */
-class Property extends OptionsAbstract implements ManagementInterface
+class GetResourcesFromProperty extends OptionsAbstract implements ManagementInterface
 {
     use ConfigurationTrait, ManagementConfigurationTrait;
 
@@ -23,7 +25,7 @@ class Property extends OptionsAbstract implements ManagementInterface
      */
     public function getEndPoint()
     {
-        return "/api/Property/{$this->accessKey}";
+        return "/api/Property/{$this->accessKey}/Resource";
     }
 
     /**
@@ -32,5 +34,13 @@ class Property extends OptionsAbstract implements ManagementInterface
     public function getRequestType()
     {
         return self::REQUEST_TYPE_GET;
+    }
+
+    /**
+     * @return ResourceCollection
+     */
+    public function getDataObject()
+    {
+        return new ResourceCollection();
     }
 }

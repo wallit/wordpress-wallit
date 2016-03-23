@@ -7,21 +7,22 @@
 
 namespace iMoneza\Options\Access;
 
+use iMoneza\Data\ResourceAccess;
 use iMoneza\Options\ConfigurationTrait;
 use iMoneza\Options\OptionsAbstract;
 
 /**
- * Class ResourceFromResourceKey
+ * Class GetResourceFromTemporaryUserToken
  * @package iMoneza\Options\Access
  */
-class ResourceFromResourceKey extends OptionsAbstract implements AccessInterface
+class GetResourceFromTemporaryUserToken extends OptionsAbstract implements AccessInterface
 {
     use ConfigurationTrait, AccessConfigurationTrait;
 
     /**
-     * @var string the resource key (private because part of get params)
+     * @var string the resource key
      */
-    private $resourceKey = '';
+    protected $ResourceKey = '';
 
     /**
      * @var string the url of this resource
@@ -31,7 +32,7 @@ class ResourceFromResourceKey extends OptionsAbstract implements AccessInterface
     /**
      * @var string the user token
      */
-    protected $UserToken = '';
+    protected $temporaryUserToken = '';
 
     /**
      * @var string the IP address
@@ -44,7 +45,7 @@ class ResourceFromResourceKey extends OptionsAbstract implements AccessInterface
      */
     public function setResourceKey($resourceKey)
     {
-        $this->resourceKey = $resourceKey;
+        $this->ResourceKey = $resourceKey;
         return $this;
     }
 
@@ -59,12 +60,12 @@ class ResourceFromResourceKey extends OptionsAbstract implements AccessInterface
     }
 
     /**
-     * @param mixed $UserToken
+     * @param string $temporaryUserToken
      * @return $this
      */
-    public function setUserToken($UserToken)
+    public function setTemporaryUserToken($temporaryUserToken)
     {
-        $this->UserToken = $UserToken;
+        $this->temporaryUserToken = $temporaryUserToken;
         return $this;
     }
 
@@ -83,7 +84,7 @@ class ResourceFromResourceKey extends OptionsAbstract implements AccessInterface
      */
     public function getEndPoint()
     {
-        return "/api/Resource/{$this->accessKey}/{$this->resourceKey}";
+        return "/api/TemporaryUserToken/{$this->accessKey}/{$this->temporaryUserToken}";
     }
 
     /**
@@ -92,5 +93,13 @@ class ResourceFromResourceKey extends OptionsAbstract implements AccessInterface
     public function getRequestType()
     {
         return self::REQUEST_TYPE_GET;
+    }
+
+    /**
+     * @return ResourceAccess
+     */
+    public function getDataObject()
+    {
+        return new ResourceAccess();
     }
 }

@@ -1,3 +1,4 @@
+/tests/docs
 .idea/
-/tests/iMoneza/IntegrationTest/.env
 vendor/
+/docs/examples/.env

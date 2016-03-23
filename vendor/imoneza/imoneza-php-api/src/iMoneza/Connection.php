@@ -7,16 +7,19 @@
 
 namespace iMoneza;
 use iMoneza\Data\DataAbstract;
-use iMoneza\Data\Resource;
+use iMoneza\Data\DataInterface;
+use iMoneza\Data\None;
 use iMoneza\Exception;
 use iMoneza\Options\Access\AccessInterface;
 use iMoneza\Options\OptionsAbstract;
+use iMoneza\Options\OptionsInterface;
 use iMoneza\Request\RequestInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 /**
  * Class Connection
+ * @codeCoverageIgnore this will be covered in integration testing
  * @package iMoneza
  */
 class Connection
@@ -71,8 +74,8 @@ class Connection
     }
 
     /**
-     * @param OptionsAbstract $options
-     * @param DataAbstract $dataObject
+     * @param OptionsInterface $options
+     * @param DataInterface $dataObject
      * @return DataAbstract
      * @throws Exception\AccessDenied
      * @throws Exception\AuthenticationFailure
@@ -80,7 +83,7 @@ class Connection
      * @throws Exception\NotFound
      * @throws Exception\TransferError
      */
-    public function request(OptionsAbstract $options, DataAbstract $dataObject)
+    public function request(OptionsInterface $options, DataInterface $dataObject)
     {
         $apiKey = ($options instanceof AccessInterface ? $this->accessApiKey : $this->manageApiKey);
         $apiSecret = ($options instanceof AccessInterface ? $this->accessApiSecret : $this->manageApiSecret);
@@ -105,9 +108,14 @@ class Connection
             $payload = $httpQuery;
         }
         else {
-            $json = json_encode($populatedValues);
-            $this->debug('Json payload', [$json]);
-            $payload = $json;
+            if (empty($populatedValues)) {
+                $this->debug('Empty payload');
+            }
+            else {
+                $json = json_encode($populatedValues);
+                $this->debug('Json payload', [$json]);
+                $payload = $json;
+            }
         }
 
         $this->request->setRequestTypeAndPayload($requestType, $payload);
@@ -154,11 +162,16 @@ class Connection
         $this->debug('All error checking passed.');
         $this->log->info("The request was successful.");
 
-        $jsonArray = json_decode($result, true);
-        if (is_null($jsonArray)) {
-            throw new Exception\DecodingError(json_last_error_msg(), json_last_error());
+        if (!($dataObject instanceof None)) {
+            $jsonArray = json_decode($result, true);
+            if (is_null($jsonArray)) {
+                throw new Exception\DecodingError(json_last_error_msg(), json_last_error());
+            }
+
+            $dataObject->populate($jsonArray);
         }
-        return $dataObject->populate($jsonArray);
+
+        return $dataObject;
     }
 
     /**

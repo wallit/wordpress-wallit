@@ -15,4 +15,13 @@ namespace iMoneza\Data;
  */
 class None extends DataAbstract
 {
+    /**
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function __call($key, $value)
+    {
+        return $this;
+    }
 }

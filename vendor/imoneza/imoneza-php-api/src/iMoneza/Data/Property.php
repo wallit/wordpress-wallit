@@ -21,7 +21,7 @@ class Property extends DataAbstract
     /**
      * @var array the keys that are converted to models
      */
-    protected $arrayClassKeys = ['PricingGroups'=>'PricingGroup'];
+    protected $arrayClassKeys = ['PricingGroups'=>'PricingGroup', 'SubscriptionGroups'=>'SubscriptionGroup'];
 
     /**
      * @var string
@@ -257,7 +257,7 @@ class Property extends DataAbstract
      * @param array $SubscriptionGroups
      * @return Property
      */
-    public function setSubscriptionGroups($SubscriptionGroups)
+    public function setSubscriptionGroups(array $SubscriptionGroups)
     {
         $this->SubscriptionGroups = $SubscriptionGroups;
         return $this;
@@ -275,7 +275,7 @@ class Property extends DataAbstract
      * @param array $PricingGroups
      * @return Property
      */
-    public function setPricingGroups($PricingGroups)
+    public function setPricingGroups(array $PricingGroups)
     {
         $this->PricingGroups = $PricingGroups;
         return $this;
@@ -298,6 +298,4 @@ class Property extends DataAbstract
         $this->alwaysRequireAuthentication = $alwaysRequireAuthentication;
         return $this;
     }
-
-
 }

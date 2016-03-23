@@ -11,7 +11,7 @@ namespace iMoneza\Data;
  * Class DataAbstract
  * @package iMoneza\Data
  */
-abstract class DataAbstract
+abstract class DataAbstract implements DataInterface
 {
     /**
      * @var array keys to create date time objects
@@ -39,9 +39,10 @@ abstract class DataAbstract
             if (in_array($key, $this->dateTimeKeys)) {
                 $value = new \DateTime($value, new \DateTimeZone('UTC'));
             }
-            elseif (in_array($key, $this->classKeys)) {
+            elseif (in_array($key, $this->classKeys) && !is_null($value)) {
                 $populateValue = $value;
                 $className = sprintf('%s\%s', __NAMESPACE__, $key);
+                /** @var self $value */
                 $value = new $className();
                 $value->populate($populateValue);
             }
@@ -50,6 +51,7 @@ abstract class DataAbstract
                 $value = [];
                 $className = sprintf('%s\%s', __NAMESPACE__, $this->arrayClassKeys[$key]);
                 foreach ($arrayValues as $v) {
+                    /** @var self $class */
                     $class = new $className();
                     $class->populate($v);
                     $value[] = $class;

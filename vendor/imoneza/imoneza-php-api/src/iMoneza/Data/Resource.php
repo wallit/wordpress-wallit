@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * This particular resource
  *
  * @author Aaron Saray
  */
@@ -16,296 +16,434 @@ class Resource extends DataAbstract
     /**
      * @var string
      */
-    const ACCESS_ACTION_AUTHENTICATE = 'Authenticate';
+    const PRICING_MODEL_INHERIT = 'Inherit';
 
     /**
      * @var string
      */
-    const ACCESS_REASON_DENY = 'Deny';
+    const EXPIRATION_PERIOD_UNIT_NEVER = 'Never';
+
+    /**
+     * @var array items to convert to classes
+     */
+    protected $classKeys = ['Property', 'PricingGroup'];
+
+    /**
+     * @var array date times
+     */
+    protected $dateTimeKeys = ['PublicationDate'];
 
     /**
      * @var string
      */
-    const PAYWALL_DISPLAY_STYLE_MOBILE_REDIRECT = 'RedirectMobile';
+    protected $name;
 
     /**
      * @var string
      */
-    protected $userToken;
-
-    /**
-     * @var string
-     */
-    protected $propertyName;
-
-    /**
-     * @var string
-     */
-    protected $paywallDisplayStyle;
-
-    /**
-     * @var string
-     */
-    protected $resourceName;
-
-    /**
-     * @var string
-     */
-    protected $userName;
+    protected $externalKey;
 
     /**
      * @var boolean
      */
-    protected $isAnonymousUser;
-
-    /**
-     * @var Quota
-     */
-    protected $quota;
-
-    /**
-     * @var Subscription
-     */
-    protected $subscription;
-
-    /**
-     * @var Purchase
-     */
-    protected $purchase;
+    protected $active;
 
     /**
      * @var string
      */
-    protected $accessAction;
+    protected $URL;
 
     /**
      * @var string
      */
-    protected $accessReason;
+    protected $title;
 
     /**
      * @var string
      */
-    protected $accessActionUrl;
+    protected $byline;
 
     /**
-     * @var array keys to create classes
+     * @var string
      */
-    protected $classKeys = ['Quota', 'Purchase', 'Subscription'];
+    protected $description;
+
+    /**
+     * @var \DateTime
+     */
+    protected $PublicationDate;
+
+    /**
+     * @var PricingGroup
+     */
+    protected $PricingGroup;
+
+    /**
+     * @var string
+     */
+    protected $pricingModel;
+
+    /**
+     * @var float
+     */
+    protected $price;
+
+    /**
+     * @var string
+     */
+    protected $expirationPeriodUnit;
+
+    /**
+     * @var int
+     */
+    protected $expirationPeriodValue;
+
+    /**
+     * @var float
+     */
+    protected $targetConversionRate;
+
+    /**
+     * @var float
+     */
+    protected $targetConversionPriceFloor;
+
+    /**
+     * @var int
+     */
+    protected $targetConversionHitsPerRecalculationPeriod;
+
+    /**
+     * @var array
+     */
+    protected $resourcePricingTiers;
+
+    /**
+     * @var Property
+     */
+    protected $Property;
 
     /**
      * @return string
      */
-    public function getUserToken()
+    public function getName()
     {
-        return $this->userToken;
+        return $this->name;
     }
 
     /**
-     * @param string $userToken
+     * @param string $name
      * @return Resource
      */
-    public function setUserToken($userToken)
+    public function setName($name)
     {
-        $this->userToken = $userToken;
+        $this->name = $name;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPropertyName()
+    public function getExternalKey()
     {
-        return $this->propertyName;
+        return $this->externalKey;
     }
 
     /**
-     * @param string $propertyName
+     * @param string $externalKey
      * @return Resource
      */
-    public function setPropertyName($propertyName)
+    public function setExternalKey($externalKey)
     {
-        $this->propertyName = $propertyName;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaywallDisplayStyle()
-    {
-        return $this->paywallDisplayStyle;
-    }
-
-    /**
-     * @param string $paywallDisplayStyle
-     * @return Resource
-     */
-    public function setPaywallDisplayStyle($paywallDisplayStyle)
-    {
-        $this->paywallDisplayStyle = $paywallDisplayStyle;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getResourceName()
-    {
-        return $this->resourceName;
-    }
-
-    /**
-     * @param string $resourceName
-     * @return Resource
-     */
-    public function setResourceName($resourceName)
-    {
-        $this->resourceName = $resourceName;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserName()
-    {
-        return $this->userName;
-    }
-
-    /**
-     * @param string $userName
-     * @return Resource
-     */
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
+        $this->externalKey = $externalKey;
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function isAnonymousUser()
+    public function isActive()
     {
-        return $this->isAnonymousUser;
+        return $this->active;
     }
 
     /**
-     * @param boolean $isAnonymousUser
+     * @param boolean $active
      * @return Resource
      */
-    public function setIsAnonymousUser($isAnonymousUser)
+    public function setActive($active)
     {
-        $this->isAnonymousUser = $isAnonymousUser;
-        return $this;
-    }
-
-    /**
-     * @return Quota
-     */
-    public function getQuota()
-    {
-        return $this->quota;
-    }
-
-    /**
-     * @param Quota $quota
-     * @return Resource
-     */
-    public function setQuota(Quota $quota)
-    {
-        $this->quota = $quota;
-        return $this;
-    }
-
-    /**
-     * @return Subscription
-     */
-    public function getSubscription()
-    {
-        return $this->subscription;
-    }
-
-    /**
-     * @param Subscription $subscription
-     * @return Resource
-     */
-    public function setSubscription(Subscription $subscription)
-    {
-        $this->subscription = $subscription;
-        return $this;
-    }
-
-    /**
-     * @return Purchase
-     */
-    public function getPurchase()
-    {
-        return $this->purchase;
-    }
-
-    /**
-     * @param Purchase $purchase
-     * @return Resource
-     */
-    public function setPurchase(Purchase $purchase)
-    {
-        $this->purchase = $purchase;
+        $this->active = $active;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAccessAction()
+    public function getURL()
     {
-        return $this->accessAction;
+        return $this->URL;
     }
 
     /**
-     * @param string $accessAction
+     * @param string $URL
      * @return Resource
      */
-    public function setAccessAction($accessAction)
+    public function setURL($URL)
     {
-        $this->accessAction = $accessAction;
+        $this->URL = $URL;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAccessReason()
+    public function getTitle()
     {
-        return $this->accessReason;
+        return $this->title;
     }
 
     /**
-     * @param string $accessReason
+     * @param string $title
      * @return Resource
      */
-    public function setAccessReason($accessReason)
+    public function setTitle($title)
     {
-        $this->accessReason = $accessReason;
+        $this->title = $title;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAccessActionUrl()
+    public function getDescription()
     {
-        return $this->accessActionUrl;
+        return $this->description;
     }
 
     /**
-     * @param string $accessActionUrl
+     * @param string $description
      * @return Resource
      */
-    public function setAccessActionUrl($accessActionUrl)
+    public function setDescription($description)
     {
-        $this->accessActionUrl = $accessActionUrl;
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getByline()
+    {
+        return $this->byline;
+    }
+
+    /**
+     * @param string $byline
+     * @return Resource
+     */
+    public function setByline($byline)
+    {
+        $this->byline = $byline;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublicationDate()
+    {
+        return $this->PublicationDate;
+    }
+
+    /**
+     * @param \DateTime $PublicationDate
+     * @return Resource
+     */
+    public function setPublicationDate(\DateTime $PublicationDate)
+    {
+        $this->PublicationDate = $PublicationDate;
+        return $this;
+    }
+
+    /**
+     * @return PricingGroup
+     */
+    public function getPricingGroup()
+    {
+        return $this->PricingGroup;
+    }
+
+    /**
+     * @param PricingGroup $PricingGroup
+     * @return Resource
+     */
+    public function setPricingGroup(PricingGroup $PricingGroup)
+    {
+        $this->PricingGroup = $PricingGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPricingModel()
+    {
+        return $this->pricingModel;
+    }
+
+    /**
+     * @param string $pricingModel
+     * @return Resource
+     */
+    public function setPricingModel($pricingModel)
+    {
+        $this->pricingModel = $pricingModel;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param float $price
+     * @return Resource
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpirationPeriodUnit()
+    {
+        return $this->expirationPeriodUnit;
+    }
+
+    /**
+     * @param string $expirationPeriodUnit
+     * @return Resource
+     */
+    public function setExpirationPeriodUnit($expirationPeriodUnit)
+    {
+        $this->expirationPeriodUnit = $expirationPeriodUnit;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpirationPeriodValue()
+    {
+        return $this->expirationPeriodValue;
+    }
+
+    /**
+     * @param int $expirationPeriodValue
+     * @return Resource
+     */
+    public function setExpirationPeriodValue($expirationPeriodValue)
+    {
+        $this->expirationPeriodValue = $expirationPeriodValue;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTargetConversionRate()
+    {
+        return $this->targetConversionRate;
+    }
+
+    /**
+     * @param float $targetConversionRate
+     * @return Resource
+     */
+    public function setTargetConversionRate($targetConversionRate)
+    {
+        $this->targetConversionRate = $targetConversionRate;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTargetConversionPriceFloor()
+    {
+        return $this->targetConversionPriceFloor;
+    }
+
+    /**
+     * @param float $targetConversionPriceFloor
+     * @return Resource
+     */
+    public function setTargetConversionPriceFloor($targetConversionPriceFloor)
+    {
+        $this->targetConversionPriceFloor = $targetConversionPriceFloor;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTargetConversionHitsPerRecalculationPeriod()
+    {
+        return $this->targetConversionHitsPerRecalculationPeriod;
+    }
+
+    /**
+     * @param int $targetConversionHitsPerRecalculationPeriod
+     * @return Resource
+     */
+    public function setTargetConversionHitsPerRecalculationPeriod($targetConversionHitsPerRecalculationPeriod)
+    {
+        $this->targetConversionHitsPerRecalculationPeriod = $targetConversionHitsPerRecalculationPeriod;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResourcePricingTiers()
+    {
+        return $this->resourcePricingTiers;
+    }
+
+    /**
+     * @param array $resourcePricingTiers
+     * @return Resource
+     */
+    public function setResourcePricingTiers($resourcePricingTiers)
+    {
+        $this->resourcePricingTiers = $resourcePricingTiers;
+        return $this;
+    }
+
+    /**
+     * @return Property
+     */
+    public function getProperty()
+    {
+        return $this->Property;
+    }
+
+    /**
+     * @param Property $Property
+     * @return Resource
+     */
+    public function setProperty($Property)
+    {
+        $this->Property = $Property;
         return $this;
     }
 }

@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iMoneza/imoneza-php-api.git",
-                "reference": "1b641f0fca3ab580f7e4238331f03984a59afb23"
+                "reference": "3eef930c8d80171b569796bae6d78837ac82d01b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/1b641f0fca3ab580f7e4238331f03984a59afb23",
-                "reference": "1b641f0fca3ab580f7e4238331f03984a59afb23",
+                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/3eef930c8d80171b569796bae6d78837ac82d01b",
+                "reference": "3eef930c8d80171b569796bae6d78837ac82d01b",
                 "shasum": ""
             },
             "require": {
@@ -27,7 +27,13 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "~1.0",
+                "symfony/config": "2.8.*",
+                "symfony/console": "^2.1",
+                "symfony/filesystem": "^2.1",
+                "symfony/stopwatch": "^2.1",
+                "symfony/yaml": "2.8.*",
                 "vlucas/phpdotenv": "^2.2"
             },
             "type": "library",
@@ -53,20 +59,20 @@
                 "api",
                 "imoneza"
             ],
-            "time": "2016-02-25 20:18:47"
+            "time": "2016-03-18 18:23:51"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.17.2",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
+                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
+                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
                 "shasum": ""
             },
             "require": {
@@ -95,6 +101,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
@@ -104,7 +111,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -130,7 +137,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-10-14 12:51:02"
+            "time": "2016-03-13 16:08:35"
         },
         {
             "name": "pimple/pimple",

@@ -12,7 +12,7 @@ use iMoneza\Exception;
  * Class OptionsAbstract
  * @package iMoneza\Options
  */
-abstract class OptionsAbstract
+abstract class OptionsAbstract implements OptionsInterface
 {
     /**
      * @var string this is a get method
@@ -35,6 +35,13 @@ abstract class OptionsAbstract
         }, []);
         return $properties;
     }
+
+    /**
+     * Get the data object this should return
+     *
+     * @return \iMoneza\Data\DataAbstract
+     */
+    abstract public function getDataObject();
 
     /**
      * Gets the URL of the base request

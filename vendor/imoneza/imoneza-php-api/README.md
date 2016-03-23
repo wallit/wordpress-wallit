@@ -1,4 +1,8 @@
-# imoneza-php-api
+# iMoneza PHP API
+
+[![Build Status](https://travis-ci.org/iMoneza/imoneza-php-api.svg?branch=master)](https://travis-ci.org/iMoneza/imoneza-php-api)
+[![Coverage Status](https://coveralls.io/repos/github/iMoneza/imoneza-php-api/badge.svg?branch=master)](https://coveralls.io/github/iMoneza/imoneza-php-api?branch=master)
+
 A PHP library to integrate iMoneza into your application.
 
 Using your <http://imoneza.com> account, you can interact with all parts of the API using this library.  This library
@@ -14,11 +18,35 @@ $ composer require imoneza/imoneza-php-api
 
 ## Basic Usage
 
-@todo
+There are a number of ways to interact with the API.  But, the way of performing each task is relatively the same.  For 
+this example, let's save a resource to iMoneza.
+
+```PHP
+$options = new \iMoneza\Options\Management\SaveResource();
+$options->setExternalKey('announcement-wisconsin-crowned-king-of-cheese')
+    ->setName('Wisconsin Crowned King of Cheese')
+    ->setTitle('Wisconsin Crowned King of Cheese')
+    ->setPricingGroupId('aaa111bb-22cc-425f-425f-aaa111bb452d');
+
+$logger = new \Monolog\Logger('iMoneza');
+$connection = new \iMoneza\Connection($apiKey, $secretKey, $accessApiKey, $accessSecretKey, new \iMoneza\Request\Curl(), $logger);
+$connection->request($options, new \iMoneza\Data\None());
+```
 
 ## Documentation
 
-@todo
+[Introduction](docs/01-intro.md)  
+[The Connection Object](docs/02-connection.md)  
+[Options Objects](docs/03-options.md)  
+[Data Objects](docs/04-data.md)  
+[Examples](docs/examples)
+
+## Todo
+
+- Retrieving all resources is causing an error 500 at the moment
+- External Subscriber Import/Export requests
+- Callback results
+- Integration testing for Connection object
   
 ## About
 
@@ -28,17 +56,18 @@ $ composer require imoneza/imoneza-php-api
  - Curl
  - iMoneza publisher account
  
-### Bugs and Feature Requests
+### Bugs, Feature Requests and Testing
 
-Bugs and feature request are tracked on [GitHub](https://github.com/iMoneza/imoneza-php-api/issues)
+Bugs and feature request are tracked on [GitHub](https://github.com/iMoneza/imoneza-php-api/issues).  Testing is managed
+by [Travis CI](http://travis-ci.org) and coverage provided by Coveralls.
 
 ### Author
 
-iMoneza, LLC
+[iMoneza, LLC](https://imoneza.com)
 
 #### Contributors
 
-Aaron Saray - <http://aaronsaray.com>
+[Aaron Saray](https://github.com/aaronsaray)
 
 ### License
 

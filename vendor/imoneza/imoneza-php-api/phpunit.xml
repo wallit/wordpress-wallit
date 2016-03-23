@@ -4,9 +4,6 @@
         <testsuite name="UnitTest">
             <directory>tests/iMoneza/UnitTest</directory>
         </testsuite>
-        <testsuite name="IntegrationTest">
-            <directory>tests/iMoneza/IntegrationTest</directory>
-        </testsuite>
     </testsuites>
     <filter>
         <whitelist>
