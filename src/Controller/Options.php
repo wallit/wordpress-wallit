@@ -50,7 +50,7 @@ class Options extends ControllerAbstract
             if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
-            if (!in_array($postOptions['access-control'], ['S', 'C'])) {
+            if (!in_array($postOptions['access-control'], [\iMonezaPRO\Model\Options::ACCESS_CONTROL_SERVER, \iMonezaPRO\Model\Options::ACCESS_CONTROL_CLIENT])) {
                 $errors[] = 'The access control somehow is not a valid value.';
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {

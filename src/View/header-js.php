@@ -1,4 +1,4 @@
-<script src="https://qa-accessui.imoneza.com/assets/imoneza.js"></script>
+<script src="<?= $javascriptUrl ?>"></script>
 <script>
     iMoneza.ResourceAccess.init({
         ApiKey: '<?= $apiKey ?>',

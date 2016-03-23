@@ -133,7 +133,7 @@
          */
         function refreshAndPopulateData()
         {
-            $('<div />').imonezaAdminAjax({
+            $('<div />').imonezaAdminAjax({ // yup - using a random element here seems wrong... :)
                 showIndications: false,
                 data: {
                     action: "refresh_settings"

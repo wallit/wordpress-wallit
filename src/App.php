@@ -27,6 +27,11 @@ class App
     const SETTINGS_PAGE_IDENTIFIER = 'imoneza-pro-settings';
 
     /**
+     * @var string the url for the client side js
+     */
+    const CLIENT_SIDE_JAVASCRIPT_URL = 'https://accessui.imoneza.com/assets/imoneza.js';
+
+    /**
      * @var Container
      */
     protected $di;
@@ -130,7 +135,9 @@ class App
                 $post = is_single() ? get_post() : null;
                 if ($post) {
                     $filter = new ExternalResourceKey();
-                    View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post)]);
+                    $js = self::CLIENT_SIDE_JAVASCRIPT_URL;
+                    if ($overrideJs = getenv('CLIENT_SIDE_JAVASCRIPT_URL')) $js = $overrideJs;
+                    View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
                 }
             }
         });
