@@ -18,6 +18,7 @@ use iMoneza\Options\Management\Property;
 use iMoneza\Options\Management\SaveResource;
 use iMoneza\Options\OptionsAbstract;
 use iMoneza\Request\Curl;
+use iMonezaPRO\Filter\ExternalResourceKey;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -122,9 +123,10 @@ class iMoneza
      */
     public function createOrUpdateResource(\WP_Post $post, $pricingGroupId)
     {
+        $keyFilter = new ExternalResourceKey();
         $options = new SaveResource();
         $options->setPricingGroupId($pricingGroupId)
-            ->setExternalKey('wp-' . $post->ID)
+            ->setExternalKey($keyFilter->filter($post))
             ->setName($post->post_title)
             ->setTitle($post->post_title);
         $this->prepareForPost($options);

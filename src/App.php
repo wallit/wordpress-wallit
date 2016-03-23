@@ -8,6 +8,7 @@
 namespace iMonezaPRO;
 use iMoneza\Exception;
 use iMonezaPRO\Controller\RefreshOptions;
+use iMonezaPRO\Filter\ExternalResourceKey;
 use Pimple\Container;
 use iMonezaPRO\Traits;
 
@@ -44,83 +45,33 @@ class App
      */
     public function __invoke()
     {
-        $di = $this->di;
-        $options = $this->getOptions();
-        $firstTime = !$options->isInitialized();
-
-        register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($firstTime) {
-            if (!$firstTime) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
-        });
-        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
-            wp_clear_scheduled_hook('imoneza_hourly');
-        });
-
+        $this->registerActivationDeactivationHooks();
         $this->addCron();
-
-        add_action('wp_head', function() use ($options) {
-            if ($options->isAccessControlClient() && $options->getAccessApiKey()) {
-                $post = is_single() ? get_post() : null;
-                if ($post) {
-                    View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>'wp-' . $post->ID]);
-                }
-            }
-        });
+        $this->addClientSideAccessControl();
 
         if (is_admin()) {
-            if ($firstTime) {
-                $this->addAdminNoticeConfigNeeded();
-            }
-
-            add_action('admin_init', function () {
-                register_setting(self::$optionsKey, self::$optionsKey);
-            });
-
-            add_action('admin_menu', function () use ($firstTime, $di) {
-                add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $firstTime ? $di['controller.first-time-options'] : $di['controller.options']);
-            });
-
+            $this->addAdminNoticeConfigNeeded();
+            $this->initAdminItems();
             $this->addPostMetaBox();
-
             $this->addPublishPostAction();
-
-            add_action('wp_ajax_first-time-settings', function () use ($di) {
-                /** @var \iMonezaPRO\Controller\FirstTimeOptions $controller */
-                $controller = $di['controller.first-time-options'];
-                $controller();
-            });
-            add_action('wp_ajax_settings', function () use ($di) {
-                /** @var \iMonezaPRO\Controller\Options $controller */
-                $controller = $di['controller.options'];
-                $controller();
-            });
-            add_action('wp_ajax_refresh_settings', function () use ($di) {
-                /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
-                $controller = $di['controller.refresh-options'];
-                $controller();
-            });
-
-            add_action('admin_enqueue_scripts', function () {
-                wp_register_style('imoneza-admin-css', WP_PLUGIN_URL . '/imoneza-pro/assets/css/admin.css');
-                wp_enqueue_style('imoneza-admin-css');
-                wp_enqueue_script('jquery');
-                wp_enqueue_script('jquery-form');
-                wp_enqueue_script('imoneza-admin-js', WP_PLUGIN_URL . '/imoneza-pro/assets/js/admin.js', [], false, true);
-            });
+            $this->registerAdminAjax();
+            $this->enqueueAdminScripts();
         }
     }
 
     /**
-     * Show the config if need be
+     * Actions to be taken when this is installed / uninstalled
      */
-    public function addAdminNoticeConfigNeeded()
+    protected function registerActivationDeactivationHooks()
     {
-        global $pagenow;
+        $options = $this->getOptions();
 
-        if (!($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == self::SETTINGS_PAGE_IDENTIFIER)) {
-            add_action('admin_notices', function() {
-                View::render('admin/notify-config-needed');
-            });
-        }
+        register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($options) {
+            if ($options->isInitialized()) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
+        });
+        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
+            wp_clear_scheduled_hook('imoneza_hourly');
+        });
     }
 
     /**
@@ -169,7 +120,58 @@ class App
     }
 
     /**
-     * Add the imoneza box to the wordpress post page
+     * Used to add the javascript to the page if necessary
+     */
+    protected function addClientSideAccessControl()
+    {
+        $options = $this->getOptions();
+        add_action('wp_head', function() use ($options) {
+            if ($options->isAccessControlClient() && $options->getAccessApiKey()) {
+                $post = is_single() ? get_post() : null;
+                if ($post) {
+                    $filter = new ExternalResourceKey();
+                    View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post)]);
+                }
+            }
+        });
+    }
+
+    /**
+     * Show the config message to admin if need be
+     */
+    protected function addAdminNoticeConfigNeeded()
+    {
+        global $pagenow;
+        $options = $this->getOptions();
+
+        if (!$options->isInitialized()) {
+            if (!($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == self::SETTINGS_PAGE_IDENTIFIER)) {
+                add_action('admin_notices', function() {
+                    View::render('admin/notify-config-needed');
+                });
+            }
+        }
+    }
+
+    /**
+     * Add admin items like menu and and settings
+     */
+    protected function initAdminItems()
+    {
+        $options = $this->getOptions();
+        $di = $this->di;
+
+        add_action('admin_init', function () {
+            register_setting(self::$optionsKey, self::$optionsKey);
+        });
+
+        add_action('admin_menu', function () use ($options, $di) {
+            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $options->isInitialized() ? $di['controller.options'] : $di['controller.first-time-options']);
+        });
+    }
+
+    /**
+     * Add the imoneza box to the WordPress post page
      */
     protected function addPostMetaBox()
     {
@@ -194,6 +196,9 @@ class App
         });
     }
 
+    /**
+     * Handles updating or adding access control information to posts
+     */
     protected function addPublishPostAction()
     {
         $di = $this->di;
@@ -228,6 +233,44 @@ class App
                     update_post_meta($postId, '_pricing-group-id', $pricingGroupId);
                 }
             }
+        });
+    }
+
+    /**
+     * Registers the admin ajax functionality
+     */
+    protected function registerAdminAjax()
+    {
+        $di = $this->di;
+
+        add_action('wp_ajax_first-time-settings', function () use ($di) {
+            /** @var \iMonezaPRO\Controller\FirstTimeOptions $controller */
+            $controller = $di['controller.first-time-options'];
+            $controller();
+        });
+        add_action('wp_ajax_settings', function () use ($di) {
+            /** @var \iMonezaPRO\Controller\Options $controller */
+            $controller = $di['controller.options'];
+            $controller();
+        });
+        add_action('wp_ajax_refresh_settings', function () use ($di) {
+            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
+            $controller = $di['controller.refresh-options'];
+            $controller();
+        });
+    }
+
+    /**
+     * Add the admin scripts
+     */
+    protected function enqueueAdminScripts()
+    {
+        add_action('admin_enqueue_scripts', function () {
+            wp_register_style('imoneza-admin-css', WP_PLUGIN_URL . '/imoneza-pro/assets/css/admin.css');
+            wp_enqueue_style('imoneza-admin-css');
+            wp_enqueue_script('jquery');
+            wp_enqueue_script('jquery-form');
+            wp_enqueue_script('imoneza-admin-js', WP_PLUGIN_URL . '/imoneza-pro/assets/js/admin.js', [], false, true);
         });
     }
 }
