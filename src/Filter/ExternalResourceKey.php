@@ -20,6 +20,6 @@ class ExternalResourceKey
      */
     public function filter(\WP_Post $post)
     {
-        return sprintf('wp-%', $post->ID);
+        return sprintf('wp-%s', $post->ID);
     }
 }
