@@ -157,10 +157,13 @@
 
                     var selected = $pricingGroupSelect.val();
                     $pricingGroupSelect.empty();
-                    $.each(response.data.options.pricingGroups, function(value, label) {
-                        $pricingGroupSelect.append($('<option />').attr('value', value).text(label));
+                    $.each(response.data.options.pricingGroups, function(key, pricingGroup) {
+                        $pricingGroupSelect.append($('<option />').attr('value', pricingGroup.pricingGroupID).text(pricingGroup.name));
                     });
-                    $pricingGroupSelect.val(selected);
+
+                    if (window.location.pathname.substr(-12) != 'post-new.php') {
+                        $pricingGroupSelect.val(selected);
+                    }
                 }
             }).trigger('ajax');
         }

@@ -88,7 +88,7 @@ class Options implements \JsonSerializable
         });
         /** @var \iMoneza\Data\PricingGroup $pricingGroup */
         foreach ($pricingGroups as $pricingGroup) {
-            $pricingGroupsArray[$pricingGroup->getPricingGroupID()] = $pricingGroup->getName();
+            $pricingGroupsArray[] = ['pricingGroupID'=>$pricingGroup->getPricingGroupID(), 'name' => $pricingGroup->getName()];
         }
 
         $array['pricingGroups'] = $pricingGroupsArray;

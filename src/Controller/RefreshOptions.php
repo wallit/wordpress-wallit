@@ -49,7 +49,7 @@ class RefreshOptions extends ControllerAbstract
             ->setManagementApiSecret($options->getManagementApiSecret());
 
         if ($propertyOptions = $this->iMonezaService->getProperty()) {
-            $options->setPricingGroups($propertyOptions->getPricingGroups())
+            $options->setPricingGroupsBubbleDefaultToTop($propertyOptions->getPricingGroups())
                 ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())
                 ->setPropertyTitle($propertyOptions->getTitle());
             $this->saveOptions($options);

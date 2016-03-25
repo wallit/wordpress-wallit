@@ -67,7 +67,7 @@ class Options extends ControllerAbstract
                     ->setAccessApiSecret($postOptions['access-api-secret'])
                     ->setManagementApiKey($postOptions['management-api-key'])
                     ->setManagementApiSecret($postOptions['management-api-secret'])
-                    ->setPricingGroups($property->getPricingGroups())
+                    ->setPricingGroupsBubbleDefaultToTop($property->getPricingGroups())
                     ->setDynamicallyCreateResources($property->isDynamicallyCreateResources());
                 $this->saveOptions($options);
 
