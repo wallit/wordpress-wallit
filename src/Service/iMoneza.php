@@ -168,7 +168,9 @@ class iMoneza
         $options->setPricingGroupId($pricingGroupId)
             ->setExternalKey($keyFilter->filter($post))
             ->setName($post->post_title)
-            ->setTitle($post->post_title);
+            ->setTitle($post->post_title)
+            ->setDescription($post->post_excerpt)
+            ->setPublicationDate(new \DateTime($post->post_date));
         $this->prepareForRequest($options);
 
         $result = false;
