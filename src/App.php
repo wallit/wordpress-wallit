@@ -278,7 +278,7 @@ class App
     {
         $di = $this->di;
 
-        add_action('wp_ajax_first-time-settings', function () use ($di) {
+        add_action('wp_ajax_first_time_settings', function () use ($di) {
             /** @var \iMonezaPRO\Controller\FirstTimeOptions $controller */
             $controller = $di['controller.first-time-options'];
             $controller();

@@ -37,7 +37,7 @@ class FirstTimeOptions extends ControllerAbstract
     public function __invoke()
     {
         if ($this->isPost()) {
-            check_ajax_referer('imoneza-options');
+            check_ajax_referer('imoneza-settings');
 
             $postedOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
             $results = $this->getGenericAjaxResultsObject();

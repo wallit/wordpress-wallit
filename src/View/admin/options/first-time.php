@@ -13,7 +13,7 @@
                 </p>
                 <form method="post" id="imoneza-first-form" class="imoneza-form">
                     <?php wp_nonce_field('imoneza-settings'); ?>
-                    <input type="hidden" name="action" value="first-time-settings" />
+                    <input type="hidden" name="action" value="first_time_settings" />
                     <div class="form-row">
                         <label for="api_key">Resource Management API Key:</label>
                         <input id="api_key" type="text" name="imoneza-options[management-api-key]" required />
