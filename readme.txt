@@ -1,7 +1,7 @@
 === iMoneza PRO ===
 Contributors: aaronsaray
 Requires at least: 4.0
-Tested up to: 4.2
+Tested up to: 4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 
 == Installation ==
 
-1. Set up an iMoneza account, create an iMoneza property, and generate a set of API keys. See [our WordPress plugin page](https://www.imoneza.com/wordpress-plugin/) for more details on this process.
+1. Set up an iMoneza account, create an iMoneza property, and generate a set of API keys.
 2. Upload all files to the `/wp-content/plugins/` directory.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 4. Follow setup wizard.

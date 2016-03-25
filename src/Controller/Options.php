@@ -39,7 +39,7 @@ class Options extends ControllerAbstract
 
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
-            
+
             $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
 
             $errors = [];

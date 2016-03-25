@@ -10,7 +10,6 @@
 namespace iMonezaPRO\Service;
 use iMoneza\Connection;
 use iMoneza\Data\None;
-use iMoneza\Data\Resource;
 use iMoneza\Data\ResourceAccess;
 use iMoneza\Exception;
 use iMoneza\Helper;
@@ -222,7 +221,7 @@ class iMoneza
 
         $result = false;
         try {
-            $this->getConnectionInstance()->request($options, new Resource());
+            $this->getConnectionInstance()->request($options, $options->getDataObject());
             $result = true;
         }
         catch (Exception\NotFound $e) {
