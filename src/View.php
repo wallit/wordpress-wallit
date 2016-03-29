@@ -5,14 +5,16 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO;
+namespace iMoneza\WordPress;
 
 /**
  * Class View
- * @package iMonezaPRO
+ * @package iMoneza\WordPress
  */
 class View
 {
+    public static $assetsRoot;
+    
     /**
      * Renders the view to the screen basically by including the view file
      * @param $view
@@ -20,14 +22,16 @@ class View
      */
     public static function render($view, array $params = [])
     {
+        $assetsRoot = self::$assetsRoot;
+
         /**
          * Helper for showing assets
          * @param $assetUrl
          * @return string
          */
-        $assetUrl = function($assetUrl)
+        $assetUrl = function($assetUrl) use ($assetsRoot)
         {
-            return WP_PLUGIN_URL . '/imoneza-pro/assets' . $assetUrl;
+            return $assetsRoot . $assetUrl;
         };
         extract($params);
 

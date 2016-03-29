@@ -1,5 +1,5 @@
 <?php
-/** @var $options \iMonezaPRO\Model\Options */
+/** @var $options \iMoneza\WordPress\Model\Options */
 $options;
 ?>
 <div class="wrap">

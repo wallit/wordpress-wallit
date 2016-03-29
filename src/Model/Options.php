@@ -5,12 +5,12 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Model;
+namespace iMoneza\WordPress\Model;
 use iMoneza\Data\PricingGroup;
 
 /**
  * Class Options
- * @package iMonezaPRO\Model
+ * @package iMoneza\WordPress\Model
  */
 class Options implements \JsonSerializable
 {

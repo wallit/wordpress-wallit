@@ -5,12 +5,12 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Controller;
-use iMonezaPRO\Traits;
+namespace iMoneza\WordPress\Controller;
+use iMoneza\WordPress\Traits;
 
 /**
  * Class ControllerAbstract
- * @package iMonezaPRO\Controller
+ * @package iMoneza\WordPress\Controller
  */
 abstract class ControllerAbstract
 {

@@ -1,18 +1,19 @@
 <?php
 /**
- * Options controller
+ * First Time Options controller
  *
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Controller;
-use iMonezaPRO\Model\Options;
-use iMonezaPRO\Service\iMoneza;
-use iMonezaPRO\View;
+namespace iMoneza\WordPress\Controller\PRO;
+use iMoneza\WordPress\Controller\ControllerAbstract;
+use iMoneza\WordPress\Model\Options;
+use iMoneza\WordPress\Service\iMoneza;
+use iMoneza\WordPress\View;
 
 /**
  * Class FirstTimeOptions
- * @package iMonezaPRO\Controller
+ * @package iMoneza\WordPress\Controller
  */
 class FirstTimeOptions extends ControllerAbstract
 {
@@ -37,7 +38,7 @@ class FirstTimeOptions extends ControllerAbstract
     public function __invoke()
     {
         if ($this->isPost()) {
-            check_ajax_referer('imoneza-settings');
+            check_ajax_referer('imoneza-options');
 
             $postedOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
             $results = $this->getGenericAjaxResultsObject();
@@ -61,10 +62,10 @@ class FirstTimeOptions extends ControllerAbstract
                 $results['data']['message'] = $this->iMonezaService->getLastError();
             }
 
-            View::render('admin/options/json-response', $results);
+            View::render('PRO/admin/options/json-response', $results);
         }
         else {
-            View::render('admin/options/first-time');
+            View::render('PRO/admin/options/first-time');
         }
     }
 }

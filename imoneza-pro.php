@@ -20,22 +20,25 @@ $di = new \Pimple\Container();
 
 // DI Services
 $di['service.imoneza'] = function () {
-	return new \iMonezaPRO\Service\iMoneza();
+	return new \iMoneza\WordPress\Service\iMoneza();
 };
 
 // DI Controllers
 $di['controller.first-time-options'] = function($di) {
-	return new \iMonezaPRO\Controller\FirstTimeOptions($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\PRO\FirstTimeOptions($di['service.imoneza']);
 };
 $di['controller.options'] = function($di) {
-	return new \iMonezaPRO\Controller\Options($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\PRO\Options($di['service.imoneza']);
 };
 $di['controller.refresh-options'] = function($di) {
-	return new \iMonezaPRO\Controller\RefreshOptions($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\PRO\RefreshOptions($di['service.imoneza']);
 };
+
+// configure assets root
+\iMoneza\WordPress\View::$assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(__DIR__));
 
 /**
  * Run the proper "app"
  */
-$app = new \iMonezaPRO\App($di);
+$app = new \iMoneza\WordPress\PRO($di);
 $app();

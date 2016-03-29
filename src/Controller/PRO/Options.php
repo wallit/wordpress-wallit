@@ -5,13 +5,14 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Controller;
-use iMonezaPRO\Service\iMoneza;
-use iMonezaPRO\View;
+namespace iMoneza\WordPress\Controller\PRO;
+use iMoneza\WordPress\Controller\ControllerAbstract;
+use iMoneza\WordPress\Service\iMoneza;
+use iMoneza\WordPress\View;
 
 /**
  * Class Options
- * @package iMonezaPRO\Controller
+ * @package iMoneza\WordPress\Controller
  */
 class Options extends ControllerAbstract
 {
@@ -52,7 +53,7 @@ class Options extends ControllerAbstract
             if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
-            if (!in_array($postOptions['access-control'], [\iMonezaPRO\Model\Options::ACCESS_CONTROL_SERVER, \iMonezaPRO\Model\Options::ACCESS_CONTROL_CLIENT])) {
+            if (!in_array($postOptions['access-control'], [\iMoneza\WordPress\Model\Options::ACCESS_CONTROL_SERVER, \iMoneza\WordPress\Model\Options::ACCESS_CONTROL_CLIENT])) {
                 $errors[] = 'The access control somehow is not a valid value.';
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {
@@ -88,7 +89,7 @@ class Options extends ControllerAbstract
                 });
             }
 
-            View::render('admin/options/json-response', $results);
+            View::render('PRO/admin/options/json-response', $results);
         }
         else {
             $postsQueuedForProcessing = 0;
@@ -112,7 +113,7 @@ class Options extends ControllerAbstract
                 'postsQueuedForProcessing'  =>  $postsQueuedForProcessing
             ];
 
-            View::render('admin/options/dashboard', $parameters);
+            View::render('PRO/admin/options/dashboard', $parameters);
         }
     }
 }

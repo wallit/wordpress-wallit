@@ -5,11 +5,11 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Filter;
+namespace iMoneza\WordPress\Filter;
 
 /**
  * Class ExternalResourceKey
- * @package iMonezaPRO\Filter
+ * @package iMoneza\Wordpress\Filter
  */
 class ExternalResourceKey
 {

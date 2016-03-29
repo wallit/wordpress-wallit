@@ -12,7 +12,7 @@
                     us custom tailor the rest of the plugin options for you.
                 </p>
                 <form method="post" id="imoneza-first-form" class="imoneza-form">
-                    <?php wp_nonce_field('imoneza-settings'); ?>
+                    <?php wp_nonce_field('imoneza-options'); ?>
                     <input type="hidden" name="action" value="first_time_settings" />
                     <div class="form-row">
                         <label for="api_key">Resource Management API Key:</label>

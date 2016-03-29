@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'iMoneza\\WordPress\\' => array($baseDir . '/src'),
     'iMoneza\\' => array($vendorDir . '/imoneza/imoneza-php-api/src/iMoneza'),
-    'iMonezaPRO\\' => array($baseDir . '/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
 );

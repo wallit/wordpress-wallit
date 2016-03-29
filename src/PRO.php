@@ -5,19 +5,19 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO;
+namespace iMoneza\WordPress;
 use iMoneza\Exception;
-use iMonezaPRO\Controller\RefreshOptions;
-use iMonezaPRO\Filter\ExternalResourceKey;
+use iMoneza\WordPress\Controller\PRO\RefreshOptions;
+use iMoneza\WordPress\Filter\ExternalResourceKey;
 use Pimple\Container;
-use iMonezaPRO\Traits;
+use iMoneza\WordPress\Traits;
 
 
 /**
- * Class App
- * @package iMonezaPRO
+ * Class PRO
+ * @package iMoneza\WordPress
  */
-class App
+class PRO
 {
     use Traits\Options;
 
@@ -91,7 +91,7 @@ class App
         $options = $this->getOptions();
 
         add_action('imoneza_hourly', function() use ($di, $options) {
-            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
+            /** @var \iMoneza\WordPress\Controller\PRO\RefreshOptions $controller */
             $controller = $di['controller.refresh-options'];
             $controller(RefreshOptions::DO_NOT_SHOW_VIEW);
 
@@ -138,7 +138,7 @@ class App
                     $filter = new ExternalResourceKey();
                     $js = self::CLIENT_SIDE_JAVASCRIPT_URL;
                     if ($overrideJs = getenv('CLIENT_SIDE_JAVASCRIPT_URL')) $js = $overrideJs;
-                    View::render('header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
+                    View::render('PRO/header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
                 }
             }
         });
@@ -158,7 +158,7 @@ class App
                 if ($post) {
                     $iMonezaTUT = isset($_GET['iMonezaTUT']) ? $_GET['iMonezaTUT'] : null;
 
-                    /** @var \iMonezaPRO\Service\iMoneza $service */
+                    /** @var \iMoneza\WordPress\Service\iMoneza $service */
                     $service = $di['service.imoneza'];
                     $service->setAccessApiKey($options->getAccessApiKey())->setAccessApiSecret($options->getAccessApiSecret());
 
@@ -182,7 +182,7 @@ class App
         if (!$options->isInitialized()) {
             if (!($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == self::SETTINGS_PAGE_IDENTIFIER)) {
                 add_action('admin_notices', function() {
-                    View::render('admin/notify-config-needed');
+                    View::render('PRO/admin/notify-config-needed');
                 });
             }
         }
@@ -221,7 +221,7 @@ class App
                 $pricingGroupSelected = $editing ? get_post_meta($post->ID, '_pricing-group-id', true) : $options->getDefaultPricingGroup();
                 $overrideChecked = get_post_meta($post->ID, '_override-pricing', true);
 
-                View::render('post/post-pricing', [
+                View::render('PRO/post/post-pricing', [
                     'overrideChecked'   =>  $overrideChecked,
                     'dynamicallyCreateResources'=>$options->isDynamicallyCreateResources(),
                     'pricingGroupSelected'=>$pricingGroupSelected,
@@ -246,7 +246,7 @@ class App
             $overridePricing = !empty($_POST['override-pricing']);
             if ($options->isDynamicallyCreateResources() || $overridePricing) {
                 $pricingGroupId = $_POST['pricing-group-id'];
-                /** @var \iMonezaPRO\Service\iMoneza $service */
+                /** @var \iMoneza\WordPress\Service\iMoneza $service */
                 $service = $di['service.imoneza'];
                 $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
 
@@ -279,17 +279,17 @@ class App
         $di = $this->di;
 
         add_action('wp_ajax_first_time_settings', function () use ($di) {
-            /** @var \iMonezaPRO\Controller\FirstTimeOptions $controller */
+            /** @var \iMoneza\WordPress\Controller\PRO\FirstTimeOptions $controller */
             $controller = $di['controller.first-time-options'];
             $controller();
         });
         add_action('wp_ajax_settings', function () use ($di) {
-            /** @var \iMonezaPRO\Controller\Options $controller */
+            /** @var \iMoneza\WordPress\Controller\PRO\Options $controller */
             $controller = $di['controller.options'];
             $controller();
         });
         add_action('wp_ajax_refresh_settings', function () use ($di) {
-            /** @var \iMonezaPRO\Controller\RefreshOptions $controller */
+            /** @var \iMoneza\WordPress\Controller\PRO\RefreshOptions $controller */
             $controller = $di['controller.refresh-options'];
             $controller();
         });

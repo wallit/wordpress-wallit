@@ -5,13 +5,14 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Controller;
-use iMonezaPRO\Service\iMoneza;
-use iMonezaPRO\View;
+namespace iMoneza\WordPress\Controller\PRO;
+use iMoneza\WordPress\Controller\ControllerAbstract;
+use iMoneza\WordPress\Service\iMoneza;
+use iMoneza\WordPress\View;
 
 /**
  * Class RefreshOptions
- * @package iMonezaPRO\Controller
+ * @package iMoneza\WordPress\Controller
  */
 class RefreshOptions extends ControllerAbstract
 {
@@ -63,6 +64,6 @@ class RefreshOptions extends ControllerAbstract
             $results['data']['message'] = $this->iMonezaService->getLastError();
             if (!$showView) error_log($this->iMonezaService->getLastError());
         }
-        if ($showView) View::render('admin/options/json-response', $results);
+        if ($showView) View::render('PRO/admin/options/json-response', $results);
     }
 }

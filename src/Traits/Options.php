@@ -5,11 +5,11 @@
  * @author Aaron Saray
  */
 
-namespace iMonezaPRO\Traits;
+namespace iMoneza\WordPress\Traits;
 
 /**
  * Class Options
- * @package iMonezaPRO\Traits
+ * @package iMoneza\WordPress\Traits
  */
 trait Options
 {
@@ -19,18 +19,18 @@ trait Options
     protected static $optionsKey = 'imoneza-options';
 
     /**
-     * @return \iMonezaPRO\Model\Options
+     * @return \iMoneza\WordPress\Model\Options
      */
     protected function getOptions()
     {
-        return get_option(self::$optionsKey, new \iMonezaPRO\Model\Options());
+        return get_option(self::$optionsKey, new \iMoneza\WordPress\Model\Options());
     }
 
     /**
-     * @param \iMonezaPRO\Model\Options $options
+     * @param \iMoneza\WordPress\Model\Options $options
      * @return $this
      */
-    protected function saveOptions(\iMonezaPRO\Model\Options $options)
+    protected function saveOptions(\iMoneza\WordPress\Model\Options $options)
     {
         $options->setLastUpdatedNow();
         update_option('imoneza-options', $options);
