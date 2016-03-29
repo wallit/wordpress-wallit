@@ -9,5 +9,4 @@ return array(
     'iMoneza\\' => array($vendorDir . '/imoneza/imoneza-php-api/src/iMoneza'),
     'iMonezaPRO\\' => array($baseDir . '/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
-    'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
 );
