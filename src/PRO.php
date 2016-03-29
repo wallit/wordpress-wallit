@@ -56,6 +56,7 @@ class PRO
         $this->addServerSideAccessControl();
 
         if (is_admin()) {
+            $this->addAdminNoticeToDisableLite();
             $this->addAdminNoticeConfigNeeded();
             $this->initAdminItems();
             $this->addPostMetaBox();
@@ -169,6 +170,20 @@ class PRO
                 }
             }
         });
+    }
+
+    /**
+     * Show a message if both versions are enabled
+     */
+    protected function addAdminNoticeToDisableLite()
+    {
+        include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+        if (is_plugin_active('imoneza-lite/imoneza-lite.php')) {
+            add_action('admin_notices', function() {
+                View::render('PRO/admin/notify-disable-lite');
+            });
+        }
     }
 
     /**
