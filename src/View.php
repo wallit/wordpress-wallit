@@ -13,8 +13,6 @@ namespace iMoneza\WordPress;
  */
 class View
 {
-    public static $assetsRoot;
-    
     /**
      * Renders the view to the screen basically by including the view file
      * @param $view
@@ -22,15 +20,14 @@ class View
      */
     public static function render($view, array $params = [])
     {
-        $assetsRoot = self::$assetsRoot;
-
         /**
          * Helper for showing assets
          * @param $assetUrl
          * @return string
          */
-        $assetUrl = function($assetUrl) use ($assetsRoot)
+        $assetUrl = function($assetUrl)
         {
+            $assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(realpath(__DIR__ . '/../')));
             return $assetsRoot . $assetUrl;
         };
         extract($params);

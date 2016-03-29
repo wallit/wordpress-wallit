@@ -34,9 +34,6 @@ $di['controller.refresh-options'] = function($di) {
 	return new \iMoneza\WordPress\Controller\PRO\RefreshOptions($di['service.imoneza']);
 };
 
-// configure assets root
-\iMoneza\WordPress\View::$assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(__DIR__));
-
 /**
  * Run the proper "app"
  */
