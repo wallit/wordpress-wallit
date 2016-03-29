@@ -70,6 +70,16 @@ class Options implements \JsonSerializable
     protected $lastUpdated;
 
     /**
+     * @var bool
+     */
+    protected $indicatePremiumContent;
+
+    /**
+     * @var string the class(es) to indicate on an indicator
+     */
+    protected $premiumIndicatorIconClass;
+
+    /**
      * @return array
      */
     public function jsonSerialize()
@@ -318,5 +328,41 @@ class Options implements \JsonSerializable
     public function isInitialized()
     {
         return !empty($this->lastUpdated);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIndicatePremiumContent()
+    {
+        return $this->indicatePremiumContent;
+    }
+
+    /**
+     * @param boolean $indicatePremiumContent
+     * @return Options
+     */
+    public function setIndicatePremiumContent($indicatePremiumContent)
+    {
+        $this->indicatePremiumContent = $indicatePremiumContent;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPremiumIndicatorIconClass()
+    {
+        return $this->premiumIndicatorIconClass;
+    }
+
+    /**
+     * @param string $premiumIndicatorIconClass
+     * @return Options
+     */
+    public function setPremiumIndicatorIconClass($premiumIndicatorIconClass)
+    {
+        $this->premiumIndicatorIconClass = $premiumIndicatorIconClass;
+        return $this;
     }
 }
