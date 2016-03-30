@@ -192,7 +192,10 @@ class PRO
 
         if (is_plugin_active('imoneza/imoneza.php')) {
             add_action('admin_notices', function() {
-                View::render('admin/notify-disable-standard');
+                // this is inline because the view renderer has a problem when both versions are installed
+                echo '<div class="notice notice-error"><p>';
+                echo __('iMoneza PRO and Standard versions should not be used at the same time.  Please disable the Standard version before continuing.', 'iMoneza');
+                echo '</p></div>';
             });
         }
     }
