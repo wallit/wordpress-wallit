@@ -33,6 +33,9 @@ $di['controller.options.access'] = function($di) {
 $di['controller.options.remote-refresh'] = function($di) {
 	return new \iMoneza\WordPress\Controller\Options\RemoteRefresh($di['service.imoneza']);
 };
+$di['controller.options.display'] = function($di) {
+	return new \iMoneza\WordPress\Controller\Options\Display();
+};
 
 /**
  * Run the proper "app"

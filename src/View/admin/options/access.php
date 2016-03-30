@@ -19,7 +19,7 @@ $options;
 
     <form method="post" id="imoneza-options-form" class="imoneza-form">
         <?php wp_nonce_field('imoneza-options'); ?>
-        <input type="hidden" name="action" value="settings" />
+        <input type="hidden" name="action" value="options_access" />
 
         <section class="row">
             <div>

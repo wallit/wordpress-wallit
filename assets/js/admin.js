@@ -175,7 +175,7 @@
     $(function() {
         $('#imoneza-refresh-settings').imonezaAdminAjax({
             data: {
-                action: "refresh_settings"
+                action: "options_remote_refresh"
             },
             successCustomCallback: function(response) {
                 $('#imoneza-property-title').text(response.data.options.propertyTitle);
