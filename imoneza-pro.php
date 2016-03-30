@@ -24,14 +24,14 @@ $di['service.imoneza'] = function () {
 };
 
 // DI Controllers
-$di['controller.first-time-options'] = function($di) {
-	return new \iMoneza\WordPress\Controller\PRO\FirstTimeOptions($di['service.imoneza']);
+$di['controller.options.pro-first-time'] = function($di) {
+	return new \iMoneza\WordPress\Controller\Options\PROFirstTime($di['service.imoneza']);
 };
-$di['controller.options'] = function($di) {
-	return new \iMoneza\WordPress\Controller\PRO\Options($di['service.imoneza']);
+$di['controller.options.access'] = function($di) {
+	return new \iMoneza\WordPress\Controller\Options\Access($di['service.imoneza']);
 };
-$di['controller.refresh-options'] = function($di) {
-	return new \iMoneza\WordPress\Controller\PRO\RefreshOptions($di['service.imoneza']);
+$di['controller.options.remote-refresh'] = function($di) {
+	return new \iMoneza\WordPress\Controller\Options\RemoteRefresh($di['service.imoneza']);
 };
 
 /**

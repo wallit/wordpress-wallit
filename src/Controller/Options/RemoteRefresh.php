@@ -5,16 +5,16 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller\PRO;
+namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 use iMoneza\WordPress\Service\iMoneza;
 use iMoneza\WordPress\View;
 
 /**
- * Class RefreshOptions
- * @package iMoneza\WordPress\Controller
+ * Class RemoteRefresh
+ * @package iMoneza\WordPress\Controller\Options
  */
-class RefreshOptions extends ControllerAbstract
+class RemoteRefresh extends ControllerAbstract
 {
     /**
      * @var boolean do not show a view

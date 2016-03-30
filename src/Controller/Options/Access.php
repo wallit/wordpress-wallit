@@ -5,16 +5,16 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller\PRO;
+namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 use iMoneza\WordPress\Service\iMoneza;
 use iMoneza\WordPress\View;
 
 /**
- * Class Options
- * @package iMoneza\WordPress\Controller
+ * Class Access
+ * @package iMoneza\WordPress\Controller\Options
  */
-class Options extends ControllerAbstract
+class Access extends ControllerAbstract
 {
     /**
      * @var iMoneza
@@ -89,7 +89,7 @@ class Options extends ControllerAbstract
                 });
             }
 
-            View::render('PRO/admin/options/json-response', $results);
+            View::render('admin/options/json-response', $results);
         }
         else {
             $postsQueuedForProcessing = 0;
@@ -113,7 +113,7 @@ class Options extends ControllerAbstract
                 'postsQueuedForProcessing'  =>  $postsQueuedForProcessing
             ];
 
-            View::render('PRO/admin/options/dashboard', $parameters);
+            View::render('admin/options/access', $parameters);
         }
     }
 }

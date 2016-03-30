@@ -107,6 +107,16 @@ class Options implements \JsonSerializable
     }
 
     /**
+     * This "gently" handles when someone downgrades a plugin (not sure why they would...0
+     * @param $name
+     * @param $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        trigger_error(E_USER_NOTICE, "{$name} is not an existing function of this option.");
+    }
+
+    /**
      * @return boolean
      */
     public function isDynamicallyCreateResources()

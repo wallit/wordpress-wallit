@@ -5,17 +5,17 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller\PRO;
+namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 use iMoneza\WordPress\Model\Options;
 use iMoneza\WordPress\Service\iMoneza;
 use iMoneza\WordPress\View;
 
 /**
- * Class FirstTimeOptions
- * @package iMoneza\WordPress\Controller
+ * Class ProFirstTime
+ * @package iMoneza\WordPress\Controller\Options
  */
-class FirstTimeOptions extends ControllerAbstract
+class ProFirstTime extends ControllerAbstract
 {
     /**
      * @var iMoneza
@@ -62,10 +62,10 @@ class FirstTimeOptions extends ControllerAbstract
                 $results['data']['message'] = $this->iMonezaService->getLastError();
             }
 
-            View::render('PRO/admin/options/json-response', $results);
+            View::render('admin/options/json-response', $results);
         }
         else {
-            View::render('PRO/admin/options/first-time');
+            View::render('admin/options/pro-first-time');
         }
     }
 }

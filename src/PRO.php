@@ -7,7 +7,7 @@
 
 namespace iMoneza\WordPress;
 use iMoneza\Exception;
-use iMoneza\WordPress\Controller\PRO\RefreshOptions;
+use iMoneza\WordPress\Controller\Options\RemoteRefresh;
 use iMoneza\WordPress\Filter\ExternalResourceKey;
 use Pimple\Container;
 use iMoneza\WordPress\Traits;
@@ -67,6 +67,14 @@ class PRO
     }
 
     /**
+     * @return string the base directory
+     */
+    public static function getPluginBaseDir()
+    {
+        return sprintf('%s/%s', WP_PLUGIN_URL, basename(realpath(__DIR__ . '/../')));
+    }
+
+    /**
      * Actions to be taken when this is installed / uninstalled
      */
     protected function registerActivationDeactivationHooks()
@@ -92,9 +100,9 @@ class PRO
         $options = $this->getOptions();
 
         add_action('imoneza_hourly', function() use ($di, $options) {
-            /** @var \iMoneza\WordPress\Controller\PRO\RefreshOptions $controller */
+            /** @var \iMoneza\WordPress\Controller\Options\RemoteRefresh $controller */
             $controller = $di['controller.refresh-options'];
-            $controller(RefreshOptions::DO_NOT_SHOW_VIEW);
+            $controller(RemoteRefresh::DO_NOT_SHOW_VIEW);
 
             if ($options->isDynamicallyCreateResources()) {
                 // get all items that don't have a meta of _pricing-group-id (20 at a time - only use the first page)
@@ -139,7 +147,7 @@ class PRO
                     $filter = new ExternalResourceKey();
                     $js = self::CLIENT_SIDE_JAVASCRIPT_URL;
                     if ($overrideJs = getenv('CLIENT_SIDE_JAVASCRIPT_URL')) $js = $overrideJs;
-                    View::render('PRO/header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
+                    View::render('client-side-access-header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
                 }
             }
         });
@@ -179,9 +187,9 @@ class PRO
     {
         include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-        if (is_plugin_active('imoneza-lite/imoneza-lite.php')) {
+        if (is_plugin_active('imoneza/imoneza.php')) {
             add_action('admin_notices', function() {
-                View::render('PRO/admin/notify-disable-lite');
+                View::render('admin/notify-disable-standard');
             });
         }
     }
@@ -197,7 +205,7 @@ class PRO
         if (!$options->isInitialized()) {
             if (!($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == self::SETTINGS_PAGE_IDENTIFIER)) {
                 add_action('admin_notices', function() {
-                    View::render('PRO/admin/notify-config-needed');
+                    View::render('admin/notify-config-needed-pro');
                 });
             }
         }
@@ -208,15 +216,15 @@ class PRO
      */
     protected function initAdminItems()
     {
-        $options = $this->getOptions();
         $di = $this->di;
 
         add_action('admin_init', function () {
             register_setting(self::$optionsKey, self::$optionsKey);
         });
 
-        add_action('admin_menu', function () use ($options, $di) {
-            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $options->isInitialized() ? $di['controller.options'] : $di['controller.first-time-options']);
+        $controllerString = $this->getOptions()->isInitialized() ? 'controller.options.access' : 'controller.options.pro-first-time';
+        add_action('admin_menu', function () use ($controllerString, $di) {
+            add_options_page('iMoneza Options', 'iMoneza', 'manage_options', self::SETTINGS_PAGE_IDENTIFIER, $di[$controllerString]);
         });
     }
 
@@ -228,7 +236,7 @@ class PRO
         $options = $this->getOptions();
 
         add_action('add_meta_boxes', function() use ($options) {
-            $title = sprintf('<img src="%s" style="height: 16px; vertical-align: middle">', WP_PLUGIN_URL . '/imoneza-pro/assets/images/logo-rectangle-small.png');
+            $title = sprintf('<img src="%s%s" style="height: 16px; vertical-align: middle">', self::getPluginBaseDir(), '/assets/images/logo-rectangle-small.png');
 
             add_meta_box('imoneza-post-pricing', $title, function(\WP_Post $post) use ($options) {
                 $editing = !empty($post->ID);
@@ -236,7 +244,7 @@ class PRO
                 $pricingGroupSelected = $editing ? get_post_meta($post->ID, '_pricing-group-id', true) : $options->getDefaultPricingGroup();
                 $overrideChecked = get_post_meta($post->ID, '_override-pricing', true);
 
-                View::render('PRO/post/post-pricing', [
+                View::render('admin/post-pricing', [
                     'overrideChecked'   =>  $overrideChecked,
                     'dynamicallyCreateResources'=>$options->isDynamicallyCreateResources(),
                     'pricingGroupSelected'=>$pricingGroupSelected,
@@ -294,18 +302,18 @@ class PRO
         $di = $this->di;
 
         add_action('wp_ajax_first_time_settings', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\PRO\FirstTimeOptions $controller */
-            $controller = $di['controller.first-time-options'];
+            /** @var \iMoneza\WordPress\Controller\Options\PROFirstTime $controller */
+            $controller = $di['controller.options.pro-first-time'];
             $controller();
         });
         add_action('wp_ajax_settings', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\PRO\Options $controller */
-            $controller = $di['controller.options'];
+            /** @var \iMoneza\WordPress\Controller\Options\Access $controller */
+            $controller = $di['controller.options.access'];
             $controller();
         });
         add_action('wp_ajax_refresh_settings', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\PRO\RefreshOptions $controller */
-            $controller = $di['controller.refresh-options'];
+            /** @var \iMoneza\WordPress\Controller\Options\RemoteRefresh $controller */
+            $controller = $di['controller.options.remote-refresh'];
             $controller();
         });
     }
@@ -316,11 +324,11 @@ class PRO
     protected function enqueueAdminScripts()
     {
         add_action('admin_enqueue_scripts', function () {
-            wp_register_style('imoneza-admin-css', WP_PLUGIN_URL . '/imoneza-pro/assets/css/admin.css');
+            wp_register_style('imoneza-admin-css', self::getPluginBaseDir() . '/assets/css/admin.css');
             wp_enqueue_style('imoneza-admin-css');
             wp_enqueue_script('jquery');
             wp_enqueue_script('jquery-form');
-            wp_enqueue_script('imoneza-admin-js', WP_PLUGIN_URL . '/imoneza-pro/assets/js/admin.js', [], false, true);
+            wp_enqueue_script('imoneza-admin-js', self::getPluginBaseDir() . '/assets/js/admin.js', [], false, true);
         });
     }
 }
