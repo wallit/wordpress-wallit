@@ -64,6 +64,9 @@ class PRO
             $this->registerAdminAjax();
             $this->enqueueAdminScripts();
         }
+        else {
+            $this->addPremiumIndicator();
+        }
     }
 
     /**
@@ -339,5 +342,23 @@ class PRO
             wp_enqueue_script('jquery-form');
             wp_enqueue_script('imoneza-admin-js', self::getPluginBaseDir() . '/assets/js/admin.js', [], false, true);
         });
+    }
+
+    /**
+     * Adds the premium indicator filter if need be
+     */
+    protected function addPremiumIndicator()
+    {
+        $options = $this->getOptions();
+
+        if ($options->isIndicatePremiumContent()) {
+            add_filter('the_title', function($title) use ($options) {
+                if (has_tag('premium')) {
+                    $title = '<span class="' . $options->getPremiumIndicatorIconClass() . '"></span> ' . $title;
+                }
+
+                return $title;
+            });
+        }
     }
 }
