@@ -86,6 +86,11 @@ class PRO
 
         register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($options) {
             if ($options->isInitialized()) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
+
+            //disable lite if its active
+            if (is_plugin_active('imoneza/imoneza.php')) {
+                deactivate_plugins('imoneza/imoneza.php');
+            }
         });
         register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
             wp_clear_scheduled_hook('imoneza_hourly');
