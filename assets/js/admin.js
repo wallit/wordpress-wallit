@@ -95,7 +95,7 @@
     $.fn.imonezaAdminAjax = Plugin;
 
 
-    /*******************************************************************************************************************/
+    /** PRO *****************************************************************************************************************/
 
     /**
      * Handles the pricing overrides on the admin post page
@@ -202,6 +202,20 @@
 
         (new overridePricing).handle();
 
+    });
+
+    $(function() {
+        var $premiumIndicatorPanel = $('#choose-premium-indicator');
+        $('input[name="imoneza-options[indicate-premium-content]"]').on('change', function() {
+            if ($(this).val() == 0) {
+                $premiumIndicatorPanel.slideUp();
+            }
+            else {
+                $premiumIndicatorPanel.slideDown();
+            }
+        });
+
+        $('#imoneza-options-form').imonezaAdminAjax();
     });
 
 })(jQuery, window.history);

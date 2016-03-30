@@ -42,7 +42,7 @@ class Display extends ControllerAbstract
             View::render('admin/options/json-response', $results);
         }
         else {
-            View::render('admin/options/display', ['options'=>$options, 'indicatorClasses'=>$indicatorClasses]);
+            View::render('admin/options/display', ['options'=>$options, 'indicatorClasses'=>$indicatorClasses, 'isPro'=>$this->isPro()]);
         }
     }
 }

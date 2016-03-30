@@ -27,6 +27,14 @@ abstract class ControllerAbstract
     }
 
     /**
+     * @return bool
+     */
+    protected function isPro()
+    {
+        return substr(plugin_basename(__FILE__), 0, 11) == 'imoneza-pro';
+    }
+
+    /**
      * @return array the most generic of responses
      */
     protected function getGenericAjaxResultsObject()

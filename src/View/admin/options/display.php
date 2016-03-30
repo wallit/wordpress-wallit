@@ -61,6 +61,19 @@ $options;
                     </div>
                 </div>
             </div>
+            <?php if (empty($isPro)) : ?>
+            <aside>
+                <div class="i-card">
+                    <h4>Looking for More Features?</h4>
+                    <p>
+                        You're just scratching the surface with the features iMoneza provides.  Not only can you get more
+                        customization options for these features, you can add micropayments for content and subscription
+                        services to your content.  Ready to get started?  Visit us at <a target="_blank" href="http://imoneza.com">iMoneza.com</a>
+                        to learn more.
+                    </p>
+                </div>
+            </aside>
+            <?php endif; ?>
         </section>
     </form>
 </div>
