@@ -9,7 +9,6 @@ namespace iMoneza\WordPress;
 use iMoneza\Exception;
 use iMoneza\WordPress\Controller\Options\RemoteRefresh;
 use iMoneza\WordPress\Filter\ExternalResourceKey;
-use Pimple\Container;
 use iMoneza\WordPress\Traits;
 
 
@@ -17,39 +16,20 @@ use iMoneza\WordPress\Traits;
  * Class PRO
  * @package iMoneza\WordPress
  */
-class PRO
+class PRO extends App
 {
-    use Traits\Options;
-
-    /**
-     * @var string used to indicate it's the settings page
-     */
-    //const SETTINGS_PAGE_IDENTIFIER = 'imoneza-pro-settings';
-
     /**
      * @var string the url for the client side js
      */
     const CLIENT_SIDE_JAVASCRIPT_URL = 'https://accessui.imoneza.com/assets/imoneza.js';
 
     /**
-     * @var Container
-     */
-    protected $di;
-
-    /**
-     * App constructor.
-     * @param Container $di
-     */
-    public function __construct(Container $di)
-    {
-        $this->di = $di;
-    }
-
-    /**
      * Invoke the APP
      */
     public function __invoke()
     {
+        parent::__invoke();
+
         $this->registerActivationDeactivationHooks();
         $this->addCron();
         $this->addClientSideAccessControl();
@@ -58,14 +38,8 @@ class PRO
         if (is_admin()) {
             $this->addAdminNoticeToDisableLite();
             $this->addAdminNoticeConfigNeeded();
-            $this->initAdminItems();
             $this->addPostMetaBox();
             $this->addPublishPostAction();
-            $this->registerAdminAjax();
-            $this->enqueueAdminScripts();
-        }
-        else {
-            $this->addPremiumIndicator();
         }
     }
 

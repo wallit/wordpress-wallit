@@ -136,7 +136,7 @@
             $('<div />').imonezaAdminAjax({ // yup - using a random element here seems wrong... :)
                 showIndications: false,
                 data: {
-                    action: "refresh_settings"
+                    action: "options_remote_refresh"
                 },
                 successCustomCallback: function(response) {
                     var $autoDisplay = $('#message-automatically-manage'),
@@ -190,8 +190,11 @@
         });
         $('#imoneza-options-form').imonezaAdminAjax({
             beforeCustomCallback: function() {
-                history.replaceState(null, null, window.location.href.replace('&first-time=done', ''));
-                $('#first-time-success-message').slideUp();
+                var $firstTime = $('#first-time-success-message');
+                if ($firstTime.length) {
+                    history.replaceState(null, null, window.location.href.replace('&first-time=done', ''));
+                    $firstTime.slideUp();
+                }
             }
         });
         $('#imoneza-first-form').imonezaAdminAjax({
@@ -214,8 +217,6 @@
                 $premiumIndicatorPanel.slideDown();
             }
         });
-
-        $('#imoneza-options-form').imonezaAdminAjax();
     });
 
 })(jQuery, window.history);
