@@ -111,7 +111,10 @@ class App
         if ($options->isIndicatePremiumContent()) {
             add_filter('the_title', function($title) use ($options) {
                 if (has_tag('premium')) {
-                    $title = '<span class="imoneza-premium-indicator ' . $options->getPremiumIndicatorIconClass() . '"></span> ' . $title;
+                    $replacement = '<span class="imoneza-premium-indicator ' . $options->getPremiumIndicatorIconClass() . '">';
+                    if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') $replacement .= $options->getPremiumIndicatorCustomText();
+                    $replacement .= '</span> ' . $title;
+                    $title = $replacement;
                 }
 
                 return $title;
