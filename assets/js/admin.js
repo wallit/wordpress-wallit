@@ -173,6 +173,24 @@
     /*******************************************************************************************************************/
 
     $(function() {
+        $('.collapsible-on-off').each(function(key, item) {
+            var $panel = $(item);
+            $($panel.data('on-off-handler')).on('change', function() {
+                if (this.value == 1) {
+                    $panel.slideDown();
+                }
+                else {
+                    $panel.slideUp();
+                }
+            })
+        });
+    });
+
+    /*******************************************************************************************************************/
+
+    // pro only
+    
+    $(function() {
         $('#imoneza-refresh-settings').imonezaAdminAjax({
             data: {
                 action: "options_remote_refresh"
@@ -205,20 +223,6 @@
 
         (new overridePricing).handle();
 
-    });
-
-    $(function() {
-        $('.collapsible-on-off').each(function(key, item) {
-            var $panel = $(item);
-            $($panel.data('on-off-handler')).on('change', function() {
-                if (this.value == 1) {
-                    $panel.slideDown();
-                }
-                else {
-                    $panel.slideUp();
-                }
-            })
-        });
     });
 
 })(jQuery, window.history);
