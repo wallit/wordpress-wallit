@@ -24,24 +24,32 @@ $options;
                     $ipcStyle = sprintf('style="display:%s"', $options->isIndicatePremiumContent() ? 'block' : 'none');
                     ?>
                     <div class="form-row collapsible-on-off" data-on-off-handler="input[name='imoneza-options[indicate-premium-content]']" id="choose-premium-indicator" <?= $ipcStyle ?>>
-                        <label class="label-for-radio-container">Choose an icon:</label>
-                        <ul class="radio-container">
-                            <?php
-                            foreach ($indicatorClasses as $class) {
-                                echo "<li><label><input type='radio' name='imoneza-options[indicator-class]' value='{$class}'";
-                                if ($options->getPremiumIndicatorIconClass() == $class) echo " checked";
-                                echo "><span class='{$class}'></span></label></li>";
-                            }
-                            if (!empty($isPro)) {
-                                echo '<li><label><input type="radio" name="imoneza-options[indicator-class]" value="imoneza-custom-indicator"';
-                                if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') echo " checked";
-                                $customLabel = $options->getPremiumIndicatorCustomText();
-                                echo "><span class='imoneza-custom-indicator'><span>{$customLabel}</span>";
-                                echo "<input name='imoneza-options[indicator-text]' id='imoneza-custom-indicator-text' value='" . esc_attr($customLabel) . "' />";
-                                echo "</span></label><a id='edit-custom-indicator' href='#'>edit</a></li>";
-                            }
-                            ?>
-                        </ul>
+                        <div class="form-row">
+                            <label class="label-for-radio-container">Choose an icon:</label>
+                            <ul class="radio-container">
+                                <?php
+                                foreach ($indicatorClasses as $class) {
+                                    echo "<li><label><input type='radio' name='imoneza-options[indicator-class]' value='{$class}'";
+                                    if ($options->getPremiumIndicatorIconClass() == $class) echo " checked";
+                                    echo "><span class='{$class}'></span></label></li>";
+                                }
+                                if (!empty($isPro)) {
+                                    echo '<li><label><input type="radio" name="imoneza-options[indicator-class]" value="imoneza-custom-indicator"';
+                                    if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') echo " checked";
+                                    $customLabel = $options->getPremiumIndicatorCustomText();
+                                    echo "><span class='imoneza-custom-indicator'><span>{$customLabel}</span>";
+                                    echo "<input name='imoneza-options[indicator-text]' id='imoneza-custom-indicator-text' value='" . esc_attr($customLabel) . "' />";
+                                    echo "</span></label><a id='edit-custom-indicator' href='#'>edit</a></li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                        <?php if (!empty($isPro)) : ?>
+                        <div class="form-row color-picker-container">
+                            <label>Customize Indicator Color:</label>
+                            <input type="text" class="color-picker" value="#444444">
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

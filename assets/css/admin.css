@@ -58,7 +58,7 @@
     vertical-align: super;
     width: 33%;
 }
-.imoneza-form input[type=text] {
+.imoneza-form .large-text {
     font-size: 1.5rem;
     padding: 0.5rem;
     width: 64%;
@@ -237,7 +237,7 @@ h2.logo-header {
 
 /** used in user.css but why load this too **/
 .imoneza-custom-indicator {
-    background: #414143;
+    background: #444444;
     color: #ffffff;
     border-radius: 5px;
     padding: 2px 4px;

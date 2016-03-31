@@ -27,20 +27,20 @@ $options;
                     <h3><span class="dashicons dashicons-shield"></span> API Access Credentials</h3>
                     <div class="form-row">
                         <label for="management_api_key">Resource Management API Key:</label>
-                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options->getManagementApiKey()) ?>" required />
+                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options->getManagementApiKey()) ?>" required class="large-text" />
                     </div>
                     <div class="form-row">
                         <label for="management_api_secret">Resource Management API Secret:</label>
-                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options->getManagementApiSecret()) ?>"required />
+                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options->getManagementApiSecret()) ?>"required class="large-text" />
                     </div>
                     <hr>
                     <div class="form-row">
                         <label for="access_api_key">Resource Access API Key:</label>
-                        <input id="access_api_key" type="text" name="imoneza-options[access-api-key]" value="<?= esc_attr($options->getAccessApiKey()) ?>" required />
+                        <input id="access_api_key" type="text" name="imoneza-options[access-api-key]" value="<?= esc_attr($options->getAccessApiKey()) ?>" required class="large-text" />
                     </div>
                     <div class="form-row">
                         <label for="access_api_secret">Resource Access API Secret:</label>
-                        <input id="access_api_secret" type="text" name="imoneza-options[access-api-secret]" value="<?= esc_attr($options->getAccessApiSecret()) ?>" required />
+                        <input id="access_api_secret" type="text" name="imoneza-options[access-api-secret]" value="<?= esc_attr($options->getAccessApiSecret()) ?>" required class="large-text" />
                     </div>
                 </div>
             </div>

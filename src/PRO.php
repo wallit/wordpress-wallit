@@ -52,6 +52,19 @@ class PRO extends App
     }
 
     /**
+     * Add the admin scripts
+     */
+    protected function enqueueAdminScripts()
+    {
+        parent::enqueueAdminScripts();
+
+        add_action('admin_enqueue_scripts', function () {
+            wp_enqueue_style('wp-color-picker');
+            wp_enqueue_script('wp-color-picker');
+        });
+    }
+
+    /**
      * Actions to be taken when this is installed / uninstalled
      */
     protected function registerActivationDeactivationHooks()
@@ -288,6 +301,8 @@ class PRO extends App
      */
     protected function registerAdminAjax()
     {
+        parent::registerAdminAjax();
+
         $di = $this->di;
 
         add_action('wp_ajax_options_pro_first_time', function () use ($di) {
@@ -300,29 +315,10 @@ class PRO extends App
             $controller = $di['controller.options.access'];
             $controller();
         });
-        add_action('wp_ajax_options_display', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\Display $controller */
-            $controller = $di['controller.options.display'];
-            $controller();
-        });
         add_action('wp_ajax_options_remote_refresh', function () use ($di) {
             /** @var \iMoneza\WordPress\Controller\Options\RemoteRefresh $controller */
             $controller = $di['controller.options.remote-refresh'];
             $controller();
-        });
-    }
-
-    /**
-     * Add the admin scripts
-     */
-    protected function enqueueAdminScripts()
-    {
-        add_action('admin_enqueue_scripts', function () {
-            wp_register_style('imoneza-admin-css', self::getPluginBaseDir() . '/assets/css/admin.css');
-            wp_enqueue_style('imoneza-admin-css');
-            wp_enqueue_script('jquery');
-            wp_enqueue_script('jquery-form');
-            wp_enqueue_script('imoneza-admin-js', self::getPluginBaseDir() . '/assets/js/admin.js', [], false, true);
         });
     }
 }

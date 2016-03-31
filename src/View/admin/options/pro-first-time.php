@@ -16,11 +16,11 @@
                     <input type="hidden" name="action" value="options_pro_first_time" />
                     <div class="form-row">
                         <label for="api_key">Resource Management API Key:</label>
-                        <input id="api_key" type="text" name="imoneza-options[management-api-key]" required />
+                        <input id="api_key" type="text" name="imoneza-options[management-api-key]" required class="large-text" />
                     </div>
                     <div class="form-row">
                         <label for="api_secret">Resource Management API Secret:</label>
-                        <input id="api_secret" type="text" name="imoneza-options[management-api-secret]" required />
+                        <input id="api_secret" type="text" name="imoneza-options[management-api-secret]" required class="large-text" />
                     </div>
                     <?php submit_button('Verify Access'); ?>
                 </form>

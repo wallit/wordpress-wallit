@@ -238,6 +238,13 @@
             //focus
             $input.val('').val(value);
         });
+
+        $('.color-picker').wpColorPicker({
+            change: function(event, ui) {
+                $(".radio-container").css('color', ui.color.toString());
+                $('.imoneza-custom-indicator').css('backgroundColor', ui.color.toString());
+            }
+        });
     });
 
 })(jQuery, window.history);
