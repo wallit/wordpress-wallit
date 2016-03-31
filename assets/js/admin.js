@@ -223,6 +223,21 @@
 
         (new overridePricing).handle();
 
+        $('#edit-custom-indicator').on('click', function(e) {
+            e.preventDefault();
+            var $indicator = $('.imoneza-custom-indicator'),
+                $text = $('span', $indicator),
+                $input = $('input', $indicator),
+                value = $input.val();
+            $input.one('blur', function() {
+                $(this).hide();
+                $text.text($(this).val());
+            });
+            $text.empty();
+            $input.show().focus();
+            //focus
+            $input.val('').val(value);
+        });
     });
 
 })(jQuery, window.history);

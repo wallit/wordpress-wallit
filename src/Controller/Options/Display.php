@@ -22,6 +22,9 @@ class Display extends ControllerAbstract
     {
         $options = $this->getOptions();
         $indicatorClasses = ['dashicons dashicons-star-filled', 'dashicons dashicons-awards', 'dashicons dashicons-thumbs-up'];
+        if ($this->isPro()) {
+            $indicatorClasses = array_merge($indicatorClasses, ['dashicons dashicons-admin-post', 'dashicons dashicons-admin-network', 'dashicons dashicons-lock', 'dashicons dashicons-megaphone', 'dashicons dashicons-flag']);
+        }
 
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
@@ -29,9 +32,16 @@ class Display extends ControllerAbstract
             $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
 
             $options->setIndicatePremiumContent(boolval($postOptions['indicate-premium-content']));
-            // since this is radio, I'm not going to verify and error handle - just ignore if they don't belong
-            if (in_array($postOptions['indicator-class'], $indicatorClasses)) {
+
+            $validationArray = $this->isPro() ? array_merge($indicatorClasses, ['imoneza-custom-indicator']) : $indicatorClasses;
+            if (in_array($postOptions['indicator-class'], $validationArray)) {
                 $options->setPremiumIndicatorIconClass($postOptions['indicator-class']);
+            }
+            else {
+                $options->setPremiumIndicatorIconClass($indicatorClasses[0]); // to unset if it was set invalid
+            }
+            if ($this->isPro()) {
+                $options->setPremiumIndicatorCustomText($postOptions['indicator-text']);
             }
 
             $options->setNotifyAdblocker(boolval($postOptions['notify-adblocker']))

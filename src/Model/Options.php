@@ -80,6 +80,11 @@ class Options implements \JsonSerializable
     protected $premiumIndicatorIconClass;
 
     /**
+     * @var string when they want to use a custom string
+     */
+    protected $premiumIndicatorCustomText = 'custom'; // default label
+
+    /**
      * @var bool
      */
     protected $notifyAdblocker;
@@ -373,6 +378,24 @@ class Options implements \JsonSerializable
     public function setPremiumIndicatorIconClass($premiumIndicatorIconClass)
     {
         $this->premiumIndicatorIconClass = $premiumIndicatorIconClass;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPremiumIndicatorCustomText()
+    {
+        return $this->premiumIndicatorCustomText;
+    }
+
+    /**
+     * @param string $premiumIndicatorCustomText
+     * @return Options
+     */
+    public function setPremiumIndicatorCustomText($premiumIndicatorCustomText)
+    {
+        $this->premiumIndicatorCustomText = $premiumIndicatorCustomText;
         return $this;
     }
 

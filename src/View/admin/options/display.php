@@ -30,7 +30,15 @@ $options;
                             foreach ($indicatorClasses as $class) {
                                 echo "<li><label><input type='radio' name='imoneza-options[indicator-class]' value='{$class}'";
                                 if ($options->getPremiumIndicatorIconClass() == $class) echo " checked";
-                                echo "><span class='{$class}'></label></li>";
+                                echo "><span class='{$class}'></span></label></li>";
+                            }
+                            if (!empty($isPro)) {
+                                echo '<li><label><input type="radio" name="imoneza-options[indicator-class]" value="imoneza-custom-indicator"';
+                                if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') echo " checked";
+                                $customLabel = $options->getPremiumIndicatorCustomText();
+                                echo "><span class='imoneza-custom-indicator'><span>{$customLabel}</span>";
+                                echo "<input name='imoneza-options[indicator-text]' id='imoneza-custom-indicator-text' value='" . esc_attr($customLabel) . "' />";
+                                echo "</span></label><a id='edit-custom-indicator' href='#'>edit</a></li>";
                             }
                             ?>
                         </ul>

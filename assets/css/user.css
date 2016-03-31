@@ -11,3 +11,12 @@
     text-align: center;
     margin-top: 20px
 }
+
+.imoneza-custom-indicator {
+    background: #414143;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 2px 4px;
+    font-weight: normal;
+    display: inline-block;
+}
