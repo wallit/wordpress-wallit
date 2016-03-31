@@ -1,6 +1,6 @@
 <?php
 /**
- * Display Options controller
+ * Options controller
  *
  * @author Aaron Saray
  */
@@ -22,17 +22,21 @@ class Display extends ControllerAbstract
     {
         $options = $this->getOptions();
         $indicatorClasses = ['dashicons dashicons-star-filled', 'dashicons dashicons-awards', 'dashicons dashicons-thumbs-up'];
-        
+
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
 
             $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
-            $options->setIndicatePremiumContent(boolval($postOptions['indicate-premium-content']));
 
+            $options->setIndicatePremiumContent(boolval($postOptions['indicate-premium-content']));
             // since this is radio, I'm not going to verify and error handle - just ignore if they don't belong
             if (in_array($postOptions['indicator-class'], $indicatorClasses)) {
                 $options->setPremiumIndicatorIconClass($postOptions['indicator-class']);
             }
+
+            $options->setNotifyAdblocker(boolval($postOptions['notify-adblocker']))
+                ->setAdblockNotification(sanitize_text_field($postOptions['adblock-notification']));
+
             $this->saveOptions($options);
 
             $results = $this->getGenericAjaxResultsObject();

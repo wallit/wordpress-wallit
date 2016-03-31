@@ -3,7 +3,7 @@
     height: auto;
     font-size: inherit;
 }
-.imoneza-adblock-notification {
+#imoneza-adblock-notification {
     background-color: #ff0000;
     color: #ffffff;
     padding: 10px;

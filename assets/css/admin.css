@@ -63,6 +63,10 @@
     padding: 0.5rem;
     width: 64%;
 }
+.imoneza-form textarea {
+    width: 64%;
+    height: 5rem;
+}
 .imoneza-form .toggle label {
     width: auto;
 }
@@ -122,7 +126,7 @@
     padding: 0.2rem 1rem 0 1rem;
     display: inline-block;
 }
-.imoneza-form .label-for-radio-container {
+.imoneza-form .label-for-radio-container, .imoneza-form .label-for-textarea {
     vertical-align: top;
 }
 .radio-container {

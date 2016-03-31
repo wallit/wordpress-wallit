@@ -23,7 +23,7 @@ $options;
                     <?php
                     $ipcStyle = sprintf('style="display:%s"', $options->isIndicatePremiumContent() ? 'block' : 'none');
                     ?>
-                    <div class="form-row" id="choose-premium-indicator" <?= $ipcStyle ?>>
+                    <div class="form-row collapsible-on-off" data-on-off-handler="input[name='imoneza-options[indicate-premium-content]']" id="choose-premium-indicator" <?= $ipcStyle ?>>
                         <label class="label-for-radio-container">Choose an icon:</label>
                         <ul class="radio-container">
                             <?php
@@ -54,6 +54,36 @@ $options;
         <section class="row">
             <div>
                 <div class="i-card">
+                    <h3><span class="dashicons dashicons-megaphone"></span> Notify Ad Blockers</h3>
+                    <div class="form-row">
+                        <label class="toggle-label">Add a notification for adblockers:</label>
+                        <span class="toggle">
+                            <input type="radio" id="notify-adblocker-no" name="imoneza-options[notify-adblocker]" value="0"<?php if (!$options->isNotifyAdblocker()) echo " checked"; ?>>
+                            <label for="notify-adblocker-no" class="negative">No</label>
+                            <input type="radio" id="notify-adblocker-yes" name="imoneza-options[notify-adblocker]" value="1"<?php if ($options->isNotifyAdblocker()) echo " checked"; ?>>
+                            <label for="notify-adblocker-yes">Yes</label>
+                        </span>
+                    </div>
+                    <?php
+                    $naStyle = sprintf('style="display:%s"', $options->isNotifyAdblocker() ? 'block' : 'none');
+                    ?>
+                    <div class="form-row collapsible-on-off" data-on-off-handler="input[name='imoneza-options[notify-adblocker]']" id="specify-adblock-notification" <?= $naStyle ?>>
+                        <label class="label-for-textarea">Message for users of ad blockers:</label>
+                        <textarea name="imoneza-options[adblock-notification]"><?= esc_html($options->getAdblockNotification()) ?></textarea>
+                    </div>
+                </div>
+            </div>
+            <aside>
+                <div class="i-card">
+                    <h4>Adblock Notifier</h4>
+                    <p>Enable this setting to alert adblock users that you use ads to support your website.</p>
+                    <p>Remember, your visitors like your content.  We find it best to explain honestly your need and to be polite - otherwise you may have a lot less success with visitors disabling their adblock solution.</p>
+                </div>
+            </aside>
+        </section>
+        <section class="row">
+            <div>
+                <div class="i-card">
                     <div class="form-row form-row-spacing-top clearfix">
                         <span class="alignleft">
                         <?php submit_button('Save Settings', 'primary', 'submit', false); ?>
@@ -62,18 +92,19 @@ $options;
                 </div>
             </div>
             <?php if (empty($isPro)) : ?>
-            <aside>
-                <div class="i-card">
-                    <h4>Looking for More Features?</h4>
-                    <p>
-                        You're just scratching the surface with the features iMoneza provides.  Not only can you get more
-                        customization options for these features, you can add micropayments for content and subscription
-                        services to your content.  Ready to get started?  Visit us at <a target="_blank" href="http://imoneza.com">iMoneza.com</a>
-                        to learn more.
-                    </p>
-                </div>
-            </aside>
+                <aside>
+                    <div class="i-card">
+                        <h4>Looking for More Features?</h4>
+                        <p>
+                            You're just scratching the surface with the features iMoneza provides.  Not only can you get more
+                            customization options for these features, you can add micropayments for content and subscription
+                            services to your content.  Ready to get started?  Visit us at <a target="_blank" href="http://imoneza.com">iMoneza.com</a>
+                            to learn more.
+                        </p>
+                    </div>
+                </aside>
             <?php endif; ?>
         </section>
+
     </form>
 </div>

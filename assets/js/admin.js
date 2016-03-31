@@ -208,14 +208,16 @@
     });
 
     $(function() {
-        var $premiumIndicatorPanel = $('#choose-premium-indicator');
-        $('input[name="imoneza-options[indicate-premium-content]"]').on('change', function() {
-            if ($(this).val() == 0) {
-                $premiumIndicatorPanel.slideUp();
-            }
-            else {
-                $premiumIndicatorPanel.slideDown();
-            }
+        $('.collapsible-on-off').each(function(key, item) {
+            var $panel = $(item);
+            $($panel.data('on-off-handler')).on('change', function() {
+                if (this.value == 1) {
+                    $panel.slideDown();
+                }
+                else {
+                    $panel.slideUp();
+                }
+            })
         });
     });
 
