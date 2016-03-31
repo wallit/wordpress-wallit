@@ -80,6 +80,16 @@ class Options implements \JsonSerializable
     protected $premiumIndicatorIconClass;
 
     /**
+     * @var bool
+     */
+    protected $notifyAdblocker;
+
+    /**
+     * @var string
+     */
+    protected $adblockNotification = "We noticed you have your ad blocker on.  Is it possible for you to turn it off - just for this site - as a favor?  We wouldn't ask except that our website needs ads to survive.";
+
+    /**
      * @return array
      */
     public function jsonSerialize()
@@ -104,16 +114,6 @@ class Options implements \JsonSerializable
         $array['pricingGroups'] = $pricingGroupsArray;
 
         return $array;
-    }
-
-    /**
-     * This "gently" handles when someone downgrades a plugin (not sure why they would...0
-     * @param $name
-     * @param $arguments
-     */
-    public function __call($name, $arguments)
-    {
-        trigger_error(E_USER_NOTICE, "{$name} is not an existing function of this option.");
     }
 
     /**
@@ -272,7 +272,7 @@ class Options implements \JsonSerializable
 
     /**
      * Shortcut to get the default pricing group
-     * 
+     *
      * @return PricingGroup|null
      */
     public function getDefaultPricingGroup()
@@ -373,6 +373,42 @@ class Options implements \JsonSerializable
     public function setPremiumIndicatorIconClass($premiumIndicatorIconClass)
     {
         $this->premiumIndicatorIconClass = $premiumIndicatorIconClass;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNotifyAdblocker()
+    {
+        return $this->notifyAdblocker;
+    }
+
+    /**
+     * @param boolean $notifyAdblocker
+     * @return Options
+     */
+    public function setNotifyAdblocker($notifyAdblocker)
+    {
+        $this->notifyAdblocker = $notifyAdblocker;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdblockNotification()
+    {
+        return $this->adblockNotification;
+    }
+
+    /**
+     * @param string $adblockNotification
+     * @return Options
+     */
+    public function setAdblockNotification($adblockNotification)
+    {
+        $this->adblockNotification = $adblockNotification;
         return $this;
     }
 }
