@@ -108,7 +108,6 @@ class App
     protected function addPremiumIndicator()
     {
         $options = $this->getOptions();
-
         if ($options->isIndicatePremiumContent()) {
             add_filter('the_title', function($title) use ($options) {
                 if (has_tag('premium')) {
@@ -143,7 +142,8 @@ class App
     {
         if ($this->getOptions()->isNotifyAdblocker() || $this->getOptions()->isIndicatePremiumContent()) {
             add_action('wp_enqueue_scripts', function() {
-                wp_register_style('imoneza-user-css', self::getPluginBaseDir() . '/assets/css/user.css');
+                $dependencies = $this->getOptions()->isIndicatePremiumContent() ? ['dashicons'] : [];
+                wp_register_style('imoneza-user-css', self::getPluginBaseDir() . '/assets/css/user.css', $dependencies);
                 wp_enqueue_style('imoneza-user-css');
             });
         }
