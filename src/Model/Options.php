@@ -85,6 +85,11 @@ class Options implements \JsonSerializable
     protected $premiumIndicatorCustomText = 'custom'; // default label
 
     /**
+     * @var string
+     */
+    protected $premiumIndicatorCustomColor = '#444444';
+
+    /**
      * @var bool
      */
     protected $notifyAdblocker;
@@ -396,6 +401,24 @@ class Options implements \JsonSerializable
     public function setPremiumIndicatorCustomText($premiumIndicatorCustomText)
     {
         $this->premiumIndicatorCustomText = $premiumIndicatorCustomText;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPremiumIndicatorCustomColor()
+    {
+        return $this->premiumIndicatorCustomColor;
+    }
+
+    /**
+     * @param string $premiumIndicatorCustomColor
+     * @return Options
+     */
+    public function setPremiumIndicatorCustomColor($premiumIndicatorCustomColor)
+    {
+        $this->premiumIndicatorCustomColor = $premiumIndicatorCustomColor;
         return $this;
     }
 

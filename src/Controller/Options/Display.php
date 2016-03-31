@@ -41,7 +41,8 @@ class Display extends ControllerAbstract
                 $options->setPremiumIndicatorIconClass($indicatorClasses[0]); // to unset if it was set invalid
             }
             if ($this->isPro()) {
-                $options->setPremiumIndicatorCustomText($postOptions['indicator-text']);
+                $options->setPremiumIndicatorCustomText($postOptions['indicator-text'])
+                    ->setPremiumIndicatorCustomColor($postOptions['indicator-color']);
             }
 
             $options->setNotifyAdblocker(boolval($postOptions['notify-adblocker']))

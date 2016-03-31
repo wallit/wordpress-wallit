@@ -321,4 +321,19 @@ class PRO extends App
             $controller();
         });
     }
+
+    /**
+     * add premium colors and all the rest of the css
+     */
+    protected function addSupportingUserCSS()
+    {
+        parent::addSupportingUserCSS();
+
+        $options = $this->getOptions();
+        if ($options->isIndicatePremiumContent()) {
+            add_action('wp_head', function() use ($options) {
+                View::render('custom-premium-indicator-color-css', ['color'=>$options->getPremiumIndicatorCustomColor()]);
+            });
+        }
+    }
 }

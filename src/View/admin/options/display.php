@@ -1,6 +1,11 @@
 <?php
 /** @var $options \iMoneza\WordPress\Model\Options */
 $options;
+
+// this feeels really sloppy right now
+if (!empty($isPro)) {
+    echo '<style>.radio-container{color:' . $options->getPremiumIndicatorCustomColor() . '}.imoneza-custom-indicator{background-color:' . $options->getPremiumIndicatorCustomColor() . '}</style>';
+}
 ?><div class="wrap">
     <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Display Configuration</h2>
     <form method="post" id="imoneza-options-form" class="imoneza-form">
@@ -47,7 +52,7 @@ $options;
                         <?php if (!empty($isPro)) : ?>
                         <div class="form-row color-picker-container">
                             <label>Customize Indicator Color:</label>
-                            <input type="text" class="color-picker" value="#444444">
+                            <input name="imoneza-options[indicator-color]" type="text" class="color-picker" value="<?= esc_attr($options->getPremiumIndicatorCustomColor()) ?>">
                         </div>
                         <?php endif; ?>
                     </div>
