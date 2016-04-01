@@ -202,9 +202,8 @@ class PRO extends App
     {
         global $pagenow;
         $options = $this->getOptions();
-
         if (!$options->isProInitialized()) {
-            if (!($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == 'imoneza')) {
+            if (!($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'imoneza')) {
                 add_action('admin_notices', function() {
                     View::render('admin/notify-config-needed-pro');
                 });
