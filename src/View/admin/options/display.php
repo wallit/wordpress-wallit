@@ -99,6 +99,12 @@ if (!empty($isPro)) {
                     <h4>Adblock Notifier</h4>
                     <p>Enable this setting to alert adblock users that you use ads to support your website.</p>
                     <p>Remember, your visitors like your content.  We find it best to explain honestly your need and to be polite - otherwise you may have a lot less success with visitors disabling their adblock solution.</p>
+                    <?php if (!empty($isPro)) : ?>
+                    <p>
+                        We will place the adblock notification at the very top of your site.  If you'd like it some where else, use this shortcode: <code>[imoneza_adblock_notification]</code>.  For theme-wide usage, see
+                        <a href="https://developer.wordpress.org/reference/functions/do_shortcode/" target="_blank">do_shortcode()</a>.
+                    </p>
+                    <?php endif; ?>
                 </div>
             </aside>
         </section>

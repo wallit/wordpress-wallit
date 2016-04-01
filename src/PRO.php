@@ -32,14 +32,17 @@ class PRO extends App
 
         $this->registerActivationDeactivationHooks();
         $this->addCron();
-        $this->addClientSideAccessControl();
-        $this->addServerSideAccessControl();
 
         if (is_admin()) {
             $this->addAdminNoticeToDisableLite();
             $this->addAdminNoticeConfigNeeded();
             $this->addPostMetaBox();
             $this->addPublishPostAction();
+        }
+        else {
+            $this->addClientSideAccessControl();
+            $this->addServerSideAccessControl();
+            $this->addAdblockNotificationShortCode();
         }
     }
 
@@ -335,5 +338,15 @@ class PRO extends App
                 View::render('custom-premium-indicator-color-css', ['color'=>$options->getPremiumIndicatorCustomColor()]);
             });
         }
+    }
+
+    /**
+     * Add a shortcode for premium adblock notifications
+     */
+    protected function addAdblockNotificationShortCode()
+    {
+        add_shortcode('imoneza_adblock_notification', function() {
+            return '<div id="imoneza-adblock-notification"></div>';
+        });
     }
 }
