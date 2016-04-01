@@ -142,7 +142,7 @@
     display: inline-block;
     width: 25%;
 }
-.radio-container li:last-child {
+.radio-container li.full-width {
     width: 100%;
 }
 

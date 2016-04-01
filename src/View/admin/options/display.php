@@ -39,7 +39,7 @@ if (!empty($isPro)) {
                                     echo "><span class='{$class}'></span></label></li>";
                                 }
                                 if (!empty($isPro)) {
-                                    echo '<li><label><input type="radio" name="imoneza-options[indicator-class]" value="imoneza-custom-indicator"';
+                                    echo '<li class="full-width"><label><input type="radio" name="imoneza-options[indicator-class]" value="imoneza-custom-indicator"';
                                     if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') echo " checked";
                                     $customLabel = $options->getPremiumIndicatorCustomText();
                                     echo "><span class='imoneza-custom-indicator'><span>{$customLabel}</span>";
