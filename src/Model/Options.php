@@ -343,11 +343,11 @@ class Options implements \JsonSerializable
     }
 
     /**
-     * @return bool whether this has actually been populated ever with user data or not
+     * @return bool whether the pro version has been initialized or not
      */
-    public function isInitialized()
+    public function isProInitialized()
     {
-        return !empty($this->lastUpdated);
+        return !empty($this->propertyTitle);
     }
 
     /**
