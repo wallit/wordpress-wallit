@@ -27,7 +27,7 @@ $di['service.imoneza'] = function () {
 
 // DI Controllers
 $di['controller.options.pro-first-time'] = function($di) {
-	return new \iMoneza\WordPress\Controller\Options\PROFirstTime($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\Options\ProFirstTime($di['service.imoneza']);
 };
 $di['controller.options.access'] = function($di) {
 	return new \iMoneza\WordPress\Controller\Options\Access($di['service.imoneza']);
@@ -35,12 +35,12 @@ $di['controller.options.access'] = function($di) {
 $di['controller.options.remote-refresh'] = function($di) {
 	return new \iMoneza\WordPress\Controller\Options\RemoteRefresh($di['service.imoneza']);
 };
-$di['controller.options.display'] = function($di) {
+$di['controller.options.display'] = function() {
 	return new \iMoneza\WordPress\Controller\Options\Display();
 };
 
 /**
  * Run the proper "app"
  */
-$app = new \iMoneza\WordPress\PRO($di);
+$app = new \iMoneza\WordPress\Pro($di);
 $app();

@@ -87,7 +87,7 @@ abstract class ControllerAbstract
     {
         $return = $default;
         if (array_key_exists($key, $variable)) {
-            $return = $variable[$key];
+            $return = stripslashes_deep($variable[$key]);
         }
         return $return;
     }

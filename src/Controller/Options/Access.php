@@ -93,6 +93,7 @@ class Access extends ControllerAbstract
         }
         else {
             $postsQueuedForProcessing = 0;
+            $remainingTimeIndication = '';
 
             if ($options->isDynamicallyCreateResources()) {
                 // @todo this is dupe code
@@ -105,12 +106,22 @@ class Access extends ControllerAbstract
                 ]);
 
                 $postsQueuedForProcessing = $query->found_posts;
+                if ($postsQueuedForProcessing <= 20) {
+                    $remainingTimeIndication = 'These may take up to half an hour.';
+                }
+                else if ($postsQueuedForProcessing <= 40) {
+                    $remainingTimeIndication = 'These should be done in a little over an hour.';
+                }
+                else {
+                    $remainingTimeIndication = 'These will take a couple hours to finish up.  Check back once an hour for progress.';
+                }
             }
 
             $parameters = [
                 'firstTimeSuccess' => boolval($this->getGet('first-time')),
                 'options' => $options,
-                'postsQueuedForProcessing'  =>  $postsQueuedForProcessing
+                'postsQueuedForProcessing'  =>  $postsQueuedForProcessing,
+                'remainingTimeIndication'   =>  $remainingTimeIndication
             ];
 
             View::render('admin/options/access', $parameters);

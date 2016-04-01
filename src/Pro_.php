@@ -13,10 +13,10 @@ use iMoneza\WordPress\Traits;
 
 
 /**
- * Class PRO
+ * Class Pro
  * @package iMoneza\WordPress
  */
-class PRO extends App
+class Pro extends App
 {
     /**
      * @var string the url for the client side js

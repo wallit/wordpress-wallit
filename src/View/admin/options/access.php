@@ -93,7 +93,11 @@ $options;
                     <h3><span class="dashicons dashicons-migrate"></span> Dynamically Create Resources</h3>
                     <?php
                     if ($postsQueuedForProcessing) {
-                        echo '<p>Your resources are being added to iMoneza.  There ' . ngettext('is', 'are', $postsQueuedForProcessing) . ' ' . $postsQueuedForProcessing . ' remaining.</p>';
+                        echo '<p>';
+                        echo 'Your resources are being added to iMoneza. ';
+                        echo 'There ' . ngettext('is', 'are', $postsQueuedForProcessing) . ' ' . $postsQueuedForProcessing . ' remaining. ';
+                        echo $remainingTimeIndication;
+                        echo '</p>';
                     }
                     else {
                         echo '<p>Congratulations!  All of your content is managed by iMoneza.</p>';
