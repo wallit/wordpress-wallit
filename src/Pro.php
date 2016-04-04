@@ -169,9 +169,14 @@ class Pro extends App
                     $service = $di['service.imoneza'];
                     $service->setAccessApiKey($options->getAccessApiKey())->setAccessApiSecret($options->getAccessApiSecret());
 
-                    if ($redirectURL = $service->getResourceAccessRedirectURL($post, $iMonezaTUT)) {
-                        $currentURL = sprintf('%s://%s%s', $_SERVER['SERVER_PROTOCOL'], $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI']);
-                        wp_redirect($redirectURL . '&originalURL=' . $currentURL);
+                    try {
+                        if ($redirectURL = $service->getResourceAccessRedirectURL($post, $iMonezaTUT)) {
+                            $currentURL = sprintf('%s://%s%s', $_SERVER['SERVER_PROTOCOL'], $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI']);
+                            wp_redirect($redirectURL . '&originalURL=' . $currentURL);
+                        }
+                    }
+                    catch (Exception\iMoneza $e) {
+                        // do nothing - as we don't want to error out on content
                     }
                 }
             }
