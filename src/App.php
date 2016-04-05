@@ -127,13 +127,19 @@ class App
      */
     protected function addAdblockNotification()
     {
+        $di = $this->di;
+
         $options = $this->getOptions();
         if ($options->isNotifyAdblocker()) {
             add_action('wp_enqueue_scripts', function() {
                 wp_enqueue_script('imoneza-abd', self::getPluginBaseDir() . '/assets/js/abd.js', ['jquery'], false, true);
             });
-            add_action('wp_footer', function() use ($options) {
-                View::render('abd-execution-js', ['jsDir' => self::getPluginBaseDir() . '/assets/js', 'message'=>$options->getAdblockNotification()]);
+            add_action('wp_footer', function() use ($di, $options) {
+                /** @var \Aura\View\View $view */
+                $view = $di['view'];
+                $view->setData(['jsDir' => self::getPluginBaseDir() . '/assets/js', 'message'=>$options->getAdblockNotification()]);
+                $view->setView('abd-execution-js');
+                echo $view();
             });
         }
     }

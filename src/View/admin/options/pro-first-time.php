@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Configuration</h2>
+    <h2 class="branded-header"><img src="<?= $this->assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Configuration</h2>
     <section class="row">
         <div>
             <div class="i-card text-center">
@@ -28,7 +28,7 @@
         </div>
         <aside>
             <div class="i-card">
-                <h2 class="logo-header"><img src="<?= $assetUrl('/images/logo-rectangle.jpg') ?>" alt="logo"></h2>
+                <h2 class="logo-header"><img src="<?= $this->assetUrl('/images/logo-rectangle.jpg') ?>" alt="logo"></h2>
                 <h3>What is iMoneza?</h3>
                 <p>iMoneza is a digital micro-transaction paywall service. This plugin will add iMoneza's paywall to your site and allow you to manage your iMoneza resources from within WordPress.</p>
                 <p><strong>An iMoneza account is required.</strong>  If you don't have one, it's simple and easy.  Just go to <a href="http://imoneza.com">iMoneza.com</a> and sign up.</p>

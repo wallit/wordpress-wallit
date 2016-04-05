@@ -1,13 +1,13 @@
 <?php
 /** @var $options \iMoneza\WordPress\Model\Options */
-$options;
+$options = $this->options;
 
 // this feeels really sloppy right now
-if (!empty($isPro)) {
+if (!empty($this->isPro)) {
     echo '<style>.radio-container{color:' . $options->getPremiumIndicatorCustomColor() . '}.imoneza-custom-indicator{background-color:' . $options->getPremiumIndicatorCustomColor() . '}</style>';
 }
 ?><div class="wrap">
-    <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Display Configuration</h2>
+    <h2 class="branded-header"><img src="<?= $this->assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Display Configuration</h2>
     <form method="post" id="imoneza-options-form" class="imoneza-form">
         <?php wp_nonce_field('imoneza-options'); ?>
         <input type="hidden" name="action" value="options_display" />
@@ -33,12 +33,12 @@ if (!empty($isPro)) {
                             <label class="label-for-radio-container">Choose an icon:</label>
                             <ul class="radio-container">
                                 <?php
-                                foreach ($indicatorClasses as $class) {
+                                foreach ($this->indicatorClasses as $class) {
                                     echo "<li><label><input type='radio' name='imoneza-options[indicator-class]' value='{$class}'";
                                     if ($options->getPremiumIndicatorIconClass() == $class) echo " checked";
                                     echo "><span class='{$class}'></span></label></li>";
                                 }
-                                if (!empty($isPro)) {
+                                if (!empty($this->isPro)) {
                                     echo '<li class="full-width"><label><input type="radio" name="imoneza-options[indicator-class]" value="imoneza-custom-indicator"';
                                     if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') echo " checked";
                                     $customLabel = $options->getPremiumIndicatorCustomText();
@@ -49,11 +49,11 @@ if (!empty($isPro)) {
                                 ?>
                             </ul>
                         </div>
-                        <?php if (!empty($isPro)) : ?>
-                        <div class="form-row color-picker-container">
-                            <label>Customize Indicator Color:</label>
-                            <input name="imoneza-options[indicator-color]" type="text" class="color-picker" value="<?= esc_attr($options->getPremiumIndicatorCustomColor()) ?>">
-                        </div>
+                        <?php if (!empty($this->isPro)) : ?>
+                            <div class="form-row color-picker-container">
+                                <label>Customize Indicator Color:</label>
+                                <input name="imoneza-options[indicator-color]" type="text" class="color-picker" value="<?= esc_attr($options->getPremiumIndicatorCustomColor()) ?>">
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -99,11 +99,11 @@ if (!empty($isPro)) {
                     <h4>Adblock Notifier</h4>
                     <p>Enable this setting to alert adblock users that you use ads to support your website.</p>
                     <p>Remember, your visitors like your content.  We find it best to explain honestly your need and to be polite - otherwise you may have a lot less success with visitors disabling their adblock solution.</p>
-                    <?php if (!empty($isPro)) : ?>
-                    <p>
-                        We will place the adblock notification at the very top of your site.  If you'd like it some where else, use this shortcode: <code>[imoneza_adblock_notification]</code>.  For theme-wide usage, see
-                        <a href="https://developer.wordpress.org/reference/functions/do_shortcode/" target="_blank">do_shortcode()</a>.
-                    </p>
+                    <?php if (!empty($this->isPro)) : ?>
+                        <p>
+                            We will place the adblock notification at the very top of your site.  If you'd like it some where else, use this shortcode: <code>[imoneza_adblock_notification]</code>.  For theme-wide usage, see
+                            <a href="https://developer.wordpress.org/reference/functions/do_shortcode/" target="_blank">do_shortcode()</a>.
+                        </p>
                     <?php endif; ?>
                 </div>
             </aside>
@@ -118,7 +118,7 @@ if (!empty($isPro)) {
                     </div>
                 </div>
             </div>
-            <?php if (empty($isPro)) : ?>
+            <?php if (empty($this->isPro)) : ?>
                 <aside>
                     <div class="i-card">
                         <h4>Looking for More Features?</h4>

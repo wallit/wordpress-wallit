@@ -1,15 +1,15 @@
 <?php
 /** @var $options \iMoneza\WordPress\Model\Options */
-$options;
+$options = $this->options;
 ?>
 <div class="wrap">
-    <h2 class="branded-header"><img src="<?= $assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Access Configuration</h2>
+    <h2 class="branded-header"><img src="<?= $this->assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Access Configuration</h2>
 
     <div class="i-card text-center">
         <h3 id="imoneza-property-title"><?= esc_html($options->getPropertyTitle()) ?></h3>
     </div>
 
-    <?php if ($firstTimeSuccess) : ?>
+    <?php if ($this->firstTimeSuccess) : ?>
         <div class="i-card" id="first-time-success-message">
             <p class="text-center success large">
                 <span class="dashicons dashicons-thumbs-up"></span> Way to go!  Now, let's finish this up!
@@ -92,11 +92,11 @@ $options;
                 <div class="i-card">
                     <h3><span class="dashicons dashicons-migrate"></span> Dynamically Create Resources</h3>
                     <?php
-                    if ($postsQueuedForProcessing) {
+                    if ($this->postsQueuedForProcessing) {
                         echo '<p>';
                         echo 'Your resources are being added to iMoneza. ';
-                        echo 'There ' . ngettext('is', 'are', $postsQueuedForProcessing) . ' ' . $postsQueuedForProcessing . ' remaining. ';
-                        echo $remainingTimeIndication;
+                        echo 'There ' . ngettext('is', 'are', $this->postsQueuedForProcessing) . ' ' . $this->postsQueuedForProcessing . ' remaining. ';
+                        echo $this->remainingTimeIndication;
                         echo '</p>';
                     }
                     else {

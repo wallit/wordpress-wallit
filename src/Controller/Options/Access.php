@@ -8,7 +8,6 @@
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 use iMoneza\WordPress\Service\iMoneza;
-use iMoneza\WordPress\View;
 
 /**
  * Class Access
@@ -23,11 +22,12 @@ class Access extends ControllerAbstract
 
     /**
      * Options constructor.
+     * @param \Aura\View\View $view
      * @param iMoneza $iMonezaService
      */
-    public function __construct(iMoneza $iMonezaService)
+    public function __construct(\Aura\View\View $view, iMoneza $iMonezaService)
     {
-        parent::__construct();
+        parent::__construct($view);
         $this->iMonezaService = $iMonezaService;
     }
 
@@ -36,6 +36,8 @@ class Access extends ControllerAbstract
      */
     public function __invoke()
     {
+        $view = $this->view;
+
         $options = $this->getOptions();
 
         if ($this->isPost()) {
@@ -88,8 +90,8 @@ class Access extends ControllerAbstract
                     return $errorString;
                 });
             }
-
-            View::render('admin/options/json-response', $results);
+            $view->setView('admin/options/json-response');
+            $view->setData($results);
         }
         else {
             $postsQueuedForProcessing = 0;
@@ -124,7 +126,10 @@ class Access extends ControllerAbstract
                 'remainingTimeIndication'   =>  $remainingTimeIndication
             ];
 
-            View::render('admin/options/access', $parameters);
+            $view->setData($parameters);
+            $view->setView('admin/options/access');
         }
+
+        echo $view();
     }
 }

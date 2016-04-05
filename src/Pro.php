@@ -138,14 +138,19 @@ class Pro extends App
     protected function addClientSideAccessControl()
     {
         $options = $this->getOptions();
-        add_action('wp_head', function() use ($options) {
+        $di = $this->di;
+
+        add_action('wp_head', function() use ($di, $options) {
             if ($options->isAccessControlClient() && $options->getAccessApiKey()) {
                 $post = is_single() ? get_post() : null;
                 if ($post) {
                     $filter = new ExternalResourceKey();
                     $js = self::CLIENT_SIDE_JAVASCRIPT_URL;
                     if ($overrideJs = getenv('CLIENT_SIDE_JAVASCRIPT_URL')) $js = $overrideJs;
-                    View::render('client-side-access-header-js', ['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
+                    $view = $di['view'];
+                    $view->setView('client-side-access-header-js');
+                    $view->setData(['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$filter->filter($post), 'javascriptUrl'=>$js]);
+                    echo $view();
                 }
             }
         });
@@ -207,10 +212,13 @@ class Pro extends App
     {
         global $pagenow;
         $options = $this->getOptions();
+        $di = $this->di;
         if (!$options->isProInitialized()) {
             if (!($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'imoneza')) {
-                add_action('admin_notices', function() {
-                    View::render('admin/notify-config-needed-pro');
+                add_action('admin_notices', function() use ($di) {
+                    $view = $di['view'];
+                    $view->setView('admin/notify-config-needed-pro');
+                    echo $view();
                 });
             }
         }
@@ -243,22 +251,26 @@ class Pro extends App
     protected function addPostMetaBox()
     {
         $options = $this->getOptions();
+        $di = $this->di;
 
-        add_action('add_meta_boxes', function() use ($options) {
+        add_action('add_meta_boxes', function() use ($di, $options) {
             $title = sprintf('<img src="%s%s" style="height: 16px; vertical-align: middle">', self::getPluginBaseDir(), '/assets/images/logo-rectangle-small.png');
 
-            add_meta_box('imoneza-post-pricing', $title, function(\WP_Post $post) use ($options) {
+            add_meta_box('imoneza-post-pricing', $title, function(\WP_Post $post) use ($di, $options) {
                 $editing = !empty($post->ID);
 
                 $pricingGroupSelected = $editing ? get_post_meta($post->ID, '_pricing-group-id', true) : $options->getDefaultPricingGroup();
                 $overrideChecked = get_post_meta($post->ID, '_override-pricing', true);
 
-                View::render('admin/post-pricing', [
+                $view = $di['view'];
+                $view->setView('admin/post-pricing');
+                $view->setData([
                     'overrideChecked'   =>  $overrideChecked,
                     'dynamicallyCreateResources'=>$options->isDynamicallyCreateResources(),
                     'pricingGroupSelected'=>$pricingGroupSelected,
                     'pricingGroups'=>$options->getPricingGroups()
                 ]);
+                echo $view();
             }, 'post');
         });
     }
@@ -337,9 +349,14 @@ class Pro extends App
         parent::addSupportingUserCSS();
 
         $options = $this->getOptions();
+        $di = $this->di;
+
         if ($options->isIndicatePremiumContent()) {
-            add_action('wp_head', function() use ($options) {
-                View::render('custom-premium-indicator-color-css', ['color'=>$options->getPremiumIndicatorCustomColor()]);
+            add_action('wp_head', function() use ($di, $options) {
+                $view = $di['view'];
+                $view->setView('custom-premium-indicator-color-css');
+                $view->setData(['color'=>$options->getPremiumIndicatorCustomColor()]);
+                echo $view();
             });
         }
     }

@@ -7,7 +7,6 @@
 
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\View;
 
 /**
  * Class Display
@@ -20,6 +19,8 @@ class Display extends ControllerAbstract
      */
     public function __invoke()
     {
+        $view = $this->view;
+
         $options = $this->getOptions();
         $indicatorClasses = ['dashicons dashicons-star-filled', 'dashicons dashicons-awards', 'dashicons dashicons-thumbs-up'];
         if ($this->isPro()) {
@@ -54,10 +55,14 @@ class Display extends ControllerAbstract
             $results['success'] = true;
             $results['data']['message'] = 'Your settings have been saved!';
 
-            View::render('admin/options/json-response', $results);
+            $view->setView('admin/options/json-response');
+            $view->setData($results);
         }
         else {
-            View::render('admin/options/display', ['options'=>$options, 'indicatorClasses'=>$indicatorClasses, 'isPro'=>$this->isPro()]);
+            $view->setView('admin/options/display');
+            $view->setData(['options'=>$options, 'indicatorClasses'=>$indicatorClasses, 'isPro'=>$this->isPro()]);
         }
+
+        echo $view();
     }
 }

@@ -10,11 +10,11 @@
                     $alert = $('<div id="imoneza-adblock-notification" />');
                     $('body').prepend($alert);
                 }
-                $alert.text("<?= esc_html($message) ?>");
+                $alert.text("<?= esc_html($this->message) ?>");
             },
             strategyOptions: {
                 strategyExternalJS: {
-                    rootPath: "<?= $jsDir ?>/abd-strategy"
+                    rootPath: "<?= $this->jsDir ?>/abd-strategy"
                 }
             }
         });

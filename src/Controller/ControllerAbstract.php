@@ -6,6 +6,7 @@
  */
 
 namespace iMoneza\WordPress\Controller;
+use Aura\View\View;
 use iMoneza\WordPress\Traits;
 
 /**
@@ -17,13 +18,21 @@ abstract class ControllerAbstract
     use Traits\Options;
 
     /**
-     * ControllerAbstract constructor.
+     * @var View
      */
-    public function __construct()
+    protected $view;
+
+    /**
+     * ControllerAbstract constructor.
+     * @param View $view
+     */
+    public function __construct(View $view)
     {
         if (!current_user_can('manage_options')) {
             wp_die(__( 'You do not have sufficient permissions to access this page.', 'iMoneza'), 403);
         }
+
+        $this->view = $view;
     }
 
     /**

@@ -9,7 +9,6 @@ namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 use iMoneza\WordPress\Model\Options;
 use iMoneza\WordPress\Service\iMoneza;
-use iMoneza\WordPress\View;
 
 /**
  * Class ProFirstTime
@@ -24,11 +23,12 @@ class ProFirstTime extends ControllerAbstract
 
     /**
      * Options constructor.
+     * @param \Aura\View\View $view
      * @param iMoneza $iMonezaService
      */
-    public function __construct(iMoneza $iMonezaService)
+    public function __construct(\Aura\View\View $view, iMoneza $iMonezaService)
     {
-        parent::__construct();
+        parent::__construct($view);
         $this->iMonezaService = $iMonezaService;
     }
 
@@ -37,6 +37,8 @@ class ProFirstTime extends ControllerAbstract
      */
     public function __invoke()
     {
+        $view = $this->view;
+
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
 
@@ -62,10 +64,13 @@ class ProFirstTime extends ControllerAbstract
                 $results['data']['message'] = $this->iMonezaService->getLastError();
             }
 
-            View::render('admin/options/json-response', $results);
+            $view->setData($results);
+            $view->setView('admin/options/json-response');
         }
         else {
-            View::render('admin/options/pro-first-time');
+            $view->setView('admin/options/pro-first-time');
         }
+
+        echo $view();
     }
 }

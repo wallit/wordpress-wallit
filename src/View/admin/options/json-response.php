@@ -1,7 +1,7 @@
 <?php
-if ($success) {
-    wp_send_json_success($data);
+if ($this->success) {
+    wp_send_json_success($this->data);
 }
 else {
-    wp_send_json_error($data);
+    wp_send_json_error($this->data);
 }

@@ -1,7 +1,7 @@
 <script src="<?= $javascriptUrl ?>"></script>
 <script>
     iMoneza.ResourceAccess.init({
-        ApiKey: '<?= $apiKey ?>',
-        ResourceKey: '<?= $resourceKey ?>'
+        ApiKey: '<?= $this->apiKey ?>',
+        ResourceKey: '<?= $this->resourceKey ?>'
     });
 </script>

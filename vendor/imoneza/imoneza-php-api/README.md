@@ -43,10 +43,9 @@ $connection->request($options, new \iMoneza\Data\None());
 
 ## Todo
 
-- Retrieving all resources is causing an error 500 at the moment
-- External Subscriber Import/Export requests
-- Callback results
-- Integration testing for Connection object
+Please note that there are a few "todo" issues out there.  These include external subscriber support and callback results.
+You can view [the issues](https://github.com/iMoneza/imoneza-php-api/issues) to see what features are still slated to
+be completed.
   
 ## About
 

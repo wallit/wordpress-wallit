@@ -8,7 +8,6 @@
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 use iMoneza\WordPress\Service\iMoneza;
-use iMoneza\WordPress\View;
 
 /**
  * Class RemoteRefresh
@@ -27,11 +26,18 @@ class RemoteRefresh extends ControllerAbstract
     protected $iMonezaService;
 
     /**
+     * @var \Aura\View\View
+     */
+    protected $view;
+
+    /**
      * Options constructor.
+     * @param \Aura\View\View $view
      * @param iMoneza $iMonezaService
      */
-    public function __construct(iMoneza $iMonezaService)
+    public function __construct(\Aura\View\View $view, iMoneza $iMonezaService)
     {
+        $this->view = $view;
         $this->iMonezaService = $iMonezaService;
         //no parent constructor because this is also called by cron
     }
@@ -64,6 +70,11 @@ class RemoteRefresh extends ControllerAbstract
             $results['data']['message'] = $this->iMonezaService->getLastError();
             if (!$showView) error_log($this->iMonezaService->getLastError());
         }
-        if ($showView) View::render('PRO/admin/options/json-response', $results);
+        if ($showView) {
+            $view = $this->view;
+            $view->setView('admin/options/json-response');
+            $view->setData($results);
+            echo $view();
+        } 
     }
 }

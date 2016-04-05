@@ -27,16 +27,33 @@ $di['service.imoneza'] = function () {
 
 // DI Controllers
 $di['controller.options.pro-first-time'] = function($di) {
-	return new \iMoneza\WordPress\Controller\Options\ProFirstTime($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\Options\ProFirstTime($di['view'], $di['service.imoneza']);
 };
 $di['controller.options.access'] = function($di) {
-	return new \iMoneza\WordPress\Controller\Options\Access($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\Options\Access($di['view'], $di['service.imoneza']);
 };
 $di['controller.options.remote-refresh'] = function($di) {
-	return new \iMoneza\WordPress\Controller\Options\RemoteRefresh($di['service.imoneza']);
+	return new \iMoneza\WordPress\Controller\Options\RemoteRefresh($di['view'], $di['service.imoneza']);
 };
-$di['controller.options.display'] = function() {
-	return new \iMoneza\WordPress\Controller\Options\Display();
+$di['controller.options.display'] = function($di) {
+	return new \iMoneza\WordPress\Controller\Options\Display($di['view']);
+};
+
+// View
+$di['view'] = function($di) {
+	$factory = new \Aura\View\ViewFactory();
+	$view = $factory->newInstance();
+
+	$registry = $view->getViewRegistry();
+	$registry->setPaths([__DIR__ . '/src/View']);
+
+	$helpers = $view->getHelpers();
+	$helpers->set('assetUrl', function($assetUrl) {
+		$assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(__DIR__));
+		return $assetsRoot . $assetUrl;
+	});
+
+	return $view;
 };
 
 /**
