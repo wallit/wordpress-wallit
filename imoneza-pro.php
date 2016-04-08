@@ -14,11 +14,34 @@ if (!defined('ABSPATH')) {
 	die('Please do not surf to this file directly.');
 }
 
-/** Get autoloader */
-require 'vendor/autoload.php';
+add_action('plugins_loaded', function() {
+	if (stream_resolve_include_path('vendor/autoload.php')) {
+		require_once 'vendor/autoload.php';
 
-/**
- * Run the proper "app"
- */
-$app = new \iMoneza\WordPress\Pro\Pro();
-$app();
+		if (class_exists('iMoneza\\WordPress\\Pro\\App')) {
+			$app = new \iMoneza\WordPress\Pro\App();
+			$app();
+		}
+		else {
+			/**
+			 * add a setting link to remind them to run config
+			 */
+			$pluginId = plugin_dir_path(__FILE__);
+			add_filter('plugin_action_links_' . $pluginId, function($links) use ($pluginId) {
+				$links['run-composer-update'] = sprintf(
+					'<a href="%s">%s</a>',
+					admin_url('plugins.php?page=composer-manager-composer-install&plugin=' . $pluginId),
+					__('Run Composer Update', 'imoneza')
+				);
+				return $links;
+			});
+		}
+	}
+	else {
+		add_action('admin_notices', function() {
+			echo '<div class="notice notice-error"><p>';
+			echo __('This plugin relies on WP Composer Manager.  Please install that plugin, then use it to update this plugin.', 'imoneza');
+			echo '</p></div>';
+		});
+	}
+});
