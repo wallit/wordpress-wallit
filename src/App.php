@@ -55,11 +55,11 @@ class App
             $view = $factory->newInstance();
 
             $registry = $view->getViewRegistry();
-            $registry->setPaths([__DIR__ . '/src/View']);
+            $registry->setPaths([dirname(__DIR__) . '/src/View']);
 
             $helpers = $view->getHelpers();
             $helpers->set('assetUrl', function($assetUrl) {
-                $assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(__DIR__));
+                $assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(dirname(__DIR__)));
                 return $assetsRoot . $assetUrl;
             });
 

@@ -10,7 +10,7 @@ use iMoneza\Data\PricingGroup;
 
 /**
  * Class Options
- * @package iMoneza\WordPress\Model
+ * @package iMoneza\WordPress\Pro\Model
  */
 class Options implements \JsonSerializable
 {

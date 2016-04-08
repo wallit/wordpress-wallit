@@ -30,7 +30,7 @@ class Pro extends App
     {
         parent::__invoke();
 
-        $this->registerActivationDeactivationHooks();
+        //$this->registerActivationDeactivationHooks();
         $this->addCron();
 
         if (is_admin()) {
@@ -67,25 +67,20 @@ class Pro extends App
         });
     }
 
-    /**
-     * Actions to be taken when this is installed / uninstalled
-     */
-    protected function registerActivationDeactivationHooks()
-    {
-        $options = $this->getOptions();
-
-        register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($options) {
-            if ($options->isProInitialized()) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
-
-            //disable lite if its active
-            if (is_plugin_active('imoneza/imoneza.php')) {
-                deactivate_plugins('imoneza/imoneza.php');
-            }
-        });
-        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
-            wp_clear_scheduled_hook('imoneza_hourly');
-        });
-    }
+//    /**
+//     * Actions to be taken when this is installed / uninstalled
+//     */
+//    protected function registerActivationDeactivationHooks()
+//    {
+//        $options = $this->getOptions();
+//
+//        register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($options) {
+//            if ($options->isProInitialized()) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
+//        });
+//        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
+//            wp_clear_scheduled_hook('imoneza_hourly');
+//        });
+//    }
 
     /**
      * this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured

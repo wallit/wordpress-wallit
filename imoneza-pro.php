@@ -14,33 +14,51 @@ if (!defined('ABSPATH')) {
 	die('Please do not surf to this file directly.');
 }
 
+/** if standard is installed, deactivate it */
+register_activation_hook('imoneza-pro/imoneza-pro.php', function() {
+	if (is_plugin_active('imoneza/imoneza.php')) {
+		deactivate_plugins('imoneza/imoneza.php');
+	}
+});
+
 add_action('plugins_loaded', function() {
 	if (stream_resolve_include_path('vendor/autoload.php')) {
 		require_once 'vendor/autoload.php';
 
-		if (class_exists('iMoneza\\WordPress\\Pro\\App')) {
-			$app = new \iMoneza\WordPress\Pro\App();
+		if (class_exists('iMoneza\\WordPress\\Pro\\Pro')) {
+			$app = new \iMoneza\WordPress\Pro\Pro();
 			$app();
 		}
 		else {
 			/**
 			 * add a setting link to remind them to run config
 			 */
-			$pluginId = plugin_dir_path(__FILE__);
+			$pluginId = plugin_basename(__FILE__);
 			add_filter('plugin_action_links_' . $pluginId, function($links) use ($pluginId) {
 				$links['run-composer-update'] = sprintf(
 					'<a href="%s">%s</a>',
-					admin_url('plugins.php?page=composer-manager-composer-install&plugin=' . $pluginId),
-					__('Run Composer Update', 'imoneza')
+					admin_url('plugins.php?page=composer-manager'),
+					__('WP Composer Manager', 'imoneza')
 				);
 				return $links;
+			});
+
+			add_action('admin_notices', function () {
+				echo '<div class="notice notice-error"><p>';
+				echo __('The iMoneza PRO plugin needs composer update to be ran. ', 'imoneza');
+				echo sprintf('<a href="%s">%s</a>',
+					admin_url('plugins.php?page=composer-manager'),
+					__('Please go to the WP Composer Manager plugin.', 'imoneza')
+				);
+				echo " " . __('Then run Composer Update on this plugin.');
+				echo '</p></div>';
 			});
 		}
 	}
 	else {
 		add_action('admin_notices', function() {
 			echo '<div class="notice notice-error"><p>';
-			echo __('This plugin relies on WP Composer Manager.  Please install that plugin, then use it to update this plugin.', 'imoneza');
+			echo __('The iMoneza PRO plugin relies on WP Composer Manager.  Please install that plugin, then use it to update this plugin.', 'imoneza');
 			echo '</p></div>';
 		});
 	}
