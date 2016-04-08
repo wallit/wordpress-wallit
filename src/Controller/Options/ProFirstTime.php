@@ -5,14 +5,14 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller\Options;
-use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Model\Options;
-use iMoneza\WordPress\Service\iMoneza;
+namespace iMoneza\WordPress\Pro\Controller\Options;
+use iMoneza\WordPress\Pro\Controller\ControllerAbstract;
+use iMoneza\WordPress\Pro\Model\Options;
+use iMoneza\WordPress\Pro\Service\iMoneza;
 
 /**
  * Class ProFirstTime
- * @package iMoneza\WordPress\Controller\Options
+ * @package iMoneza\WordPress\Pro\Controller\Options
  */
 class ProFirstTime extends ControllerAbstract
 {

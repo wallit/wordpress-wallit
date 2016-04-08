@@ -5,13 +5,13 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller;
+namespace iMoneza\WordPress\Pro\Controller;
 use Aura\View\View;
-use iMoneza\WordPress\Traits;
+use iMoneza\WordPress\Pro\Traits;
 
 /**
  * Class ControllerAbstract
- * @package iMoneza\WordPress\Controller
+ * @package iMoneza\WordPress\Pro\Controller
  */
 abstract class ControllerAbstract
 {

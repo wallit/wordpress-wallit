@@ -5,7 +5,7 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Model;
+namespace iMoneza\WordPress\Pro\Model;
 use iMoneza\Data\PricingGroup;
 
 /**

@@ -7,7 +7,7 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Service;
+namespace iMoneza\WordPress\Pro\Service;
 use iMoneza\Connection;
 use iMoneza\Data\None;
 use iMoneza\Data\ResourceAccess;
@@ -273,7 +273,7 @@ class iMoneza
      */
     protected function setUserTokenCookie($userToken)
     {
-        setcookie('imoneza-user-token', $userToken, 1893456000, '/', null, null, true); // 01/01/20130 0:0:0
+        setcookie('imoneza-user-token', $userToken, 1893456000, '/', null, null, true); // 01/01/2030 0:0:0
     }
 
     /**

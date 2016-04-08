@@ -5,9 +5,9 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress;
+namespace iMoneza\WordPress\Pro;
 use Pimple\Container;
-use iMoneza\WordPress\Traits;
+use iMoneza\WordPress\Pro\Traits;
 
 
 /**
@@ -25,11 +25,46 @@ class App
 
     /**
      * App constructor.
-     * @param Container $di
      */
-    public function __construct(Container $di)
+    public function __construct()
     {
-        $this->di = $di;
+        $this->di = $di = new Container();
+
+        // DI Services
+        $di['service.imoneza'] = function () {
+            return new \iMoneza\WordPress\Pro\Service\iMoneza();
+        };
+
+        // DI Controllers
+        $di['controller.options.pro-first-time'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\ProFirstTime($di['view'], $di['service.imoneza']);
+        };
+        $di['controller.options.access'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\Access($di['view'], $di['service.imoneza']);
+        };
+        $di['controller.options.remote-refresh'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh($di['view'], $di['service.imoneza']);
+        };
+        $di['controller.options.display'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\Display($di['view']);
+        };
+
+        // View
+        $di['view'] = function($di) {
+            $factory = new \Aura\View\ViewFactory();
+            $view = $factory->newInstance();
+
+            $registry = $view->getViewRegistry();
+            $registry->setPaths([__DIR__ . '/src/View']);
+
+            $helpers = $view->getHelpers();
+            $helpers->set('assetUrl', function($assetUrl) {
+                $assetsRoot = sprintf('%s/%s/assets', WP_PLUGIN_URL, basename(__DIR__));
+                return $assetsRoot . $assetUrl;
+            });
+
+            return $view;
+        };
     }
 
     /**
@@ -82,7 +117,7 @@ class App
     {
         $di = $this->di;
         add_action('wp_ajax_options_display', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\Display $controller */
+            /** @var \iMoneza\WordPress\Pro\Controller\Options\Display $controller */
             $controller = $di['controller.options.display'];
             $controller();
         });

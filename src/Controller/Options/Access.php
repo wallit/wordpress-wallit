@@ -5,13 +5,13 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller\Options;
-use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Service\iMoneza;
+namespace iMoneza\WordPress\Pro\Controller\Options;
+use iMoneza\WordPress\Pro\Controller\ControllerAbstract;
+use iMoneza\WordPress\Pro\Service\iMoneza;
 
 /**
  * Class Access
- * @package iMoneza\WordPress\Controller\Options
+ * @package iMoneza\WordPress\Pro\Controller\Options
  */
 class Access extends ControllerAbstract
 {
@@ -55,7 +55,7 @@ class Access extends ControllerAbstract
             if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
-            if (!in_array($postOptions['access-control'], [\iMoneza\WordPress\Model\Options::ACCESS_CONTROL_SERVER, \iMoneza\WordPress\Model\Options::ACCESS_CONTROL_CLIENT])) {
+            if (!in_array($postOptions['access-control'], [\iMoneza\WordPress\Pro\Model\Options::ACCESS_CONTROL_SERVER, \iMoneza\WordPress\Pro\Model\Options::ACCESS_CONTROL_CLIENT])) {
                 $errors[] = 'The access control somehow is not a valid value.';
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {

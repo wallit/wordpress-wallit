@@ -1,4 +1,4 @@
-<script src="<?= $javascriptUrl ?>"></script>
+<script src="<?= $this->javascriptUrl ?>"></script>
 <script>
     iMoneza.ResourceAccess.init({
         ApiKey: '<?= $this->apiKey ?>',

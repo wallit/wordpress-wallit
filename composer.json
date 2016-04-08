@@ -19,6 +19,6 @@
     "require-dev": {
     },
     "autoload": {
-        "psr-4": {"iMoneza\\WordPress\\": "src"}
+        "psr-4": {"iMoneza\\WordPress\\Pro\\": "src"}
     }
 }

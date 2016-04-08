@@ -1,5 +1,5 @@
 <?php
-/** @var $options \iMoneza\WordPress\Model\Options */
+/** @var $options \iMoneza\WordPress\Pro\Model\Options */
 $options = $this->options;
 
 // this feeels really sloppy right now

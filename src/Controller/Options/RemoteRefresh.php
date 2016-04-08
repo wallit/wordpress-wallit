@@ -5,13 +5,13 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Controller\Options;
-use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Service\iMoneza;
+namespace iMoneza\WordPress\Pro\Controller\Options;
+use iMoneza\WordPress\Pro\Controller\ControllerAbstract;
+use iMoneza\WordPress\Pro\Service\iMoneza;
 
 /**
  * Class RemoteRefresh
- * @package iMoneza\WordPress\Controller\Options
+ * @package iMoneza\WordPress\Pro\Controller\Options
  */
 class RemoteRefresh extends ControllerAbstract
 {

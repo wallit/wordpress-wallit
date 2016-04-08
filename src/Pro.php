@@ -1,15 +1,15 @@
 <?php
 /**
- * Main App
+ * Pro Main App
  *
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress;
+namespace iMoneza\WordPress\Pro;
 use iMoneza\Exception;
-use iMoneza\WordPress\Controller\Options\RemoteRefresh;
-use iMoneza\WordPress\Filter\ExternalResourceKey;
-use iMoneza\WordPress\Traits;
+use iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh;
+use iMoneza\WordPress\Pro\Filter\ExternalResourceKey;
+use iMoneza\WordPress\Pro\Traits;
 
 
 /**
@@ -98,7 +98,7 @@ class Pro extends App
         $options = $this->getOptions();
 
         add_action('imoneza_hourly', function() use ($di, $options) {
-            /** @var \iMoneza\WordPress\Controller\Options\RemoteRefresh $controller */
+            /** @var \iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh $controller */
             $controller = $di['controller.refresh-options'];
             $controller(RemoteRefresh::DO_NOT_SHOW_VIEW);
 
@@ -170,7 +170,7 @@ class Pro extends App
                 if ($post) {
                     $iMonezaTUT = isset($_GET['iMonezaTUT']) ? $_GET['iMonezaTUT'] : null;
 
-                    /** @var \iMoneza\WordPress\Service\iMoneza $service */
+                    /** @var \iMoneza\WordPress\Pro\Service\iMoneza $service */
                     $service = $di['service.imoneza'];
                     $service->setAccessApiKey($options->getAccessApiKey())->setAccessApiSecret($options->getAccessApiSecret());
 
@@ -199,7 +199,7 @@ class Pro extends App
             add_action('admin_notices', function() {
                 // this is inline because the view renderer has a problem when both versions are installed
                 echo '<div class="notice notice-error"><p>';
-                echo __('iMoneza PRO and Standard versions should not be used at the same time.  Please disable the Standard version before continuing.', 'iMoneza');
+                echo __('iMoneza PRO and Standard versions should not be used at the same time.  Please disable the Standard version before continuing.', 'imoneza');
                 echo '</p></div>';
             });
         }
@@ -290,7 +290,7 @@ class Pro extends App
             $overridePricing = !empty($_POST['override-pricing']);
             if ($options->isDynamicallyCreateResources() || $overridePricing) {
                 $pricingGroupId = $_POST['pricing-group-id'];
-                /** @var \iMoneza\WordPress\Service\iMoneza $service */
+                /** @var \iMoneza\WordPress\Pro\Service\iMoneza $service */
                 $service = $di['service.imoneza'];
                 $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
 
@@ -325,17 +325,17 @@ class Pro extends App
         $di = $this->di;
 
         add_action('wp_ajax_options_pro_first_time', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\PROFirstTime $controller */
+            /** @var \iMoneza\WordPress\Pro\Controller\Options\PROFirstTime $controller */
             $controller = $di['controller.options.pro-first-time'];
             $controller();
         });
         add_action('wp_ajax_options_access', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\Access $controller */
+            /** @var \iMoneza\WordPress\Pro\Controller\Options\Access $controller */
             $controller = $di['controller.options.access'];
             $controller();
         });
         add_action('wp_ajax_options_remote_refresh', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\RemoteRefresh $controller */
+            /** @var \iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh $controller */
             $controller = $di['controller.options.remote-refresh'];
             $controller();
         });
