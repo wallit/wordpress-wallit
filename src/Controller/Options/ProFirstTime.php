@@ -7,7 +7,7 @@
 
 namespace iMoneza\WordPress\Pro\Controller\Options;
 use iMoneza\Library\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Pro\Model\Options;
+use iMoneza\Library\WordPress\Model\Options;
 use iMoneza\WordPress\Pro\Service\iMoneza;
 
 /**

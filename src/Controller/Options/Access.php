@@ -55,7 +55,7 @@ class Access extends ControllerAbstract
             if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
-            if (!in_array($postOptions['access-control'], [\iMoneza\WordPress\Pro\Model\Options::ACCESS_CONTROL_SERVER, \iMoneza\WordPress\Pro\Model\Options::ACCESS_CONTROL_CLIENT])) {
+            if (!in_array($postOptions['access-control'], [\iMoneza\Library\WordPress\Model\Options::ACCESS_CONTROL_SERVER, \iMoneza\Library\WordPress\Model\Options::ACCESS_CONTROL_CLIENT])) {
                 $errors[] = 'The access control somehow is not a valid value.';
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {

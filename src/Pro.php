@@ -10,7 +10,6 @@ use iMoneza\Exception;
 use iMoneza\Library\WordPress\Base;
 use iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh;
 use iMoneza\WordPress\Pro\Filter\ExternalResourceKey;
-use iMoneza\WordPress\Pro\Traits;
 
 
 /**
@@ -25,6 +24,33 @@ class Pro extends Base
     const CLIENT_SIDE_JAVASCRIPT_URL = 'https://accessui.imoneza.com/assets/imoneza.js';
 
     /**
+     * Pro constructor.
+     * @param string $pluginDir
+     */
+    public function __construct($pluginDir)
+    {
+        parent::__construct($pluginDir);
+
+        $di = $this->di;
+
+        // DI Services
+        $di['service.imoneza'] = function () {
+            return new \iMoneza\WordPress\Pro\Service\iMoneza();
+        };
+
+        // DI Controllers
+        $di['controller.options.pro-first-time'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\ProFirstTime($di['view'], $di['service.imoneza']);
+        };
+        $di['controller.options.access'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\Access($di['view'], $di['service.imoneza']);
+        };
+        $di['controller.options.remote-refresh'] = function($di) {
+            return new \iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh($di['view'], $di['service.imoneza']);
+        };
+    }
+
+    /**
      * Invoke the APP
      */
     public function __invoke()
@@ -33,9 +59,9 @@ class Pro extends Base
 
         $this->registerDeactivationHook();
         $this->addCron();
-        $this->disableStandardVersionPlugin();
 
         if (is_admin()) {
+            $this->addAdminNoticeToDisableLite();
             $this->addAdminNoticeConfigNeeded();
             $this->addPostMetaBox();
             $this->addPublishPostAction();
@@ -177,14 +203,19 @@ class Pro extends Base
     }
 
     /**
-     * Need to make sure both versions aren't running at the same time.
+     * Show a message if both versions are enabled
      */
-    protected function disableStandardVersionPlugin()
+    protected function addAdminNoticeToDisableLite()
     {
         include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
         if (is_plugin_active('imoneza/imoneza.php')) {
-            deactivate_plugins('imoneza/imoneza.php');
+            add_action('admin_notices', function() {
+                // this is inline because the view renderer has a problem when both versions are installed
+                echo '<div class="notice notice-error"><p>';
+                echo __('iMoneza PRO and Standard versions should not be used at the same time.  Please disable the Standard version before continuing.', 'imoneza');
+                echo '</p></div>';
+            });
         }
     }
 

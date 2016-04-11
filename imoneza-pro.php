@@ -26,7 +26,7 @@ add_action('plugins_loaded', function() {
 		require_once 'vendor/autoload.php';
 
 		if (class_exists('iMoneza\\WordPress\\Pro\\Pro')) {
-			$app = new \iMoneza\WordPress\Pro\Pro();
+			$app = new \iMoneza\WordPress\Pro\Pro(__DIR__);
 			$app();
 		}
 		else {
