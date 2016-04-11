@@ -202,7 +202,7 @@ class iMoneza
             $this->lastError = "Oh no!  Looks like your Management API Key isn't working. Look closely - does it look right?";
         }
         catch (Exception\AuthenticationFailure $e) {
-            $this->lastError = "Well, we have good news and bad news.  Good news is - got an idea of who you are.  Bad news?  Looks like your Management API secret might be wrong.  Why don't you delete it and try again?  That would be swell!";
+            $this->lastError = "Looks like the API key and secret don't match properly.  Go back and make sure you're using the exact API Management KEY and SECRET.  Thanks!";
         }
         catch (Exception\iMoneza $e) {
             $this->lastError = sprintf('Something went wrong with the system: %s', $e->getMessage());

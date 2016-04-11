@@ -46,6 +46,7 @@ class ProFirstTime extends ControllerAbstract
             $results = $this->getGenericAjaxResultsObject();
 
             $this->iMonezaService->setManagementApiKey($postedOptions['management-api-key'])->setManagementApiSecret($postedOptions['management-api-secret']);
+
             if ($propertyOptions = $this->iMonezaService->getProperty()) {
                 $options = $this->getOptions();
                 $options->setManagementApiKey($postedOptions['management-api-key'])
