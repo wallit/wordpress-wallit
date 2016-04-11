@@ -7,6 +7,7 @@
 
 namespace iMoneza\WordPress\Pro;
 use iMoneza\Exception;
+use iMoneza\Library\WordPress\Base;
 use iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh;
 use iMoneza\WordPress\Pro\Filter\ExternalResourceKey;
 use iMoneza\WordPress\Pro\Traits;
@@ -16,7 +17,7 @@ use iMoneza\WordPress\Pro\Traits;
  * Class Pro
  * @package iMoneza\WordPress
  */
-class Pro extends App
+class Pro extends Base
 {
     /**
      * @var string the url for the client side js
@@ -30,11 +31,11 @@ class Pro extends App
     {
         parent::__invoke();
 
-        //$this->registerActivationDeactivationHooks();
+        $this->registerDeactivationHook();
         $this->addCron();
+        $this->disableStandardVersionPlugin();
 
         if (is_admin()) {
-            $this->addAdminNoticeToDisableLite();
             $this->addAdminNoticeConfigNeeded();
             $this->addPostMetaBox();
             $this->addPublishPostAction();
@@ -44,14 +45,6 @@ class Pro extends App
             $this->addServerSideAccessControl();
             $this->addAdblockNotificationShortCode();
         }
-    }
-
-    /**
-     * @return string the base directory
-     */
-    public static function getPluginBaseDir()
-    {
-        return sprintf('%s/%s', WP_PLUGIN_URL, basename(realpath(__DIR__ . '/../')));
     }
 
     /**
@@ -67,23 +60,18 @@ class Pro extends App
         });
     }
 
-//    /**
-//     * Actions to be taken when this is installed / uninstalled
-//     */
-//    protected function registerActivationDeactivationHooks()
-//    {
-//        $options = $this->getOptions();
-//
-//        register_activation_hook('imoneza-pro/imoneza-pro.php', function() use ($options) {
-//            if ($options->isProInitialized()) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
-//        });
-//        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
-//            wp_clear_scheduled_hook('imoneza_hourly');
-//        });
-//    }
+    /**
+     * Actions to be taken when this is uninstalled
+     */
+    protected function registerDeactivationHook()
+    {
+        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
+            wp_clear_scheduled_hook('imoneza_hourly');
+        });
+    }
 
     /**
-     * this is scheduled hourly AFTER the first time we've kicked this off, or if we have this configured
+     * this is scheduled hourly
      *
      * It gets the options to keep them fresh, and then also checks for unpriced managed posts
      */
@@ -125,6 +113,11 @@ class Pro extends App
                 }
             }
         });
+
+        /** schedule cron if it hasn't been scheduled - making sure we have it configured too */
+        if ($this->getOptions()->isProInitialized()) {
+            if (wp_next_scheduled('imoneza_hourly') === false) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
+        }
     }
 
     /**
@@ -184,19 +177,14 @@ class Pro extends App
     }
 
     /**
-     * Show a message if both versions are enabled
+     * Need to make sure both versions aren't running at the same time.
      */
-    protected function addAdminNoticeToDisableLite()
+    protected function disableStandardVersionPlugin()
     {
         include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
         if (is_plugin_active('imoneza/imoneza.php')) {
-            add_action('admin_notices', function() {
-                // this is inline because the view renderer has a problem when both versions are installed
-                echo '<div class="notice notice-error"><p>';
-                echo __('iMoneza PRO and Standard versions should not be used at the same time.  Please disable the Standard version before continuing.', 'imoneza');
-                echo '</p></div>';
-            });
+            deactivate_plugins('imoneza/imoneza.php');
         }
     }
 
@@ -247,9 +235,10 @@ class Pro extends App
     {
         $options = $this->getOptions();
         $di = $this->di;
+        $pluginBaseUrl = $this->pluginBaseUrl;
 
-        add_action('add_meta_boxes', function() use ($di, $options) {
-            $title = sprintf('<img src="%s%s" style="height: 16px; vertical-align: middle">', self::getPluginBaseDir(), '/assets/images/logo-rectangle-small.png');
+        add_action('add_meta_boxes', function() use ($di, $options, $pluginBaseUrl) {
+            $title = sprintf('<img src="%s" style="height: 16px; vertical-align: middle">', $pluginBaseUrl . '/assets/images/logo-rectangle-small.png');
 
             add_meta_box('imoneza-post-pricing', $title, function(\WP_Post $post) use ($di, $options) {
                 $editing = !empty($post->ID);
