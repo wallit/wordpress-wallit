@@ -274,7 +274,13 @@ class Pro extends Base
             add_meta_box('imoneza-post-pricing', $title, function(\WP_Post $post) use ($di, $options) {
                 $editing = !empty($post->ID);
 
-                $pricingGroupSelected = $editing ? get_post_meta($post->ID, '_pricing-group-id', true) : $options->getDefaultPricingGroup();
+                $pricingGroupSelected = '';
+                if ($editing) {
+                    $pricingGroupSelected = get_post_meta($post->ID, '_pricing-group-id', true);
+                }
+                if (empty($selected)) {
+                    $pricingGroupSelected = $options->getDefaultPricingGroup();
+                }
                 $overrideChecked = get_post_meta($post->ID, '_override-pricing', true);
 
                 $view = $di['view'];
