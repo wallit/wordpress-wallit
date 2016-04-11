@@ -43,14 +43,14 @@ add_action('plugins_loaded', function() {
 				return $links;
 			});
 
-			add_action('admin_notices', function () {
+			add_action('admin_notices', function () use ($pluginId) {
 				echo '<div class="notice notice-error"><p>';
 				echo __('The iMoneza PRO plugin needs composer update to be ran. ', 'imoneza');
 				echo sprintf('<a href="%s">%s</a>',
-					admin_url('plugins.php?page=composer-manager'),
-					__('Please go to the WP Composer Manager plugin.', 'imoneza')
+					admin_url('plugins.php?page=composer-manager-composer-update&plugin=' . $pluginId),
+					__('Please click here to run the command using WP Composer Manager.', 'imoneza')
 				);
-				echo " " . __('Then run Composer Update on this plugin.');
+				echo " " . __('Please note - this may take a while based on your internet connection.');
 				echo '</p></div>';
 			});
 		}
