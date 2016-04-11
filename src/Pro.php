@@ -108,7 +108,7 @@ class Pro extends Base
 
         add_action('imoneza_hourly', function() use ($di, $options) {
             /** @var \iMoneza\WordPress\Pro\Controller\Options\RemoteRefresh $controller */
-            $controller = $di['controller.refresh-options'];
+            $controller = $di['controller.options.remote-refresh'];
             $controller(RemoteRefresh::DO_NOT_SHOW_VIEW);
 
             if ($options->isDynamicallyCreateResources()) {
