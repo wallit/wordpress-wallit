@@ -19,7 +19,7 @@ use iMoneza\Options\Management\GetProperty;
 use iMoneza\Options\Management\SaveResource;
 use iMoneza\Options\OptionsAbstract;
 use iMoneza\Request\Curl;
-use iMoneza\WordPress\Filter\ExternalResourceKey;
+use iMoneza\WordPress\Pro\Filter\ExternalResourceKey;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
