@@ -57,7 +57,7 @@ class Pro extends Base
     {
         parent::__invoke();
 
-        $this->registerDeactivationHook();
+        $this->registerActivationDeactivationHooks();
         $this->addCron();
 
         if (is_admin()) {
@@ -89,8 +89,15 @@ class Pro extends Base
     /**
      * Actions to be taken when this is uninstalled
      */
-    protected function registerDeactivationHook()
+    protected function registerActivationDeactivationHooks()
     {
+        /** if standard is installed, deactivate it */
+        register_activation_hook('imoneza-pro/imoneza-pro.php', function() {
+            if (is_plugin_active('imoneza/imoneza.php')) {
+                deactivate_plugins('imoneza/imoneza.php');
+            }
+        });
+        
         register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
             wp_clear_scheduled_hook('imoneza_hourly');
         });
