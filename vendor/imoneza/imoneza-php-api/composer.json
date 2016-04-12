@@ -1,0 +1,39 @@
+{
+  "name": "imoneza/imoneza-php-api",
+  "description": "A PHP library for integration with iMoneza.",
+  "keywords": ["imoneza", "api"],
+  "homepage": "https://github.com/iMoneza/imoneza-php-api",
+  "type": "library",
+  "license": "LGPLv3",
+  "authors": [
+    {
+      "name": "Aaron Saray",
+      "email": "aaron@aaronsaray.com",
+      "homepage": "http://aaronsaray.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "lib-curl": ">=7.0",
+    "monolog/monolog": ">=1.17"
+  },
+  "require-dev": {
+    "vlucas/phpdotenv": "^2.2",
+    "symfony/yaml": "2.8.*",
+    "phpunit/phpunit": "^4.8",
+    "symfony/config": "2.8.*",
+    "symfony/console": "^2.1",
+    "symfony/filesystem": "^2.1",
+    "symfony/stopwatch": "^2.1",
+    "satooshi/php-coveralls": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {"iMoneza\\": "src/iMoneza"}
+  },
+  "autoload-dev": {
+    "psr-4": {"iMoneza\\tests\\": "tests/iMoneza"}
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}

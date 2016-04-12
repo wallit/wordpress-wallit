@@ -13,8 +13,8 @@
     ],
     "repositories": [
         {
-            "type": "vcs",
-            "url":  "https://github.com/imoneza/library-wordpress-imoneza"
+            "type": "git",
+            "url":  "git://github.com/imoneza/library-wordpress-imoneza.git"
         }
     ],
     "require": {
@@ -22,8 +22,6 @@
         "imoneza/imoneza-php-api": "^1.0",
         "pimple/pimple": "^3.0",
         "aura/view": "^2.2"
-    },
-    "require-dev": {
     },
     "autoload": {
         "psr-4": {"iMoneza\\WordPress\\Pro\\": "src"}

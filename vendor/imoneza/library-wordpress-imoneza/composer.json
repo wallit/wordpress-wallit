@@ -1,0 +1,21 @@
+{
+  "name": "imoneza/library-wordpress-imoneza",
+  "description": "Library for iMoneza WordPress Plugins",
+  "authors": [
+    {
+      "name": "iMoneza",
+      "email": "info@imoneza.com"
+    },
+    {
+      "name": "Aaron Saray",
+      "email": "aaron@aaronsaray.com"
+    }
+  ],
+  "require": {
+    "pimple/pimple": "^3.0",
+    "aura/view": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {"iMoneza\\Library\\WordPress\\": "src"}
+  }
+}
