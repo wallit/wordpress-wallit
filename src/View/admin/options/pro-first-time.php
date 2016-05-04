@@ -30,8 +30,8 @@
             <div class="i-card">
                 <h2 class="logo-header"><img src="<?= $this->assetUrl('/images/logo-rectangle.jpg') ?>" alt="logo"></h2>
                 <h3>What is iMoneza?</h3>
-                <p>iMoneza is a digital micro-transaction paywall service. This plugin will add iMoneza's paywall to your site and allow you to manage your iMoneza resources from within WordPress.</p>
-                <p><strong>An iMoneza account is required.</strong>  If you don't have one, it's simple and easy.  Just go to <a href="http://imoneza.com">iMoneza.com</a> and sign up.</p>
+                <p>iMoneza is a digital micropayment paywall service. This plugin will add iMoneza's paywall to your site and allow you to manage your iMoneza resources from within WordPress.</p>
+                <p><strong>An iMoneza account is required.</strong>  If you don't have one, it's simple and easy.  Just go to <a href="https://www.imoneza.com/sign-up">iMoneza.com</a> and sign up.</p>
             </div>
         </aside>
     </section>
