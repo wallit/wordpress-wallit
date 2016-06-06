@@ -35,7 +35,7 @@ class App
     protected $pluginBaseUrl;
     
     /**
-     * Pro constructor.
+     * constructor.
      * @param string $pluginDir
      */
     public function __construct($pluginDir)
@@ -405,7 +405,7 @@ class App
         });
         
         add_action('wp_ajax_options_pro_first_time', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\PROFirstTime $controller */
+            /** @var \iMoneza\WordPress\Controller\Options\FirstTime $controller */
             $controller = $di['controller.options.pro-first-time'];
             $controller();
         });
