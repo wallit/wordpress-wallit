@@ -62,7 +62,7 @@ class Access extends ControllerAbstract
                 $errors[] = $this->iMonezaService->getLastError();
             }
             if (!in_array($postOptions['access-control'], [Model\Options::ACCESS_CONTROL_SERVER, Model\Options::ACCESS_CONTROL_CLIENT])) {
-                $errors[] = 'The access control somehow is not a valid value.';
+                $errors[] = __('The access control somehow is not a valid value.', 'iMoneza');
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {
                 $errors[] = $this->iMonezaService->getLastError();
@@ -81,7 +81,7 @@ class Access extends ControllerAbstract
                 $this->saveOptions($options);
 
                 $results['success'] = true;
-                $results['data']['message'] = 'Your settings have been saved!';
+                $results['data']['message'] = __('Your settings have been saved!', 'iMoneza');
             }
             else {
                 $results['success'] = false;
@@ -90,6 +90,7 @@ class Access extends ControllerAbstract
                         $errorString = $error;
                     }
                     else {
+                        // @todo figure out how to translate this
                         $concatAdverbish = ['Also', 'Then', 'In addition'];
                         $errorString .= ' ' . $concatAdverbish[array_rand($concatAdverbish)] . ', ' . lcfirst($error);
                     }
@@ -108,13 +109,13 @@ class Access extends ControllerAbstract
 
                 $postsQueuedForProcessing = $query->found_posts;
                 if ($postsQueuedForProcessing <= Service\Post::BATCH_SIZE_PROCESS_TO_IMONEZA) {
-                    $remainingTimeIndication = 'These may take up to half an hour.';
+                    $remainingTimeIndication = __('These may take up to half an hour.', 'iMoneza');
                 }
                 else if ($postsQueuedForProcessing <= Service\Post::BATCH_SIZE_PROCESS_TO_IMONEZA * 2) {
-                    $remainingTimeIndication = 'These should be done in a little over an hour.';
+                    $remainingTimeIndication = __('These should be done in a little over an hour.', 'iMoneza');
                 }
                 else {
-                    $remainingTimeIndication = 'These will take a couple hours to finish up.  Check back once an hour for progress.';
+                    $remainingTimeIndication = __('These will take a couple hours to finish up.  Check back once an hour for progress.', 'iMoneza');
                 }
             }
 

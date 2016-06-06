@@ -1,6 +1,6 @@
 <?php
 /**
- * Options controller
+ * Display Options controller
  *
  * @author Aaron Saray
  */
@@ -20,9 +20,17 @@ class Display extends ControllerAbstract
     public function __invoke()
     {
         $view = $this->view;
-
         $options = $this->getOptions();
-        $indicatorClasses = ['dashicons dashicons-star-filled', 'dashicons dashicons-awards', 'dashicons dashicons-thumbs-up', 'dashicons dashicons-admin-post', 'dashicons dashicons-admin-network', 'dashicons dashicons-lock', 'dashicons dashicons-megaphone', 'dashicons dashicons-flag'];
+        $indicatorClasses = [
+            'dashicons dashicons-star-filled', 
+            'dashicons dashicons-awards', 
+            'dashicons dashicons-thumbs-up', 
+            'dashicons dashicons-admin-post', 
+            'dashicons dashicons-admin-network', 
+            'dashicons dashicons-lock', 
+            'dashicons dashicons-megaphone', 
+            'dashicons dashicons-flag'
+        ];
 
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
@@ -30,7 +38,6 @@ class Display extends ControllerAbstract
             $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
 
             $options->setIndicatePremiumContent(boolval($postOptions['indicate-premium-content']));
-
             $validationArray = array_merge($indicatorClasses, ['imoneza-custom-indicator']);
             if (in_array($postOptions['indicator-class'], $validationArray)) {
                 $options->setPremiumIndicatorIconClass($postOptions['indicator-class']);
@@ -45,7 +52,7 @@ class Display extends ControllerAbstract
 
             $results = $this->getGenericAjaxResultsObject();
             $results['success'] = true;
-            $results['data']['message'] = 'Your settings have been saved!';
+            $results['data']['message'] = __('Your settings have been saved!', 'iMoneza');
 
             $view->setView('admin/options/json-response');
             $view->setData($results);

@@ -7,7 +7,7 @@
 
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Service\iMoneza;
+use iMoneza\WordPress\Service;
 
 /**
  * Class RemoteRefresh
@@ -21,25 +21,20 @@ class RemoteRefresh extends ControllerAbstract
     const DO_NOT_SHOW_VIEW = false;
 
     /**
-     * @var iMoneza
+     * @var Service\iMoneza
      */
     protected $iMonezaService;
 
     /**
-     * @var \Aura\View\View
-     */
-    protected $view;
-
-    /**
      * Options constructor.
+     * 
      * @param \Aura\View\View $view
-     * @param iMoneza $iMonezaService
+     * @param Service\iMoneza $iMonezaService
      */
-    public function __construct(\Aura\View\View $view, iMoneza $iMonezaService)
+    public function __construct(\Aura\View\View $view, Service\iMoneza $iMonezaService)
     {
-        $this->view = $view;
+        parent::__construct($view);
         $this->iMonezaService = $iMonezaService;
-        //no parent constructor because this is also called by cron
     }
 
     /**
@@ -62,7 +57,7 @@ class RemoteRefresh extends ControllerAbstract
             $this->saveOptions($options);
 
             $results['success'] = true;
-            $results['data']['message'] = 'You have successfully refreshed your options.';
+            $results['data']['message'] = __('You have successfully refreshed your options.', 'iMoneza');
             $results['data']['options'] = $options;
         }
         else {

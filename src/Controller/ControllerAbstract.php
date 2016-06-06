@@ -24,11 +24,14 @@ abstract class ControllerAbstract
 
     /**
      * ControllerAbstract constructor.
+     * 
+     * Make sure it has the permission to manage options - or that cron is running 
+     * 
      * @param View $view
      */
     public function __construct(View $view)
     {
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_options') && !defined('DOING_CRON')) {
             wp_die(__( 'You do not have sufficient permissions to access this page.', 'iMoneza'), 403);
         }
 

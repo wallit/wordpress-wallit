@@ -7,8 +7,8 @@
 
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Model\Options;
-use iMoneza\WordPress\Service\iMoneza;
+use iMoneza\WordPress\Model;
+use iMoneza\WordPress\Service;
 
 /**
  * Class FirstTime
@@ -17,16 +17,16 @@ use iMoneza\WordPress\Service\iMoneza;
 class FirstTime extends ControllerAbstract
 {
     /**
-     * @var iMoneza
+     * @var Service\iMoneza
      */
     protected $iMonezaService;
 
     /**
      * Options constructor.
      * @param \Aura\View\View $view
-     * @param iMoneza $iMonezaService
+     * @param Service\iMoneza $iMonezaService
      */
-    public function __construct(\Aura\View\View $view, iMoneza $iMonezaService)
+    public function __construct(\Aura\View\View $view, Service\iMoneza $iMonezaService)
     {
         parent::__construct($view);
         $this->iMonezaService = $iMonezaService;
@@ -53,7 +53,7 @@ class FirstTime extends ControllerAbstract
                     ->setManagementApiSecret($postedOptions['management-api-secret'])
                     ->setPropertyTitle($propertyOptions->getTitle())
                     ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())
-                    ->setAccessControl(Options::ACCESS_CONTROL_CLIENT)
+                    ->setAccessControl(Model\Options::ACCESS_CONTROL_CLIENT)
                     ->setPricingGroupsBubbleDefaultToTop($propertyOptions->getPricingGroups());
                 $this->saveOptions($options);
 
