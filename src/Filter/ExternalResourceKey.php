@@ -5,7 +5,7 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Pro\Filter;
+namespace iMoneza\WordPress\Filter;
 
 /**
  * Class ExternalResourceKey

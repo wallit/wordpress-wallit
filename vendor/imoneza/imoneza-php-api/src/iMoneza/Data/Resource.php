@@ -119,6 +119,16 @@ class Resource extends DataAbstract
     protected $resourcePricingTiers;
 
     /**
+     * @var string
+     */
+    protected $paywallDescription;
+
+    /**
+     * @var string
+     */
+    protected $paywallShortDescription;
+
+    /**
      * @var Property
      */
     protected $Property;
@@ -429,6 +439,42 @@ class Resource extends DataAbstract
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getPaywallDescription()
+    {
+        return $this->paywallDescription;
+    }
+
+    /**
+     * @param string $paywallDescription
+     * @return Resource
+     */
+    public function setPaywallDescription($paywallDescription)
+    {
+        $this->paywallDescription = $paywallDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaywallShortDescription()
+    {
+        return $this->paywallShortDescription;
+    }
+
+    /**
+     * @param string $paywallShortDescription
+     * @return Resource
+     */
+    public function setPaywallShortDescription($paywallShortDescription)
+    {
+        $this->paywallShortDescription = $paywallShortDescription;
+        return $this;
+    }
+    
     /**
      * @return Property
      */

@@ -11,7 +11,7 @@ use iMoneza\Options\Management\SaveResource;
 
 /**
  * Class SaveResourceTest
- * @package iMoneza\Tests\Options\Access
+ * @package iMoneza\Tests\Options\Management
  */
 class SaveResourceTest extends \PHPUnit_Framework_TestCase
 {
@@ -106,6 +106,13 @@ class SaveResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals('pricing-model', 'PricingModel', $options);
     }
 
+    public function testSetPricingGroup()
+    {
+        $options = new SaveResource();
+        $this->assertInstanceOf('iMoneza\Options\Management\SaveResource', $options->setPricingGroup([1,2,3]));
+        $this->assertAttributeEquals([1,2,3], 'PricingGroup', $options);
+    }
+
     public function testSetPrice()
     {
         $options = new SaveResource();
@@ -146,5 +153,19 @@ class SaveResourceTest extends \PHPUnit_Framework_TestCase
         $options = new SaveResource();
         $this->assertInstanceOf('iMoneza\Options\Management\SaveResource', $options->setTargetConversionHitsPerRecalculationPeriod(400));
         $this->assertAttributeEquals(400, 'TargetConversionHitsPerRecalculationPeriod', $options);
+    }
+
+    public function testSetPaywallDescription()
+    {
+        $options = new SaveResource();
+        $this->assertInstanceOf('iMoneza\Options\Management\SaveResource', $options->setPaywallDescription('paywall desc'));
+        $this->assertAttributeEquals('paywall desc', 'PaywallDescription', $options);
+    }
+
+    public function testSetPaywallShortDescription()
+    {
+        $options = new SaveResource();
+        $this->assertInstanceOf('iMoneza\Options\Management\SaveResource', $options->setPaywallShortDescription('here is something'));
+        $this->assertAttributeEquals('here is something', 'PaywallShortDescription', $options);
     }
 }

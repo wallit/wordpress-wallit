@@ -14,10 +14,10 @@ Create an options object that reflects the type of request you want to do.  If t
 customization or parameters, apply those to the options object before performing your request.
 
 2. Create a Connection Object  
-A connection object accepts a number of elements as dependencies of its construction.  The Management API and Access API
+A connection object accepts a number of elements as dependencies of its construction.  The Management API and Access API key
 and secrets are required.  Then, an instance of a new `iMoneza\Request\RequestInterface` is required.  A request interface
 to Curl is provided by default.  Finally, pass in an instance of a PSR-3 compatible logging interface.  Monolog is recommended, 
-and is included, but is not required.
+but is not required.
 
 3. Call the request method  
 The request method of the connection object accepts two arguments: the options object and a data object.  The data object

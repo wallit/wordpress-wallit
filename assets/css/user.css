@@ -3,15 +3,6 @@
     height: auto;
     font-size: inherit;
 }
-#imoneza-adblock-notification {
-    background-color: #ff0000;
-    color: #ffffff;
-    padding: 10px;
-    font-size: 12px;
-    text-align: center;
-    margin-top: 20px
-}
-
 .imoneza-custom-indicator {
     background: #444444;
     color: #ffffff;

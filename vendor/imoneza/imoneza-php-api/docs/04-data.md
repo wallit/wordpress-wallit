@@ -138,7 +138,7 @@ This represents the access available to a resource for the consumer.
 
 - `setResourceName()`/`getResourceName()` The name of the resource
 
-- `setUserName()`/`getUserName()` 
+- `setUserName()`/`getUserName()` Username of the current user
 
 - `setIsAnonymousUser()`/`isAnonymousUser()` Whether anonymous user or not
 
@@ -153,6 +153,17 @@ This represents the access available to a resource for the consumer.
 - `setAccessReason()`/`getAccessReason()` 
 
 - `setAccessActionUrl()`/`getAccessActionUrl()` The URL to send the access to
+
+- `setFirstName()`/`getFirstName()` The first name of the current user
+
+- `setIsAdSupported()`/`isAdSupported()` 
+
+- `setAdSupportedMessage()`/`getAdSupportedMessage()`
+
+- `setAdSupportedMessageTitle()`/`getAdSupportedMessageTitle()`
+
+- `setIsNoCost()`/`isNoCost()`
+
 
 #### `iMoneza\Data\ResourceCollection`
 
@@ -184,8 +195,28 @@ Represents the Subscription Group.
 
 - `setPeriod()`/`getPeriod()`  
 
+- `setPaywallDescription()`/`getPaywallDescription()`
+
+- `setPaywallShortDescription()`/`getPaywallShortDescription()`
+
+#### `iMoneza\Data\ExternalSubscriberExportResponse`
+
+Represents the External Subscription Export Request response.
+
+- `setID()`/`getId()`  The ID of the request - NOT the callback ID.
+
+- `setNotificationEmailAddress()`/`getNotificationEmailAddress()`  
+
+- `setStatus()`/`getStatus()`  The status of the request.
+
+- `setStartDate()`/`getStartDate()`  When the requested export begins.
+
+- `setEndDate()`/`getEndDate()`  When the requested export ends.
 
 #### `iMoneza\Data\None`
 
 This is a special data object that is used for methods that return no data - or if you want to ignore any data that was retrieved.
 
+#### `iMoneza\Data\CallbackResult`
+
+This is a special data object that just accepts any data and puts it as public properties on itself - very similar to a `stdClass`.

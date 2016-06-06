@@ -1,6 +1,6 @@
 {
-    "name": "imoneza/wordpress-imoneza-pro",
-    "description": "Wordpress iMoneza PRO plugin",
+    "name": "imoneza/wordpress-imoneza",
+    "description": "iMoneza WordPress plugin",
     "authors": [
         {
             "name": "iMoneza",
@@ -11,19 +11,12 @@
             "email": "aaron@aaronsaray.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "git",
-            "url":  "git://github.com/imoneza/library-wordpress-imoneza.git"
-        }
-    ],
     "require": {
-        "imoneza/library-wordpress-imoneza": "dev-master@dev",
-        "imoneza/imoneza-php-api": "^1.0",
+        "imoneza/imoneza-php-api": "^1.2",
         "pimple/pimple": "^3.0",
         "aura/view": "^2.2"
     },
     "autoload": {
-        "psr-4": {"iMoneza\\WordPress\\Pro\\": "src"}
+        "psr-4": {"iMoneza\\WordPress\\": "src"}
     }
 }

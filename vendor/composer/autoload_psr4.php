@@ -6,10 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'iMoneza\\WordPress\\Pro\\' => array($baseDir . '/src'),
-    'iMoneza\\Library\\WordPress\\' => array($vendorDir . '/imoneza/library-wordpress-imoneza/src'),
+    'iMoneza\\WordPress\\' => array($baseDir . '/src'),
     'iMoneza\\' => array($vendorDir . '/imoneza/imoneza-php-api/src/iMoneza'),
-    'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Aura\\View\\_Config\\' => array($vendorDir . '/aura/view/config'),
     'Aura\\View\\' => array($vendorDir . '/aura/view/src'),
 );

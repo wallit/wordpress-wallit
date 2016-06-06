@@ -43,6 +43,13 @@ class GetResourceFromTemporaryUserTokenTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals('123.123.123.123', 'IP', $options);
     }
 
+    public function testSetAdBlockerStatus()
+    {
+        $options = new GetResourceFromTemporaryUserToken();
+        $this->assertInstanceOf('iMoneza\Options\Access\GetResourceFromTemporaryUserToken', $options->setAdBlockerStatus(GetResourceFromTemporaryUserToken::AD_BLOCKER_STATUS_DETECTED));
+        $this->assertAttributeEquals(GetResourceFromTemporaryUserToken::AD_BLOCKER_STATUS_DETECTED, 'AdBlockerStatus', $options);
+    }
+    
     public function testGetRequestType()
     {
         $options = new GetResourceFromTemporaryUserToken();

@@ -43,6 +43,13 @@ class ResourceFromResourceKeyTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals('123.123.123.123', 'IP', $options);
     }
 
+    public function testSetAdBlockerStatus()
+    {
+        $options = new GetResourceFromResourceKey();
+        $this->assertInstanceOf('iMoneza\Options\Access\GetResourceFromResourceKey', $options->setAdBlockerStatus(GetResourceFromResourceKey::AD_BLOCKER_STATUS_DETECTED));
+        $this->assertAttributeEquals(GetResourceFromResourceKey::AD_BLOCKER_STATUS_DETECTED, 'AdBlockerStatus', $options);
+    }
+    
     public function testGetRequestType()
     {
         $options = new GetResourceFromResourceKey();

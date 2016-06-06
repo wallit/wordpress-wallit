@@ -15,7 +15,7 @@
   "require": {
     "php": ">=5.4.0",
     "lib-curl": ">=7.0",
-    "monolog/monolog": ">=1.17"
+    "psr/log": "^1.0"
   },
   "require-dev": {
     "vlucas/phpdotenv": "^2.2",
@@ -25,7 +25,8 @@
     "symfony/console": "^2.1",
     "symfony/filesystem": "^2.1",
     "symfony/stopwatch": "^2.1",
-    "satooshi/php-coveralls": "~1.0"
+    "satooshi/php-coveralls": "~1.0",
+    "monolog/monolog": ">=1.17"
   },
   "autoload": {
     "psr-4": {"iMoneza\\": "src/iMoneza"}

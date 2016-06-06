@@ -20,6 +20,76 @@ class SaveResource extends OptionsAbstract implements ManagementInterface
     use ConfigurationTrait, ManagementConfigurationTrait;
 
     /**
+     * @var string
+     */
+    const PRICING_MODEL_INHERIT = 'Inherit';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_FREE = 'Free';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_AUTHENTICATION_REQUIRED = 'AuthenticationRequired';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_FIXED_PRICE = 'FixedPrice';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_VARIABLE_PRICE = 'VariablePrice';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_TIME_TIERED = 'TimeTiered';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_VIEW_TIERED = 'ViewTiered';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_SUBSCRIPTION_ONLY = 'SubscriptionOnly';
+
+    /**
+     * @var string
+     */
+    const PRICING_MODEL_TARGET_CONVERSION = 'TargetConversion';
+
+    /**
+     * @var string
+     */
+    const EXPIRATION_PERIOD_NEVER = 'Never';
+
+    /**
+     * @var string
+     */
+    const EXPIRATION_PERIOD_YEARS = 'Years';
+
+    /**
+     * @var string
+     */
+    const EXPIRATION_PERIOD_MONTHS = 'Months';
+
+    /**
+     * @var string
+     */
+    const EXPIRATION_PERIOD_WEEKS = 'Weeks';
+
+    /**
+     * @var string
+     */
+    const EXPIRATION_PERIOD_DAYS = 'Days';
+    
+    /**
      * @var string the external key to use for this reference
      */
     protected $ExternalKey;
@@ -99,6 +169,16 @@ class SaveResource extends OptionsAbstract implements ManagementInterface
      */
     protected $TargetConversionHitsPerRecalculationPeriod;
 
+    /**
+     * @var string
+     */
+    protected $PaywallDescription;
+
+    /**
+     * @var string
+     */
+    protected $PaywallShortDescription;
+    
     /**
      * @param $pricingGroupId
      * @return $this
@@ -214,6 +294,16 @@ class SaveResource extends OptionsAbstract implements ManagementInterface
     }
 
     /**
+     * @param array $PricingGroup
+     * @return SaveResource
+     */
+    public function setPricingGroup($PricingGroup)
+    {
+        $this->PricingGroup = $PricingGroup;
+        return $this;
+    }
+
+    /**
      * @param string $PricingModel
      * @return SaveResource
      */
@@ -280,6 +370,26 @@ class SaveResource extends OptionsAbstract implements ManagementInterface
     public function setTargetConversionHitsPerRecalculationPeriod($TargetConversionHitsPerRecalculationPeriod)
     {
         $this->TargetConversionHitsPerRecalculationPeriod = $TargetConversionHitsPerRecalculationPeriod;
+        return $this;
+    }
+
+    /**
+     * @param string $PaywallDescription
+     * @return SaveResource
+     */
+    public function setPaywallDescription($PaywallDescription)
+    {
+        $this->PaywallDescription = $PaywallDescription;
+        return $this;
+    }
+
+    /**
+     * @param string $PaywallShortDescription
+     * @return SaveResource
+     */
+    public function setPaywallShortDescription($PaywallShortDescription)
+    {
+        $this->PaywallShortDescription = $PaywallShortDescription;
         return $this;
     }
 }

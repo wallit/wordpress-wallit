@@ -155,6 +155,21 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['something-here'], $resource->getResourcePricingTiers());
     }
 
+    public function testPaywallDescription()
+    {
+        $resource = new Resource();
+        $this->assertNull($resource->getPaywallDescription());
+        $this->assertInstanceOf('iMoneza\Data\Resource', $resource->setPaywallDescription("my description"));
+        $this->assertEquals("my description", $resource->getPaywallDescription());
+    }
+    public function testPaywallShortDescription()
+    {
+        $resource = new Resource();
+        $this->assertNull($resource->getPaywallShortDescription());
+        $this->assertInstanceOf('iMoneza\Data\Resource', $resource->setPaywallShortDescription("short desc"));
+        $this->assertEquals('short desc', $resource->getPaywallShortDescription());
+    }
+    
     public function testProperty()
     {
         $resource = new Resource();

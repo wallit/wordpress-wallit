@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2dc9eadd5ca48c824adde9aa4b258fb9",
-    "content-hash": "ecb91cc560de5fde33d5dbf96556bf3c",
+    "hash": "fe49c3b506db0340d11ac2ffbede0bbe",
+    "content-hash": "04c67377d200da48b5e2c9c4b3d18416",
     "packages": [
         {
             "name": "aura/view",
@@ -69,24 +69,25 @@
         },
         {
             "name": "imoneza/imoneza-php-api",
-            "version": "1.1.0",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/iMoneza/imoneza-php-api.git",
-                "reference": "53ad904ba2d852521526df0c179a97a1186376d7"
+                "reference": "d7df30328649450ecd94ff9bafd43ce78ea4eede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/53ad904ba2d852521526df0c179a97a1186376d7",
-                "reference": "53ad904ba2d852521526df0c179a97a1186376d7",
+                "url": "https://api.github.com/repos/iMoneza/imoneza-php-api/zipball/d7df30328649450ecd94ff9bafd43ce78ea4eede",
+                "reference": "d7df30328649450ecd94ff9bafd43ce78ea4eede",
                 "shasum": ""
             },
             "require": {
                 "lib-curl": ">=7.0",
-                "monolog/monolog": ">=1.17",
-                "php": ">=5.4.0"
+                "php": ">=5.4.0",
+                "psr/log": "^1.0"
             },
             "require-dev": {
+                "monolog/monolog": ">=1.17",
                 "phpunit/phpunit": "^4.8",
                 "satooshi/php-coveralls": "~1.0",
                 "symfony/config": "2.8.*",
@@ -119,116 +120,7 @@
                 "api",
                 "imoneza"
             ],
-            "time": "2016-04-11 16:59:33"
-        },
-        {
-            "name": "imoneza/library-wordpress-imoneza",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git://github.com/imoneza/library-wordpress-imoneza.git",
-                "reference": "c8dae8b6955129ee6b528718bb17f195976d7da3"
-            },
-            "require": {
-                "aura/view": "^2.2",
-                "pimple/pimple": "^3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "iMoneza\\Library\\WordPress\\": "src"
-                }
-            },
-            "authors": [
-                {
-                    "name": "iMoneza",
-                    "email": "info@imoneza.com"
-                },
-                {
-                    "name": "Aaron Saray",
-                    "email": "aaron@aaronsaray.com"
-                }
-            ],
-            "description": "Library for iMoneza WordPress Plugins",
-            "time": "2016-04-11 19:47:57"
-        },
-        {
-            "name": "monolog/monolog",
-            "version": "1.18.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/064b38c16790249488e7a8b987acf1c9d7383c09",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "~1.0"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9",
-                "doctrine/couchdb": "~1.0@dev",
-                "graylog2/gelf-php": "~1.0",
-                "jakub-onderka/php-parallel-lint": "0.9",
-                "php-amqplib/php-amqplib": "~2.4",
-                "php-console/php-console": "^3.1.3",
-                "phpunit/phpunit": "~4.5",
-                "phpunit/phpunit-mock-objects": "2.3.0",
-                "raven/raven": "^0.13",
-                "ruflin/elastica": ">=0.90 <3.0",
-                "swiftmailer/swiftmailer": "~5.3"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mongo": "Allow sending log messages to a MongoDB server",
-                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
-                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
-                "raven/raven": "Allow sending log messages to a Sentry server",
-                "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Monolog\\": "src/Monolog"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
-            "keywords": [
-                "log",
-                "logging",
-                "psr-3"
-            ],
-            "time": "2016-04-02 13:12:58"
+            "time": "2016-05-11 16:10:31"
         },
         {
             "name": "pimple/pimple",
@@ -318,9 +210,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "imoneza/library-wordpress-imoneza": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -4,7 +4,7 @@
 
 The connection object is responsible for accepting your credentials, sending a request, retrieving a response and emitting
 any errors.  To use the connection object, you must have access to both API's (access and management).  You will also need
-a PSR-3 compatible logger (Monolog is included by default), and Curl (There is an interface available if you'd like to create
+a PSR-3 compatible logger (Monolog is suggested), and Curl (There is an interface available if you'd like to create
 your own connection toolset void of curl).
 
 ### Constructing the Connection Object
@@ -20,7 +20,7 @@ like to create your own request object.  If you have curl installed, it's best t
 
 **$logger** This is a PSR-3 compatible logger.  Monolog is included by default and suggested.  Remember to include your own
 output handlers and set your reporting level.  _Debug_ issues the most data, _info_ has general workflow notices.  When 
-an exception is issued, a _warning_ is recorded as well.
+an exception is issued, an _error_ is recorded as well.
 
 **$managementApiKey** and **$managementSecret** are your management API key and secret respectively.
 

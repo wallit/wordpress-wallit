@@ -58,12 +58,60 @@ class ResourceAccessTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('quarter-pounder55', $resourceAccess->getUserName());
     }
 
+    public function testFirstName()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->getFirstName());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setFirstName('PAT'));
+        $this->assertEquals('PAT', $resourceAccess->getFirstName());
+    }
+
     public function testAnonymousUser()
     {
         $resourceAccess = new ResourceAccess();
         $this->assertNull($resourceAccess->isAnonymousUser());
         $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setIsAnonymousUser(false));
         $this->assertFalse($resourceAccess->isAnonymousUser());
+    }
+
+    public function testIsAdSupported()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->isAdSupported());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setIsAdSupported(false));
+        $this->assertFalse($resourceAccess->isAdSupported());
+    }
+
+    public function testAdSupportedMessageTitle()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->getAdSupportedMessageTitle());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setAdSupportedMessageTitle('some title here'));
+        $this->assertEquals('some title here', $resourceAccess->getAdSupportedMessageTitle());
+    }
+
+    public function testAdSupportedMessage()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->getAdSupportedMessage());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setAdSupportedMessage('you can have it all'));
+        $this->assertEquals('you can have it all', $resourceAccess->getAdSupportedMessage());
+    }
+
+    public function testAdBlockerStatus()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->getAdBlockerStatus());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setAdBlockerStatus('unknown'));
+        $this->assertEquals('unknown', $resourceAccess->getAdBlockerStatus());
+    }
+
+    public function testIsNoCost()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->isNoCost());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setIsNoCost(true));
+        $this->assertTrue($resourceAccess->isNoCost());
     }
 
     public function testQuota()

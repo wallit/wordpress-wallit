@@ -7,7 +7,7 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Pro\Service;
+namespace iMoneza\WordPress\Service;
 use iMoneza\Connection;
 use iMoneza\Data\None;
 use iMoneza\Data\ResourceAccess;
@@ -19,7 +19,7 @@ use iMoneza\Options\Management\GetProperty;
 use iMoneza\Options\Management\SaveResource;
 use iMoneza\Options\OptionsAbstract;
 use iMoneza\Request\Curl;
-use iMoneza\WordPress\Pro\Filter\ExternalResourceKey;
+use iMoneza\WordPress\Filter\ExternalResourceKey;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 

@@ -25,6 +25,11 @@ abstract class OptionsAbstract implements OptionsInterface
     const REQUEST_TYPE_PUT = 'put';
 
     /**
+     * @var string the post method
+     */
+    const REQUEST_TYPE_POST = 'post';
+
+    /**
      * @return array the populated array of elements from this set of options (note, private vars are not included - yay!)
      */
     public function getPopulated()

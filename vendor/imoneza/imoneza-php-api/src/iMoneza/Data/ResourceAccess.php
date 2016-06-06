@@ -79,9 +79,39 @@ class ResourceAccess extends DataAbstract
     protected $userName;
 
     /**
+     * @var string the visitors first name
+     */
+    protected $firstName;
+
+    /**
      * @var boolean
      */
     protected $isAnonymousUser;
+
+    /**
+     * @var boolean
+     */
+    protected $isAdSupported;
+
+    /**
+     * @var string
+     */
+    protected $adSupportedMessageTitle;
+
+    /**
+     * @var string
+     */
+    protected $adSupportedMessage;
+
+    /**
+     * @var string
+     */
+    protected $adBlockerStatus;
+    
+    /**
+     * @var boolean
+     */
+    protected $isNoCost;
 
     /**
      * @var Quota
@@ -331,6 +361,114 @@ class ResourceAccess extends DataAbstract
     public function setAccessActionUrl($accessActionUrl)
     {
         $this->accessActionUrl = $accessActionUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     * @return ResourceAccess
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAdSupported()
+    {
+        return $this->isAdSupported;
+    }
+
+    /**
+     * @param boolean $isAdSupported
+     * @return ResourceAccess
+     */
+    public function setIsAdSupported($isAdSupported)
+    {
+        $this->isAdSupported = $isAdSupported;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdSupportedMessageTitle()
+    {
+        return $this->adSupportedMessageTitle;
+    }
+
+    /**
+     * @param string $adSupportedMessageTitle
+     * @return ResourceAccess
+     */
+    public function setAdSupportedMessageTitle($adSupportedMessageTitle)
+    {
+        $this->adSupportedMessageTitle = $adSupportedMessageTitle;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdSupportedMessage()
+    {
+        return $this->adSupportedMessage;
+    }
+
+    /**
+     * @param string $adSupportedMessage
+     * @return ResourceAccess
+     */
+    public function setAdSupportedMessage($adSupportedMessage)
+    {
+        $this->adSupportedMessage = $adSupportedMessage;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdBlockerStatus()
+    {
+        return $this->adBlockerStatus;
+    }
+
+    /**
+     * @param string $adBlockerStatus
+     * @return ResourceAccess
+     */
+    public function setAdBlockerStatus($adBlockerStatus)
+    {
+        $this->adBlockerStatus = $adBlockerStatus;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNoCost()
+    {
+        return $this->isNoCost;
+    }
+
+    /**
+     * @param boolean $isNoCost
+     * @return ResourceAccess
+     */
+    public function setIsNoCost($isNoCost)
+    {
+        $this->isNoCost = $isNoCost;
         return $this;
     }
 }

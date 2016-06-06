@@ -11,7 +11,7 @@ use iMoneza\Options\Management\GetResource;
 
 /**
  * Class GetResourceTest
- * @package iMoneza\Tests\Options\Access
+ * @package iMoneza\Tests\Options\Management
  */
 class GetResourceTest extends \PHPUnit_Framework_TestCase
 {

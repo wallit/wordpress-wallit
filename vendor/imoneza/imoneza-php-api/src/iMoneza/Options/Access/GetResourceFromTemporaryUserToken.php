@@ -7,27 +7,15 @@
 
 namespace iMoneza\Options\Access;
 
-use iMoneza\Data\ResourceAccess;
 use iMoneza\Options\ConfigurationTrait;
-use iMoneza\Options\OptionsAbstract;
 
 /**
  * Class GetResourceFromTemporaryUserToken
  * @package iMoneza\Options\Access
  */
-class GetResourceFromTemporaryUserToken extends OptionsAbstract implements AccessInterface
+class GetResourceFromTemporaryUserToken extends AccessConfigurationAbstract
 {
-    use ConfigurationTrait, AccessConfigurationTrait;
-
-    /**
-     * @var string the resource key
-     */
-    protected $ResourceKey = '';
-
-    /**
-     * @var string the url of this resource
-     */
-    protected $ResourceURL = '';
+    use ConfigurationTrait;
 
     /**
      * @var string the user token
@@ -35,9 +23,9 @@ class GetResourceFromTemporaryUserToken extends OptionsAbstract implements Acces
     protected $temporaryUserToken = '';
 
     /**
-     * @var string the IP address
+     * @var string the resource key
      */
-    protected $IP = '';
+    protected $ResourceKey = '';
 
     /**
      * @param mixed $resourceKey
@@ -48,17 +36,7 @@ class GetResourceFromTemporaryUserToken extends OptionsAbstract implements Acces
         $this->ResourceKey = $resourceKey;
         return $this;
     }
-
-    /**
-     * @param mixed $ResourceURL
-     * @return $this
-     */
-    public function setResourceURL($ResourceURL)
-    {
-        $this->ResourceURL = $ResourceURL;
-        return $this;
-    }
-
+    
     /**
      * @param string $temporaryUserToken
      * @return $this
@@ -70,16 +48,6 @@ class GetResourceFromTemporaryUserToken extends OptionsAbstract implements Acces
     }
 
     /**
-     * @param mixed $IP
-     * @return $this
-     */
-    public function setIP($IP)
-    {
-        $this->IP = $IP;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getEndPoint()
@@ -87,19 +55,4 @@ class GetResourceFromTemporaryUserToken extends OptionsAbstract implements Acces
         return "/api/TemporaryUserToken/{$this->accessKey}/{$this->temporaryUserToken}";
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestType()
-    {
-        return self::REQUEST_TYPE_GET;
-    }
-
-    /**
-     * @return ResourceAccess
-     */
-    public function getDataObject()
-    {
-        return new ResourceAccess();
-    }
 }

@@ -44,6 +44,16 @@ class SubscriptionGroup extends DataAbstract
     protected $Period;
 
     /**
+     * @var string
+     */
+    protected $PaywallDescription;
+
+    /**
+     * @var string
+     */
+    protected $PaywallShortDescription;
+    
+    /**
      * @return string
      */
     public function getSubscriptionGroupID()
@@ -130,6 +140,42 @@ class SubscriptionGroup extends DataAbstract
     public function setPeriod($Period)
     {
         $this->Period = $Period;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaywallDescription()
+    {
+        return $this->PaywallDescription;
+    }
+
+    /**
+     * @param string $PaywallDescription
+     * @return SubscriptionGroup
+     */
+    public function setPaywallDescription($PaywallDescription)
+    {
+        $this->PaywallDescription = $PaywallDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaywallShortDescription()
+    {
+        return $this->PaywallShortDescription;
+    }
+
+    /**
+     * @param string $PaywallShortDescription
+     * @return SubscriptionGroup
+     */
+    public function setPaywallShortDescription($PaywallShortDescription)
+    {
+        $this->PaywallShortDescription = $PaywallShortDescription;
         return $this;
     }
 }

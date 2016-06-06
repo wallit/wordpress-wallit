@@ -11,7 +11,7 @@ use iMoneza\Options\Management\GetProperty;
 
 /**
  * Class GetPropertyTest
- * @package iMoneza\Tests\Options\Access
+ * @package iMoneza\Tests\Options\Management
  */
 class GetPropertyTest extends \PHPUnit_Framework_TestCase
 {

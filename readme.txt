@@ -1,7 +1,7 @@
-=== iMoneza PRO ===
+=== iMoneza ===
 Contributors: aaronsaray
 Requires at least: 4.0
-Tested up to: 4.4
+Tested up to: 4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,5 +25,5 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 == Changelog ==
 
 = 2.0 =
-* Initial public release of PRO version
+* Initial public release of updated plugin with new interface and embedded paywall
 

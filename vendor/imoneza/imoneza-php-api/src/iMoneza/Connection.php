@@ -63,7 +63,7 @@ class Connection
      * @param RequestInterface $request
      * @param LoggerInterface $log
      */
-    public function __construct($manageApiKey, $manageApiSecret, $accessApiKey, $accessApiSecret, RequestInterface $request, LoggerInterface $log)
+    public function __construct($manageApiKey, $manageApiSecret, $accessApiKey, $accessApiSecret, RequestInterface $request, LoggerInterface $log = null)
     {
         $this->manageApiKey = $manageApiKey;
         $this->manageApiSecret = $manageApiSecret;
@@ -144,7 +144,7 @@ class Connection
         $this->request->setAuthentication("{$apiKey}:{$token}")
             ->setTimestamp($timestamp);
 
-        $this->log->info("About to send to {$url} via {$requestType} with options of " . get_class($options));
+        $this->info("About to send to {$url} via {$requestType} with options of " . get_class($options));
 
         $this->debug('Beginning request');
         $result = $this->request->execute();
@@ -155,12 +155,12 @@ class Connection
         // really shouldn't happen unless something changes or I missed something
         if (($httpCode = $this->request->getResponseHTTPCode()) !== 200) {
             $message = "HTTP Error Code of {$httpCode} was generated and not caught: " . $result;
-            $this->log->error($message);
+            $this->error($message);
             throw new Exception\TransferError($message);
         }
 
         $this->debug('All error checking passed.');
-        $this->log->info("The request was successful.");
+        $this->info("The request was successful.");
 
         if (!($dataObject instanceof None)) {
             $jsonArray = json_decode($result, true);
@@ -193,11 +193,11 @@ class Connection
 
         switch ($this->request->getResponseHTTPCode()) {
             case 401:
-                $this->log->error($result, ['CODE'=>401]);
+                $this->error($result, ['CODE'=>401]);
                 throw new Exception\AuthenticationFailure($result, 401);
                 break;
             case 403:
-                $this->log->error($result, ['CODE'=>403]);
+                $this->error($result, ['CODE'=>403]);
                 throw new Exception\AccessDenied($result, 403);
                 break;
             case 404:
@@ -209,7 +209,7 @@ class Connection
                 else {
                     $errorMessage = $result;
                 }
-                $this->log->error($errorMessage, ['CODE'=>404]);
+                $this->error($errorMessage, ['CODE'=>404]);
                 throw new Exception\NotFound($errorMessage, 404);
                 break;
         }
@@ -222,6 +222,26 @@ class Connection
      */
     protected function debug($string, $context = [])
     {
-        return $this->log->debug($string, $context);
+        return $this->log ? $this->log->debug($string, $context) : false;
+    }
+
+    /**
+     * @param $string
+     * @param array $context
+     * @return bool|null
+     */
+    protected function info($string, $context = [])
+    {
+        return $this->log ? $this->log->info($string, $context) : false;
+    }
+
+    /**
+     * @param $string
+     * @param array $context
+     * @return bool|null
+     */
+    protected function error($string, $context = [])
+    {
+        return $this->log ? $this->log->error($string, $context) : false;
     }
 }

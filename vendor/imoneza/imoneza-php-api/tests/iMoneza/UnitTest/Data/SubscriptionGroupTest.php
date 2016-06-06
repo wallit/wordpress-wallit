@@ -54,4 +54,20 @@ class SubscriptionGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('iMoneza\Data\SubscriptionGroup', $subscriptionGroup->setPeriod('my blue one'));
         $this->assertEquals('my blue one', $subscriptionGroup->getPeriod());
     }
+
+    public function testPaywallDescription()
+    {
+        $subscriptionGroup = new SubscriptionGroup();
+        $this->assertNull($subscriptionGroup->getPaywallDescription());
+        $this->assertInstanceOf('iMoneza\Data\SubscriptionGroup', $subscriptionGroup->setPaywallDescription('here ya go'));
+        $this->assertEquals('here ya go', $subscriptionGroup->getPaywallDescription());
+    }
+
+    public function testPaywallShortDescription()
+    {
+        $subscriptionGroup = new SubscriptionGroup();
+        $this->assertNull($subscriptionGroup->getPaywallShortDescription());
+        $this->assertInstanceOf('iMoneza\Data\SubscriptionGroup', $subscriptionGroup->setPaywallShortDescription('desc'));
+        $this->assertEquals('desc', $subscriptionGroup->getPaywallShortDescription());
+    }
 }
