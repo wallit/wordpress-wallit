@@ -14,7 +14,8 @@
     "require": {
         "imoneza/imoneza-php-api": "^1.2",
         "pimple/pimple": "^3.0",
-        "aura/view": "^2.2"
+        "aura/view": "^2.2",
+        "monolog/monolog": "^1.19"
     },
     "autoload": {
         "psr-4": {"iMoneza\\WordPress\\": "src"}

@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: iMoneza PRO
- * Plugin URI: https://github.com/iMoneza/wordpress-imoneza-pro
+ * Plugin Name: iMoneza
+ * Plugin URI: https://github.com/iMoneza/wordpress-imoneza
  * Description: This plugin lets you provide paid access control mechanisms on your WordPress by using iMoneza.
  * Author: iMoneza
  * Author URI: http://imoneza.com

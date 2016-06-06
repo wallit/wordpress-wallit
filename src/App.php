@@ -1,29 +1,28 @@
 <?php
 /**
- * Pro Main App
+ * Main App
  *
  * @author Aaron Saray
  */
 
-namespace iMoneza\WordPress\Pro;
+namespace iMoneza\WordPress;
 use iMoneza\Exception;
-use iMoneza\Library\WordPress\Base;
 use iMoneza\WordPress\Controller\Options\RemoteRefresh;
 use iMoneza\WordPress\Filter\ExternalResourceKey;
-
+use Pimple\Container;
 
 /**
  * Class Pro
  * @package iMoneza\WordPress
  */
-class App extends Base
+class App
 {
     use Traits\Options;
 
     /**
      * @var string the url for the client side js
      */
-    const CLIENT_SIDE_JAVASCRIPT_URL = 'https://accessui.imoneza.com/assets/imoneza.js';
+    const CLIENT_SIDE_JAVASCRIPT_URL = 'https://cdn.imoneza.com/paywall.min.js';
     
     /**
      * @var Container
@@ -47,7 +46,7 @@ class App extends Base
 
         // DI Controllers
         $di['controller.options.display'] = function($di) {
-            return new \iMoneza\Library\WordPress\Controller\Options\Display($di['view']);
+            return new \iMoneza\WordPress\Controller\Options\Display($di['view']);
         };
 
         // View
@@ -121,8 +120,16 @@ class App extends Base
      */
     protected function enqueueAdminScripts()
     {
-        parent::enqueueAdminScripts();
+        $pluginBaseUrl = $this->pluginBaseUrl;
 
+        add_action('admin_enqueue_scripts', function () use ($pluginBaseUrl) {
+            wp_register_style('imoneza-admin-css', $pluginBaseUrl . '/assets/css/admin.css');
+            wp_enqueue_style('imoneza-admin-css');
+            wp_enqueue_script('jquery');
+            wp_enqueue_script('jquery-form');
+            wp_enqueue_script('imoneza-admin-js', $pluginBaseUrl . '/assets/js/admin.js', [], false, true);
+        });
+        
         add_action('admin_enqueue_scripts', function () {
             wp_enqueue_style('wp-color-picker');
             wp_enqueue_script('wp-color-picker');
@@ -155,14 +162,8 @@ class App extends Base
      */
     protected function registerActivationDeactivationHooks()
     {
-        /** if standard is installed, deactivate it */
-        register_activation_hook('imoneza-pro/imoneza-pro.php', function() {
-            if (is_plugin_active('imoneza/imoneza.php')) {
-                deactivate_plugins('imoneza/imoneza.php');
-            }
-        });
-        
-        register_deactivation_hook('imoneza-pro/imoneza-pro.php', function() {
+       
+        register_deactivation_hook('imoneza/imoneza.php', function() {
             wp_clear_scheduled_hook('imoneza_hourly');
         });
     }
@@ -271,23 +272,6 @@ class App extends Base
                 }
             }
         });
-    }
-
-    /**
-     * Show a message if both versions are enabled
-     */
-    protected function addAdminNoticeToDisableLite()
-    {
-        include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-
-        if (is_plugin_active('imoneza/imoneza.php')) {
-            add_action('admin_notices', function() {
-                // this is inline because the view renderer has a problem when both versions are installed
-                echo '<div class="notice notice-error"><p>';
-                echo __('iMoneza PRO and Standard versions should not be used at the same time.  Please disable the Standard version before continuing.', 'imoneza');
-                echo '</p></div>';
-            });
-        }
     }
 
     /**
@@ -412,10 +396,14 @@ class App extends Base
      */
     protected function registerAdminAjax()
     {
-        parent::registerAdminAjax();
-
         $di = $this->di;
 
+        add_action('wp_ajax_options_display', function () use ($di) {
+            /** @var \iMoneza\Library\WordPress\Controller\Options\Display $controller */
+            $controller = $di['controller.options.display'];
+            $controller();
+        });
+        
         add_action('wp_ajax_options_pro_first_time', function () use ($di) {
             /** @var \iMoneza\WordPress\Controller\Options\PROFirstTime $controller */
             $controller = $di['controller.options.pro-first-time'];
@@ -461,13 +449,4 @@ class App extends Base
         }
     }
 
-    /**
-     * Add a shortcode for premium adblock notifications
-     */
-    protected function addAdblockNotificationShortCode()
-    {
-        add_shortcode('imoneza_adblock_notification', function() {
-            return '<div id="imoneza-adblock-notification"></div>';
-        });
-    }
 }

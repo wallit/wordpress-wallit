@@ -12,6 +12,10 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
             'iMoneza\\WordPress\\' => 18,
             'iMoneza\\' => 8,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'A' => 
         array (
             'Aura\\View\\_Config\\' => 18,
@@ -27,6 +31,10 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
         'iMoneza\\' => 
         array (
             0 => __DIR__ . '/..' . '/imoneza/imoneza-php-api/src/iMoneza',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Aura\\View\\_Config\\' => 
         array (
