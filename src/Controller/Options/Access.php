@@ -1,13 +1,14 @@
 <?php
 /**
- * Options controller
+ * Access Options controller
  *
  * @author Aaron Saray
  */
 
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
-use iMoneza\WordPress\Service\iMoneza;
+use iMoneza\WordPress\Service;
+use iMoneza\WordPress\Model;
 
 /**
  * Class Access
@@ -16,19 +17,25 @@ use iMoneza\WordPress\Service\iMoneza;
 class Access extends ControllerAbstract
 {
     /**
-     * @var iMoneza
+     * @var Service\iMoneza
      */
     protected $iMonezaService;
 
     /**
+     * @var Service\Post
+     */
+    protected $postService;
+
+    /**
      * Options constructor.
      * @param \Aura\View\View $view
-     * @param iMoneza $iMonezaService
+     * @param Service\iMoneza $iMonezaService
      */
-    public function __construct(\Aura\View\View $view, iMoneza $iMonezaService)
+    public function __construct(\Aura\View\View $view, Service\iMoneza $iMonezaService, Service\Post $postService)
     {
         parent::__construct($view);
         $this->iMonezaService = $iMonezaService;
+        $this->postService = $postService;
     }
 
     /**
@@ -37,7 +44,6 @@ class Access extends ControllerAbstract
     public function __invoke()
     {
         $view = $this->view;
-
         $options = $this->getOptions();
 
         if ($this->isPost()) {
@@ -55,7 +61,7 @@ class Access extends ControllerAbstract
             if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
             }
-            if (!in_array($postOptions['access-control'], [\iMoneza\WordPress\Model\Options::ACCESS_CONTROL_SERVER, \iMoneza\WordPress\Model\Options::ACCESS_CONTROL_CLIENT])) {
+            if (!in_array($postOptions['access-control'], [Model\Options::ACCESS_CONTROL_SERVER, Model\Options::ACCESS_CONTROL_CLIENT])) {
                 $errors[] = 'The access control somehow is not a valid value.';
             }
             if (!$this->iMonezaService->validateResourceAccessApiCredentials()) {
@@ -98,20 +104,13 @@ class Access extends ControllerAbstract
             $remainingTimeIndication = '';
 
             if ($options->isDynamicallyCreateResources()) {
-                // @todo this is dupe code
-                $query = new \WP_Query([
-                    'post_type' =>  'post',
-                    'posts_per_page'    =>  20,
-                    'meta_query'    =>  [
-                        ['key'=>'_pricing-group-id', 'value'=>'', 'compare'=>'NOT EXISTS']
-                    ]
-                ]);
+                $query = $this->postService->getWPQueryPostsNotPriced();
 
                 $postsQueuedForProcessing = $query->found_posts;
-                if ($postsQueuedForProcessing <= 20) {
+                if ($postsQueuedForProcessing <= Service\Post::BATCH_SIZE_PROCESS_TO_IMONEZA) {
                     $remainingTimeIndication = 'These may take up to half an hour.';
                 }
-                else if ($postsQueuedForProcessing <= 40) {
+                else if ($postsQueuedForProcessing <= Service\Post::BATCH_SIZE_PROCESS_TO_IMONEZA * 2) {
                     $remainingTimeIndication = 'These should be done in a little over an hour.';
                 }
                 else {

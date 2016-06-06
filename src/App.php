@@ -52,6 +52,9 @@ class App
         $di['service.imoneza'] = function () use ($di) {
             return new Service\iMoneza($di['filter.external-resource-key']);
         };
+        $di['service.post'] = function () use ($di) {
+            return new Service\Post();
+        };
         
         // DI Controllers
         $di['controller.options.display'] = function ($di) {
@@ -61,7 +64,7 @@ class App
             return new Controller\Options\FirstTime($di['view'], $di['service.imoneza']);
         };
         $di['controller.options.access'] = function ($di) {
-            return new Controller\Options\Access($di['view'], $di['service.imoneza']);
+            return new Controller\Options\Access($di['view'], $di['service.imoneza'], $di['service.post']);
         };
         $di['controller.options.remote-refresh'] = function ($di) {
             return new Controller\Options\RemoteRefresh($di['view'], $di['service.imoneza']);
@@ -401,14 +404,8 @@ class App
             $controller(Controller\Options\RemoteRefresh::DO_NOT_SHOW_VIEW);
 
             if ($options->isDynamicallyCreateResources()) {
-                // get all items that don't have a meta of _pricing-group-id (20 at a time - only use the first page)
-                $query = new \WP_Query([
-                    'post_type' =>  'post',
-                    'posts_per_page'    =>  20,
-                    'meta_query'    =>  [
-                        ['key'=>'_pricing-group-id', 'value'=>'', 'compare'=>'NOT EXISTS']
-                    ]
-                ]);
+                // get all items that are un priced and only on the first page
+                $query = $di['service.post']->getWPQueryPostsNotPriced();
 
                 if ($query->have_posts()) {
                     $service = $di['service.imoneza'];
