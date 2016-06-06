@@ -5,7 +5,7 @@
  * Description: This plugin lets you provide paid access control mechanisms on your WordPress by using iMoneza.
  * Author: iMoneza
  * Author URI: http://imoneza.com
- * Version: 2.0.0
+ * Version: 2.1.0
  * License: GPLv3
  */
 

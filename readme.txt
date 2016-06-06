@@ -24,6 +24,6 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 
 == Changelog ==
 
-= 2.0 =
+= 2.1 =
 * Initial public release of updated plugin with new interface and embedded paywall
 
