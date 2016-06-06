@@ -103,7 +103,6 @@ class App
         $this->addCron();
 
         if (is_admin()) {
-            $this->addAdminNoticeToDisableLite();
             $this->addAdminNoticeConfigNeeded();
             $this->addPostMetaBox();
             $this->addPublishPostAction();
@@ -111,7 +110,6 @@ class App
         else {
             $this->addClientSideAccessControl();
             $this->addServerSideAccessControl();
-            $this->addAdblockNotificationShortCode();
         }
     }
 

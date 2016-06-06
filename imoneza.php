@@ -2,7 +2,7 @@
 /**
  * Plugin Name: iMoneza
  * Plugin URI: https://github.com/iMoneza/wordpress-imoneza
- * Description: This plugin lets you provide paid access control mechanisms on your WordPress by using iMoneza.
+ * Description: Integrate your WordPress site with iMoneza.
  * Author: iMoneza
  * Author URI: http://imoneza.com
  * Version: 2.1.0
@@ -15,5 +15,12 @@ if (!defined('ABSPATH')) {
 }
 
 require_once 'vendor/autoload.php';
+
+/** only used for development */
+if (class_exists('Dotenv\Dotenv')) {
+	$dotenv = new Dotenv\Dotenv(__DIR__);
+	$dotenv->load();
+}
+
 $app = new \iMoneza\WordPress\App(__DIR__);
 $app();

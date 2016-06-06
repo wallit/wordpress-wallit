@@ -19,5 +19,8 @@
     },
     "autoload": {
         "psr-4": {"iMoneza\\WordPress\\": "src"}
+    },
+    "require-dev": {
+        "vlucas/phpdotenv": "^2.2"
     }
 }
