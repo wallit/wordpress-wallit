@@ -179,11 +179,7 @@
                 }
             })
         });
-    });
-
-    /*******************************************************************************************************************/
-    
-    $(function() {
+   
         $('#imoneza-refresh-settings').imonezaAdminAjax({
             data: {
                 action: "options_remote_refresh"

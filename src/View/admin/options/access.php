@@ -3,7 +3,7 @@
 $options = $this->options;
 ?>
 <div class="wrap">
-    <h2 class="branded-header"><img src="<?= $this->assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Access Configuration</h2>
+    <h2 class="branded-header"><img src="<?= $this->assetUrl('images/logo-square.jpg') ?>" alt="logo"> iMoneza Access Configuration</h2>
 
     <div class="i-card text-center">
         <h3 id="imoneza-property-title"><?= esc_html($options->getPropertyTitle()) ?></h3>

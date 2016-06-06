@@ -234,6 +234,10 @@ h2.logo-header {
     display: inline-block;
     width: 7rem;
 }
+#imoneza-post-pricing img {
+    height: 16px;
+    vertical-align: middle;
+}
 
 /** used in user.css but why load this too **/
 .imoneza-custom-indicator {

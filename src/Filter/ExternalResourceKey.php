@@ -18,7 +18,7 @@ class ExternalResourceKey
      * @param \WP_Post $post
      * @return string
      */
-    public function filter(\WP_Post $post)
+    public function __invoke(\WP_Post $post)
     {
         return sprintf('wp-%s', $post->ID);
     }

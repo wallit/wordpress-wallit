@@ -5,7 +5,7 @@ $options = $this->options;
 // this feeels really sloppy right now
 echo '<style>.radio-container{color:' . $options->getPremiumIndicatorCustomColor() . '}.imoneza-custom-indicator{background-color:' . $options->getPremiumIndicatorCustomColor() . '}</style>';
 ?><div class="wrap">
-    <h2 class="branded-header"><img src="<?= $this->assetUrl('/images/logo-square.jpg') ?>" alt="logo"> iMoneza Display Configuration</h2>
+    <h2 class="branded-header"><img src="<?= $this->assetUrl('images/logo-square.jpg') ?>" alt="logo"> iMoneza Display Configuration</h2>
     <form method="post" id="imoneza-options-form" class="imoneza-form">
         <?php wp_nonce_field('imoneza-options'); ?>
         <input type="hidden" name="action" value="options_display" />

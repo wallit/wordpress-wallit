@@ -22,6 +22,12 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 4. Follow setup wizard.
 
+== Frequently Asked Questions ==
+
+= What version of PHP is required? =
+
+5.4+
+
 == Changelog ==
 
 = 2.1 =
