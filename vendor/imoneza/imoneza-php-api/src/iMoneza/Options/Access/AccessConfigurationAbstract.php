@@ -54,7 +54,7 @@ abstract class AccessConfigurationAbstract extends OptionsAbstract implements Ac
     /**
      * @var string
      */
-    protected $AdBlockerStatus = '';
+    protected $AdBlockerStatus;
 
     /**
      * @param mixed $ResourceURL

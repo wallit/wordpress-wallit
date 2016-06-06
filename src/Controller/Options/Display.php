@@ -5,7 +5,7 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\Library\WordPress\Controller\Options;
+namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
 
 /**

@@ -73,8 +73,8 @@ class App
         };
 
         // DI Controllers
-        $di['controller.options.pro-first-time'] = function($di) {
-            return new \iMoneza\WordPress\Controller\Options\ProFirstTime($di['view'], $di['service.imoneza']);
+        $di['controller.options.first-time'] = function($di) {
+            return new \iMoneza\WordPress\Controller\Options\FirstTime($di['view'], $di['service.imoneza']);
         };
         $di['controller.options.access'] = function($di) {
             return new \iMoneza\WordPress\Controller\Options\Access($di['view'], $di['service.imoneza']);
@@ -211,7 +211,7 @@ class App
         });
 
         /** schedule cron if it hasn't been scheduled - making sure we have it configured too */
-        if ($this->getOptions()->isProInitialized()) {
+        if ($this->getOptions()->isInitialized()) {
             if (wp_next_scheduled('imoneza_hourly') === false) wp_schedule_event(time(), 'hourly', 'imoneza_hourly');
         }
     }
@@ -280,11 +280,11 @@ class App
         global $pagenow;
         $options = $this->getOptions();
         $di = $this->di;
-        if (!$options->isProInitialized()) {
+        if (!$options->isInitialized()) {
             if (!($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'imoneza')) {
                 add_action('admin_notices', function() use ($di) {
                     $view = $di['view'];
-                    $view->setView('admin/notify-config-needed-pro');
+                    $view->setView('admin/notify-config-needed');
                     echo $view();
                 });
             }
@@ -302,7 +302,7 @@ class App
             register_setting(self::$optionsKey, self::$optionsKey);
         });
 
-        $settingsControllerString = $this->getOptions()->isProInitialized() ? 'controller.options.access' : 'controller.options.pro-first-time';
+        $settingsControllerString = $this->getOptions()->isInitialized() ? 'controller.options.access' : 'controller.options.first-time';
         add_action('admin_menu', function () use ($settingsControllerString, $di) {
             add_menu_page('iMoneza Settings', 'iMoneza', 'manage_options', 'imoneza', $di[$settingsControllerString],
                 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjAiIHk9IjAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwLCAwLCAxNTAsIDE1MCI+CiAgPGcgaWQ9IkxheWVyXzEiPgogICAgPGc+CiAgICAgIDxwYXRoIGQ9Ik0yNS44MzEsMTExLjc4NiBMNTQuOTcyLDY0LjcyIEw0OS41NjQsNjQuNzIgTDQ5LjU2NCw1MC41IEw3OC4zMDUsNTAuNSBMNzguMzA1LDEwMS4xNzEgTDEwMS41MzcsNjQuNzIgTDk3LjAzMSw2NC43MiBMOTcuNTMxLDUwLjUgTDEyNS4xNyw1MC41IEwxMjUuMTcsMTExLjc4NiBMMTMyLjE4LDExMS43ODYgTDEzMi4xOCwxMjUuNjA1IEwxMDYuNTQ0LDEyNS42MDUgTDEwNi41NDQsMTExLjc4NiBMMTExLjE1MSwxMTEuNzg2IEwxMTEuMTUxLDc1LjIzNSBMNzkuMjA2LDEyNS42MDUgTDY0LjQ4NSwxMjUuNjA1IEw2NC40ODUsNzUuMjM1IEw0Mi4xNTQsMTExLjc4NiBMNDguMzYzLDExMS43ODYgTDQ4LjM2MywxMjUuNjA1IEwxNy44MiwxMjUuNjA1IEwxNy44MiwxMTEuNzg2IHoiIGZpbGw9IiM0NTQ2NDMiLz4KICAgICAgPHBhdGggZD0iTTc1LjA1MywzNS40MDcgQzc1LjA1Myw0MS40ODcgNzAuMTI2LDQ2LjQxOSA2NC4wNDEsNDYuNDE5IEM1Ny45NjEsNDYuNDE5IDUzLjAzMiw0MS40ODcgNTMuMDMyLDM1LjQwNyBDNTMuMDMyLDI5LjMyNyA1Ny45NjEsMjQuMzk1IDY0LjA0MSwyNC4zOTUgQzcwLjEyNiwyNC4zOTUgNzUuMDUzLDI5LjMyNyA3NS4wNTMsMzUuNDA3IiBmaWxsPSIjNDU0NjQzIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K'
@@ -397,14 +397,14 @@ class App
         $di = $this->di;
 
         add_action('wp_ajax_options_display', function () use ($di) {
-            /** @var \iMoneza\Library\WordPress\Controller\Options\Display $controller */
+            /** @var \iMoneza\WordPress\Controller\Options\Display $controller */
             $controller = $di['controller.options.display'];
             $controller();
         });
         
-        add_action('wp_ajax_options_pro_first_time', function () use ($di) {
+        add_action('wp_ajax_options_first_time', function () use ($di) {
             /** @var \iMoneza\WordPress\Controller\Options\FirstTime $controller */
-            $controller = $di['controller.options.pro-first-time'];
+            $controller = $di['controller.options.first-time'];
             $controller();
         });
         add_action('wp_ajax_options_access', function () use ($di) {
