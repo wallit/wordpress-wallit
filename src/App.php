@@ -29,11 +29,6 @@ class App
      * @var Container DI Container 
      */
     protected $di;
-
-    /**
-     * @var string the base URL for this plugin
-     */
-    protected $pluginBaseUrl;
     
     /**
      * Set up DI and Base URL in the contructor
@@ -42,13 +37,8 @@ class App
      */
     public function __construct($pluginDir)
     {
-        $pluginBaseUrl = $this->pluginBaseUrl = sprintf('%s/%s', WP_PLUGIN_URL, plugin_basename($pluginDir));
+        $pluginBaseUrl = sprintf('%s/%s', WP_PLUGIN_URL, plugin_basename($pluginDir));
         $this->di = $di = new Container();
-
-        // DI Services
-        $di['service.imoneza'] = function () {
-            return new Service\iMoneza();
-        };
 
         // DI Filters
         $di['filter.asset-url'] = function () use ($pluginBaseUrl) {
@@ -57,7 +47,12 @@ class App
         $di['filter.external-resource-key'] = function () {
             return new Filter\ExternalResourceKey();
         };
-
+        
+        // DI Services
+        $di['service.imoneza'] = function () use ($di) {
+            return new Service\iMoneza($di['filter.external-resource-key']);
+        };
+        
         // DI Controllers
         $di['controller.options.display'] = function ($di) {
             return new Controller\Options\Display($di['view']);
@@ -220,7 +215,7 @@ class App
                 if ($editing) {
                     $pricingGroupSelected = get_post_meta($post->ID, '_pricing-group-id', true);
                 }
-                if (empty($selected)) {
+                if (empty($pricingGroupSelected)) {
                     $pricingGroupSelected = $options->getDefaultPricingGroup();
                 }
                 $overrideChecked = get_post_meta($post->ID, '_override-pricing', true);

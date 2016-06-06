@@ -70,6 +70,21 @@ class iMoneza
     protected $connection;
 
     /**
+     * @var ExternalResourceKey
+     */
+    protected $externalResourceKeyFilter;
+
+    /**
+     * Create this service
+     * 
+     * @param ExternalResourceKey $externalResourceKeyFilter
+     */
+    public function __construct(ExternalResourceKey $externalResourceKeyFilter)
+    {
+        $this->externalResourceKeyFilter = $externalResourceKeyFilter;
+    }
+
+    /**
      * @param string $managementApiKey
      * @return iMoneza
      */
@@ -163,10 +178,11 @@ class iMoneza
      */
     public function createOrUpdateResource(\WP_Post $post, $pricingGroupId)
     {
-        $keyFilter = new ExternalResourceKey();
+        $filter = $this->externalResourceKeyFilter;
+        
         $options = new SaveResource();
         $options->setPricingGroupId($pricingGroupId)
-            ->setExternalKey($keyFilter->filter($post))
+            ->setExternalKey($filter($post))
             ->setName($post->post_title)
             ->setTitle($post->post_title)
             ->setDescription($post->post_excerpt)
