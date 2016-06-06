@@ -6,15 +6,15 @@
  */
 
 namespace iMoneza\WordPress\Controller\Options;
-use iMoneza\Library\WordPress\Controller\ControllerAbstract;
-use iMoneza\Library\WordPress\Model\Options;
+use iMoneza\WordPress\Controller\ControllerAbstract;
+use iMoneza\WordPress\Model\Options;
 use iMoneza\WordPress\Service\iMoneza;
 
 /**
- * Class ProFirstTime
+ * Class FirstTime
  * @package iMoneza\WordPress\Controller\Options
  */
-class ProFirstTime extends ControllerAbstract
+class FirstTime extends ControllerAbstract
 {
     /**
      * @var iMoneza
@@ -69,7 +69,7 @@ class ProFirstTime extends ControllerAbstract
             $view->setView('admin/options/json-response');
         }
         else {
-            $view->setView('admin/options/pro-first-time');
+            $view->setView('admin/options/first-time');
         }
 
         echo $view();

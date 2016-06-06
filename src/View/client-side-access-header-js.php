@@ -1,7 +1,6 @@
 <script src="<?= $this->javascriptUrl ?>"></script>
 <script>
-    iMoneza.ResourceAccess.init({
-        ApiKey: '<?= $this->apiKey ?>',
-        ResourceKey: '<?= $this->resourceKey ?>'
+    iMoneza.paywall.init('<?= $this->apiKey ?>', {
+        resourceKey: '<?= $this->resourceKey ?>'
     });
 </script>

@@ -5,13 +5,13 @@
  * @author Aaron Saray
  */
 
-namespace iMoneza\Library\WordPress\Controller;
+namespace iMoneza\WordPress\Controller;
 use Aura\View\View;
-use iMoneza\Library\WordPress\Traits;
+use iMoneza\WordPress\Traits;
 
 /**
  * Class ControllerAbstract
- * @package iMoneza\Library\WordPress\Controller
+ * @package iMoneza\WordPress\Controller
  */
 abstract class ControllerAbstract
 {
@@ -33,14 +33,6 @@ abstract class ControllerAbstract
         }
 
         $this->view = $view;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isPro()
-    {
-        return substr(plugin_basename(__FILE__), 0, 11) == 'imoneza-pro';
     }
 
     /**
