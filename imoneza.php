@@ -7,6 +7,7 @@
  * Author URI: http://imoneza.com
  * Version: 2.1.0
  * License: GPLv3
+ * Text Domain: iMoneza
  */
 
 if (!defined('ABSPATH')) {

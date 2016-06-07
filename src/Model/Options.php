@@ -103,7 +103,7 @@ class Options implements \JsonSerializable
         // build pricing groups
         $pricingGroupsArray = [];
         $pricingGroups = $this->pricingGroups;
-        usort($pricingGroups, function($pricingGroupA, $pricingGroupB) {
+        usort($pricingGroups, function(PricingGroup $pricingGroupA, PricingGroup $pricingGroupB) {
             return $pricingGroupA->isDefault() ? -1 : 1;
         });
         /** @var \iMoneza\Data\PricingGroup $pricingGroup */

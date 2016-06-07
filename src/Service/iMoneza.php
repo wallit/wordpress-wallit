@@ -144,7 +144,7 @@ class iMoneza
     public function getResourceAccessRedirectURL(\WP_Post $post, $iMonezaTUT = null)
     {
         $result = false;
-        $keyFilter = new ExternalResourceKey();
+        $keyFilter = $this->externalResourceKeyFilter;
         
         if ($iMonezaTUT) {
             $options = new GetResourceFromTemporaryUserToken();
@@ -155,7 +155,7 @@ class iMoneza
             $options->setUserToken($this->getUserTokenFromCookie());
         }
         
-        $options->setResourceKey($keyFilter->filter($post))
+        $options->setResourceKey($keyFilter($post))
             ->setIP(Helper::getCurrentIP());
         $this->prepareForRequest($options, self::API_TYPE_ACCESS);
 
@@ -195,7 +195,7 @@ class iMoneza
             $result = true;
         }
         catch (Exception\iMoneza $e) {
-            $this->lastError = sprintf('Something went wrong with the system: %s', $e->getMessage());
+            $this->lastError = sprintf(__('Something went wrong with the system: %s', 'iMoneza'), $e->getMessage());
         }
 
         return $result;
@@ -215,13 +215,13 @@ class iMoneza
             $result = $this->getConnectionInstance()->request($options, new \iMoneza\Data\Property());
         }
         catch (Exception\NotFound $e) {
-            $this->lastError = "Oh no!  Looks like your Management API Key isn't working. Look closely - does it look right?";
+            $this->lastError = __("Oh no!  Looks like your Management API Key isn't working. Look closely - does it look right?", 'iMoneza');
         }
         catch (Exception\AuthenticationFailure $e) {
-            $this->lastError = "Looks like the API key and secret don't match properly.  Go back and make sure you're using the exact API Management KEY and SECRET.  Thanks!";
+            $this->lastError = __("Looks like the API key and secret don't match properly.  Go back and make sure you're using the exact API Management KEY and SECRET.  Thanks!", 'iMoneza');
         }
         catch (Exception\iMoneza $e) {
-            $this->lastError = sprintf('Something went wrong with the system: %s', $e->getMessage());
+            $this->lastError = sprintf(__('Something went wrong with the system: %s', 'iMoneza'), $e->getMessage());
         }
 
         return $result;
@@ -243,13 +243,13 @@ class iMoneza
             $result = true;
         }
         catch (Exception\NotFound $e) {
-            $this->lastError = "It seems like your resource access API key is wrong. Check and see if there are any obvious problems - otherwise, delete it and try again please.";
+            $this->lastError = __("It seems like your resource access API key is wrong. Check and see if there are any obvious problems - otherwise, delete it and try again please.", 'iMoneza');
         }
         catch (Exception\AuthenticationFailure $e) {
-            $this->lastError = "Your resource access API secret looks wrong.  Can you give it another shot?";
+            $this->lastError = __("Your resource access API secret looks wrong.  Can you give it another shot?", 'iMoneza');
         }
         catch (Exception\iMoneza $e) {
-            $this->lastError = sprintf('Something went wrong with the system: %s', $e->getMessage());
+            $this->lastError = sprintf(__('Something went wrong with the system: %s', 'iMoneza'), $e->getMessage());
         }
 
         return $result;

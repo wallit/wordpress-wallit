@@ -3,7 +3,7 @@
 $options = $this->options;
 ?>
 <div class="wrap">
-    <h2 class="branded-header"><img src="<?= $this->assetUrl('images/logo-square.jpg') ?>" alt="logo"> iMoneza Access Configuration</h2>
+    <h2 class="branded-header"><img src="<?= $this->assetUrl('images/logo-square.jpg') ?>" alt="logo"> <?= __("iMoneza Access Configuration", 'iMoneza') ?></h2>
 
     <div class="i-card text-center">
         <h3 id="imoneza-property-title"><?= esc_html($options->getPropertyTitle()) ?></h3>
@@ -12,7 +12,7 @@ $options = $this->options;
     <?php if ($this->firstTimeSuccess) : ?>
         <div class="i-card" id="first-time-success-message">
             <p class="text-center success large">
-                <span class="dashicons dashicons-thumbs-up"></span> Way to go!  Now, let's finish this up!
+                <span class="dashicons dashicons-thumbs-up"></span> <?= __("Way to go!  Now, let's finish this up!", 'iMoneza') ?>
             </p>
         </div>
     <?php endif; ?>
@@ -24,62 +24,62 @@ $options = $this->options;
         <section class="row">
             <div>
                 <div class="i-card">
-                    <h3><span class="dashicons dashicons-shield"></span> API Access Credentials</h3>
+                    <h3><span class="dashicons dashicons-shield"></span> <?= __("API Access Credentials", 'iMoneza') ?></h3>
                     <div class="form-row">
-                        <label for="management_api_key">Resource Management API Key:</label>
+                        <label for="management_api_key"><?= __("Resource Management API Key:", 'iMoneza') ?></label>
                         <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options->getManagementApiKey()) ?>" required class="large-text" />
                     </div>
                     <div class="form-row">
-                        <label for="management_api_secret">Resource Management API Secret:</label>
+                        <label for="management_api_secret"><?= __("Resource Management API Secret:", 'iMoneza') ?></label>
                         <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options->getManagementApiSecret()) ?>"required class="large-text" />
                     </div>
                     <hr>
                     <div class="form-row">
-                        <label for="access_api_key">Resource Access API Key:</label>
+                        <label for="access_api_key"><?= __("Resource Access API Key:", 'iMoneza') ?></label>
                         <input id="access_api_key" type="text" name="imoneza-options[access-api-key]" value="<?= esc_attr($options->getAccessApiKey()) ?>" required class="large-text" />
                     </div>
                     <div class="form-row">
-                        <label for="access_api_secret">Resource Access API Secret:</label>
+                        <label for="access_api_secret"><?= __("Resource Access API Secret:", 'iMoneza') ?></label>
                         <input id="access_api_secret" type="text" name="imoneza-options[access-api-secret]" value="<?= esc_attr($options->getAccessApiSecret()) ?>" required class="large-text" />
                     </div>
                 </div>
             </div>
             <aside>
                 <div class="i-card">
-                    <h4>API Access</h4>
+                    <h4><?= __("API Access", 'iMoneza') ?></h4>
                     <p>
-                        Your secure iMoneza data and configuration is hosted remotely.  To identify your website and account,
+                        <?= __("Your secure iMoneza data and configuration is hosted remotely.  To identify your website and account,
                         while keeping you fully secure, we need access to specific API Keys.  Protect these like you would protect
-                        your username and password on any site.
+                        your username and password on any site.", 'iMoneza') ?>
                     </p>
-                    <h5>Resource Management API</h5>
-                    <p>This API allows your website to modify your settings and account information with iMoneza.  It also allows us to identify you and provide you the proper level of customization.</p>
-                    <h5>Resource Access API</h5>
-                    <p>This API is used primarily to connect to your content and users.  This is the basis of your paywall measurement and enforcement.</p>
+                    <h5><?= __("Resource Management API", 'iMoneza') ?></h5>
+                    <p><?= __("This API allows your website to modify your settings and account information with iMoneza.  It also allows us to identify you and provide you the proper level of customization.", 'iMoneza') ?></p>
+                    <h5><?= __("Resource Access API", 'iMoneza') ?></h5>
+                    <p><?= __("This API is used primarily to connect to your content and users.  This is the basis of your PayWall measurement and enforcement.", 'iMoneza') ?></p>
                 </div>
             </aside>
         </section>
         <section class="row">
             <div>
                 <div class="i-card">
-                    <h3><span class="dashicons dashicons-admin-network"></span> Access Control Method</h3>
+                    <h3><span class="dashicons dashicons-admin-network"></span> <?= __("Access Control Method", 'iMoneza') ?></h3>
                     <div class="form-row">
-                        <label class="toggle-label">Select an Access Control:</label>
+                        <label class="toggle-label"><?= __("Select an Access Control:", 'iMoneza') ?></label>
                         <span class="toggle">
                             <input type="radio" id="access_control_client" name="imoneza-options[access-control]" value="C"<?php if ($options->isAccessControlClient()) echo " checked"; ?>>
-                            <label for="access_control_client">Client Side</label>
+                            <label for="access_control_client"><?= __("Client Side", 'iMoneza') ?></label>
                             <input type="radio" id="access_control_server" name="imoneza-options[access-control]" value="S"<?php if ($options->isAccessControlServer()) echo " checked"; ?>>
-                            <label for="access_control_server">Server Side</label>
+                            <label for="access_control_server"><?= __("Server Side", 'iMoneza') ?></label>
                         </span>
                     </div>
                 </div>
             </div>
             <aside>
                 <div class="i-card">
-                    <h4>Which Method is For Me?</h4>
+                    <h4><?= __("Which Method is For Me?", 'iMoneza') ?></h4>
                     <p>
-                        Client-side access is usually the best choice for most content.  Your content is protected quickly and easily.
-                        For premium, ultra-high quality content, server-side access provides a slower, but more robust security model.
+                        <?= __("Client-side access is usually the best choice for most content.  Your content is protected quickly and easily.
+                        For premium, ultra-high quality content, server-side access provides a slower, but more robust security model.", 'iMoneza') ?>
                     </p>
                 </div>
             </aside>
@@ -90,17 +90,21 @@ $options = $this->options;
         <section class="row" id="dynamically-create-resources-notification" <?= $dcrnStyle ?>>
             <div>
                 <div class="i-card">
-                    <h3><span class="dashicons dashicons-migrate"></span> Dynamically Create Resources</h3>
+                    <h3><span class="dashicons dashicons-migrate"></span> <?= __("Dynamically Create Resources", 'iMoneza') ?></h3>
                     <?php
                     if ($this->postsQueuedForProcessing) {
                         echo '<p>';
-                        echo 'Your resources are being added to iMoneza. ';
-                        echo 'There ' . ngettext('is', 'are', $this->postsQueuedForProcessing) . ' ' . $this->postsQueuedForProcessing . ' remaining. ';
+                        echo __('Your resources are being added to iMoneza.', 'iMoneza');
+                        echo ' ';
+                        printf(_('There is %s remaining.', 'There are %s remaining.', $this->postQueuedForProcessing, 'iMoneza'), $this->postQueuedForProcessing);
+                        echo ' ';
                         echo $this->remainingTimeIndication;
                         echo '</p>';
                     }
                     else {
-                        echo '<p>Congratulations!  All of your content is managed by iMoneza.</p>';
+                        echo '<p>';
+                        echo __('Congratulations!  All of your content is managed by iMoneza.', 'iMoneza');
+                        echo '</p>';
                     }
                     ?>
                 </div>
@@ -109,10 +113,10 @@ $options = $this->options;
         <div class="i-card">
             <div class="form-row form-row-spacing-top clearfix">
                 <span class="alignleft">
-                <?php submit_button('Save Settings', 'primary', 'submit', false); ?>
+                <?php submit_button(__('Save Settings', 'iMoneza'), 'primary', 'submit', false); ?>
                 </span>
                 <span class="alignright">
-                    <a href="#" class="button alignright" id="imoneza-refresh-settings">Refresh Options from iMoneza.com</a>
+                    <a href="#" class="button alignright" id="imoneza-refresh-settings"><?= __("Refresh Options from iMoneza.com", 'iMoneza') ?></a>
                 </span>
             </div>
         </div>
