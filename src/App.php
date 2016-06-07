@@ -127,6 +127,12 @@ class App
                 , 100);
             add_submenu_page('imoneza', 'iMoneza Settings', 'Access Settings', 'manage_options', 'imoneza');
             add_submenu_page('imoneza', 'iMoneza Settings', 'Display Settings', 'manage_options', 'imoneza-display', $di['controller.options.display']);
+            
+            // this is necessary because you can't use full URLs in add_submenu_page
+            global $submenu;
+            $url = 'https://manageui.imoneza.com';
+            if ($envUrl = getenv('MANAGEMENT_UI_URL')) $url = $envUrl;
+            $submenu['imoneza'][] = ['Manage on iMoneza.com', 'manage_options', $url];
         });
     }
 
