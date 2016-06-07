@@ -23,5 +23,9 @@ if (class_exists('Dotenv\Dotenv')) {
 	$dotenv->load();
 }
 
+if (is_admin()) {
+	new \WPOG\UpdateWatcher(__FILE__, 'iMoneza', 'wordpress-imoneza');
+}
+
 $app = new \iMoneza\WordPress\App(__DIR__);
 $app();

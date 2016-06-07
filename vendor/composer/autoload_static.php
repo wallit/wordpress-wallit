@@ -12,6 +12,10 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
             'iMoneza\\WordPress\\' => 18,
             'iMoneza\\' => 8,
         ),
+        'W' => 
+        array (
+            'WPOG\\' => 5,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
@@ -35,6 +39,10 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
         'iMoneza\\' => 
         array (
             0 => __DIR__ . '/..' . '/imoneza/imoneza-php-api/src/iMoneza',
+        ),
+        'WPOG\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wpog/wordpress-plugin-on-github/src',
         ),
         'Monolog\\' => 
         array (
@@ -64,6 +72,10 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
             'Pimple' => 
             array (
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
             ),
         ),
     );

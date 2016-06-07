@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'iMoneza\\WordPress\\' => array($baseDir . '/src'),
     'iMoneza\\' => array($vendorDir . '/imoneza/imoneza-php-api/src/iMoneza'),
+    'WPOG\\' => array($vendorDir . '/wpog/wordpress-plugin-on-github/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Aura\\View\\_Config\\' => array($vendorDir . '/aura/view/config'),
