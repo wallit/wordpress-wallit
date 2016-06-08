@@ -16,7 +16,7 @@
         "pimple/pimple": "^3.0",
         "aura/view": "^2.2",
         "monolog/monolog": "^1.19",
-        "wpog/wordpress-plugin-on-github": "^0.1.5"
+        "wpog/wordpress-plugin-on-github": "^0.1.6"
     },
     "autoload": {
         "psr-4": {"iMoneza\\WordPress\\": "src"}

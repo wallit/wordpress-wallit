@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "46638d42027de619be3b6ec3600d4845",
-    "content-hash": "91a3c237f488ce1daa348bbf76bc1659",
+    "hash": "74ba605b8c7d8f593a124391bca704a9",
+    "content-hash": "68b7aa0907b93f10f5800df0541ada20",
     "packages": [
         {
             "name": "aura/view",
@@ -325,16 +325,16 @@
         },
         {
             "name": "wpog/wordpress-plugin-on-github",
-            "version": "0.1.5",
+            "version": "0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aaronsaray/wordpress-plugin-on-github.git",
-                "reference": "fdb801f3110a355bf7936cfa70899ca07b25faa3"
+                "reference": "bcb87554e9bcbd9bca21ad23a38dbfeb2c29263e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aaronsaray/wordpress-plugin-on-github/zipball/fdb801f3110a355bf7936cfa70899ca07b25faa3",
-                "reference": "fdb801f3110a355bf7936cfa70899ca07b25faa3",
+                "url": "https://api.github.com/repos/aaronsaray/wordpress-plugin-on-github/zipball/bcb87554e9bcbd9bca21ad23a38dbfeb2c29263e",
+                "reference": "bcb87554e9bcbd9bca21ad23a38dbfeb2c29263e",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                 }
             ],
             "description": "A PHP library to handle WordPress plugin updates from GitHub",
-            "time": "2016-06-08 13:46:48"
+            "time": "2016-06-08 13:59:12"
         }
     ],
     "packages-dev": [

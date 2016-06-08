@@ -72,12 +72,10 @@ class UpdateWatcher
      */
     public function filterPreSetSiteTransientUpdatePlugins($transient)
     {
-        if (empty($transient->response)) return $transient;
-
         $this->updatePluginData();
         $this->updateGithubData();
 
-        if (version_compare($this->githubLatestRelease['tag_name'], $transient->response[$this->pluginBaseName]->new_version) === 1) {
+        if (version_compare($this->githubLatestRelease['tag_name'], $this->pluginData['Version']) === 1) {
             $update = new \stdClass();
             $update->slug = $this->pluginSlug;
             $update->new_version = $this->githubLatestRelease['tag_name'];
