@@ -27,7 +27,16 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 
 If you see a need, please put in a ticket.  Or better yet, fork this and submit your own pull request.
 
+### Development
+
 To start development, do the following:
 
 1. `composer install` - this will install the development dependencies.
 2. Copy `.env.example` to `.env` and update the properties if need be
+
+### Release Methodology
+
+1. Merge all changes back into master.
+2. Create a new tag locally and push to remote.
+3. Create a `imoneza.zip` file using `git archive` of the project
+4. Go to GitHub and create a Release from the tag, attach the `imoneza.zip` file and put changelog items in the release notes.
