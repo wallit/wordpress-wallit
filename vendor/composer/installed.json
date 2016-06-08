@@ -381,24 +381,24 @@
     },
     {
         "name": "wpog/wordpress-plugin-on-github",
-        "version": "0.1.6",
-        "version_normalized": "0.1.6.0",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aaronsaray/wordpress-plugin-on-github.git",
-            "reference": "bcb87554e9bcbd9bca21ad23a38dbfeb2c29263e"
+            "reference": "b79a81a5316f26cad6f0a5e992ccc9252187f9b5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aaronsaray/wordpress-plugin-on-github/zipball/bcb87554e9bcbd9bca21ad23a38dbfeb2c29263e",
-            "reference": "bcb87554e9bcbd9bca21ad23a38dbfeb2c29263e",
+            "url": "https://api.github.com/repos/aaronsaray/wordpress-plugin-on-github/zipball/b79a81a5316f26cad6f0a5e992ccc9252187f9b5",
+            "reference": "b79a81a5316f26cad6f0a5e992ccc9252187f9b5",
             "shasum": ""
         },
         "require": {
             "erusev/parsedown": "^1.6",
             "php": ">=5.4.0"
         },
-        "time": "2016-06-08 13:59:12",
+        "time": "2016-06-08 15:42:40",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

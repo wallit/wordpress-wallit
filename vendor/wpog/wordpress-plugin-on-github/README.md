@@ -45,3 +45,8 @@ install this as well.
 **Should I be versioning my composer vendor library in my WordPress plugin?  I thought you normally didn't do this.**
 
 At this point, you need to version the composer vendor folder in your WordPress plugins.  In the future, hopefully it won't be like this. :)
+
+**I get warnings when I do an update on a WordPress plugin with this file**
+
+I know.  I don't know a good solution at this point - but it still works.  WordPress should be checking if a file exists before
+opening it - but they don't.
