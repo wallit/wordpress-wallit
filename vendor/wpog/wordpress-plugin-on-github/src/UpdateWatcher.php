@@ -24,6 +24,11 @@ class UpdateWatcher
     protected $pluginBaseName = '';
 
     /**
+     * @var string the plugin slug like `my-plugin`
+     */
+    protected $pluginSlug = '';
+
+    /**
      * @var array plugin data gathered from the header of the plugin
      */
     protected $pluginData = [];
@@ -72,7 +77,7 @@ class UpdateWatcher
 
         if (version_compare($this->githubLatestRelease['tag_name'], $transient->checked[$this->pluginBaseName]) === 1) {
             $update = new \stdClass();
-            $update->slug = $this->pluginBaseName;
+            $update->slug = $this->pluginSlug;
             $update->new_version = $this->githubLatestRelease['tag_name'];
             $update->url = $this->pluginData['PluginURI'];
             $update->package = $this->githubLatestRelease['zipball_url'];
@@ -97,13 +102,13 @@ class UpdateWatcher
         if (empty($response->slug)) return false;
         
         $this->updatePluginData();
-        if ($response->slug != $this->pluginBaseName) return false;
+        if ($response->slug != $this->pluginSlug) return false;
         
         // it's ours, so update the data
         $this->updateGithubData();
 
         $response->last_updated = $this->githubLatestRelease['published_at'];
-        $response->slug = $this->pluginBaseName;
+        $response->slug = $this->pluginSlug;
         $response->name  = $this->pluginData["Name"];
         $response->version = $this->githubLatestRelease['tag_name'];
         $response->author = $this->pluginData["AuthorName"];
@@ -155,6 +160,7 @@ class UpdateWatcher
     protected function updatePluginData()
     {
         $this->pluginBaseName = \plugin_basename($this->pluginFile);
+        $this->pluginSlug = dirname($this->pluginBaseName);
         $this->pluginData = \get_plugin_data($this->pluginFile);
     }
 

@@ -325,16 +325,16 @@
         },
         {
             "name": "wpog/wordpress-plugin-on-github",
-            "version": "0.1.3",
+            "version": "0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aaronsaray/wordpress-plugin-on-github.git",
-                "reference": "0017cbf67e28d2f79b27d917e262b159ad07c283"
+                "reference": "20db826a16eacd08767d9a8c45a7c8866f2537c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aaronsaray/wordpress-plugin-on-github/zipball/0017cbf67e28d2f79b27d917e262b159ad07c283",
-                "reference": "0017cbf67e28d2f79b27d917e262b159ad07c283",
+                "url": "https://api.github.com/repos/aaronsaray/wordpress-plugin-on-github/zipball/20db826a16eacd08767d9a8c45a7c8866f2537c3",
+                "reference": "20db826a16eacd08767d9a8c45a7c8866f2537c3",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                 }
             ],
             "description": "A PHP library to handle WordPress plugin updates from GitHub",
-            "time": "2016-06-07 22:20:32"
+            "time": "2016-06-08 13:27:06"
         }
     ],
     "packages-dev": [
