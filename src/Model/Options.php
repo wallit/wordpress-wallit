@@ -330,7 +330,7 @@ class Options implements \JsonSerializable
     {
         $url = $this->javascriptCdnUrl;
         if ($getDefault && !$url) {
-            $url = self::DEFAULT_ACCESS_API_URL;
+            $url = self::DEFAULT_JAVASCRIPT_CDN_URL;
         }
         return $url;
     }
