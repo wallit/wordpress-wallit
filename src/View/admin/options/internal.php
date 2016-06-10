@@ -25,7 +25,7 @@ $options = $this->options;
                     </div>
                     <div class="form-row">
                         <label for="manage_ui_url"><?= __("Manage UI URL:", 'iMoneza') ?></label>
-                        <input id="manage_ui_url" type="text" name="imoneza-options[manage-ui-url]" placeholder="<?= \iMoneza\WordPress\Model\Options::DEFAULT_MANAGE_UI_URL ?>" value="<?= esc_attr($options->getJavascriptCdnUrl()) ?>" class="large-text" />
+                        <input id="manage_ui_url" type="text" name="imoneza-options[manage-ui-url]" placeholder="<?= \iMoneza\WordPress\Model\Options::DEFAULT_MANAGE_UI_URL ?>" value="<?= esc_attr($options->getManageUiUrl()) ?>" class="large-text" />
                     </div>
                 </div>
             </div>

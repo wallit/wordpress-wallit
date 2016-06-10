@@ -22,11 +22,6 @@ class App
     use Traits\Options;
 
     /**
-     * @var string the url for the client side js
-     */
-    const CLIENT_SIDE_JAVASCRIPT_URL = 'https://cdn.imoneza.com/paywall.min.js';
-    
-    /**
      * @var Container DI Container 
      */
     protected $di;
@@ -349,10 +344,7 @@ class App
         add_action('wp_head', function() use ($di, $options) {
             if ($options->isAccessControlClient() && $options->getAccessApiKey()) {
                 $view = $di['view'];
-
-                $js = self::CLIENT_SIDE_JAVASCRIPT_URL;
-                if ($overrideJs = getenv('CLIENT_SIDE_JAVASCRIPT_URL')) $js = $overrideJs;
-
+                
                 $resourceKey = '';
                 $post = is_single() ? get_post() : null;
                 if ($post) {
@@ -360,7 +352,7 @@ class App
                 }
                 
                 $view->setView('client-side-access-header-js');
-                $view->setData(['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$resourceKey, 'javascriptUrl'=>$js]);
+                $view->setData(['apiKey'=>$options->getAccessApiKey(), 'resourceKey'=>$resourceKey, 'javascriptUrl'=>$options->getJavascriptCdnUrl(Options::GET_DEFAULT)]);
                 echo $view();
             }
         });
