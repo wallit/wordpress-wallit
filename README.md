@@ -34,6 +34,8 @@ If you need to work against test or qa, please visit the slug of `imoneza-config
 ### Release Methodology
 
 1. Merge all changes back into master.
-2. Create a new tag locally and push to remote.
-3. Create a `imoneza.zip` file using `git archive` of the project
-4. Go to GitHub and create a Release from the tag, attach the `imoneza.zip` file and put changelog items in the release notes.
+2. Pick the new release number
+3. Change the plugin header to the new release number
+4. Create a new tag with that new release number locally and push to remote.
+5. Create a `imoneza.zip` file using `git archive` of the project
+6. Go to GitHub and create a Release from the tag, attach the `imoneza.zip` file and put changelog items in the release notes.
