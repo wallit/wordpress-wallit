@@ -13,9 +13,10 @@ Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMon
 ## Installation
 
 1. Set up an iMoneza account, create an iMoneza property, and generate a set of API keys.
-2. Upload imoneza.zip through the plugins installer in WordPress.
-3. Activate the plugin through the 'Plugins' menu in WordPress.
-4. Follow setup wizard.
+2. Visit the [latest release link](https://github.com/iMoneza/wordpress-imoneza/releases/latest) and download `imoneza.zip` 
+3. Upload imoneza.zip through the plugins installer in WordPress
+4. Activate the plugin through the 'Plugins' menu in WordPress.
+5. Follow setup wizard.
 
 ## Frequently Asked Questions
 
