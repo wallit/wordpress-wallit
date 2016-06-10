@@ -38,6 +38,7 @@ class FirstTime extends ControllerAbstract
     public function __invoke()
     {
         $view = $this->view;
+        $options = $this->getOptions();
 
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
@@ -45,12 +46,15 @@ class FirstTime extends ControllerAbstract
             $postedOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
             $results = $this->getGenericAjaxResultsObject();
 
-            $this->iMonezaService->setManagementApiKey($postedOptions['management-api-key'])->setManagementApiSecret($postedOptions['management-api-secret']);
+            $this->iMonezaService
+                ->setManagementApiKey($postedOptions['management-api-key'])
+                ->setManagementApiSecret($postedOptions['management-api-secret'])
+                ->setManageApiUrl($options->getManageApiUrl(Model\Options::GET_DEFAULT))
+                ->setAccessApiUrl($options->getAccessApiUrl(Model\Options::GET_DEFAULT));
 
             if ($propertyOptions = $this->iMonezaService->getProperty()) {
-                $options = $this->getOptions();
-                $options->setManagementApiKey($postedOptions['management-api-key'])
-                    ->setManagementApiSecret($postedOptions['management-api-secret'])
+                $options->setManageApiKey($postedOptions['management-api-key'])
+                    ->setManageApiSecret($postedOptions['management-api-secret'])
                     ->setPropertyTitle($propertyOptions->getTitle())
                     ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())
                     ->setAccessControl(Model\Options::ACCESS_CONTROL_CLIENT)

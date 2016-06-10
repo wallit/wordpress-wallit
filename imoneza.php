@@ -17,12 +17,6 @@ if (!defined('ABSPATH')) {
 
 require_once 'vendor/autoload.php';
 
-/** only used for development */
-if (class_exists('Dotenv\Dotenv')) {
-	$dotenv = new Dotenv\Dotenv(__DIR__);
-	$dotenv->load();
-}
-
 if (is_admin()) {
 	new \WPOG\UpdateWatcher(__FILE__, 'iMoneza', 'wordpress-imoneza');
 }

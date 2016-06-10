@@ -20,10 +20,6 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
         array (
             'Monolog\\' => 8,
         ),
-        'D' => 
-        array (
-            'Dotenv\\' => 7,
-        ),
         'A' => 
         array (
             'Aura\\View\\_Config\\' => 18,
@@ -47,10 +43,6 @@ class ComposerStaticInit1123def928aa54fee098741804e2b6c4
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
-        'Dotenv\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
         'Aura\\View\\_Config\\' => 
         array (

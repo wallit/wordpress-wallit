@@ -29,10 +29,7 @@ If you see a need, please put in a ticket.  Or better yet, fork this and submit 
 
 ### Development
 
-To start development, do the following:
-
-1. `composer install` - this will install the development dependencies.
-2. Copy `.env.example` to `.env` and update the properties if need be
+If you need to work against test or qa, please visit the slug of `imoneza-config`, a hidden menu item.
 
 ### Release Methodology
 

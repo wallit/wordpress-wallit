@@ -42,6 +42,16 @@ class iMoneza
     /**
      * @var string
      */
+    protected $manageApiUrl;
+
+    /**
+     * @var string
+     */
+    protected $accessApiUrl;
+    
+    /**
+     * @var string
+     */
     protected $managementApiKey;
 
     /**
@@ -84,6 +94,26 @@ class iMoneza
         $this->externalResourceKeyFilter = $externalResourceKeyFilter;
     }
 
+    /**
+     * @param string $manageApiUrl
+     * @return iMoneza
+     */
+    public function setManageApiUrl($manageApiUrl)
+    {
+        $this->manageApiUrl = $manageApiUrl;
+        return $this;
+    }
+
+    /**
+     * @param string $accessApiUrl
+     * @return iMoneza
+     */
+    public function setAccessApiUrl($accessApiUrl)
+    {
+        $this->accessApiUrl = $accessApiUrl;
+        return $this;
+    }
+    
     /**
      * @param string $managementApiKey
      * @return iMoneza
@@ -278,9 +308,7 @@ class iMoneza
     protected function prepareForRequest(OptionsAbstract $options, $type = self::API_TYPE_MANAGE)
     {
         $this->lastError = '';
-        if ($baseUrl = getenv($type == self::API_TYPE_MANAGE ? 'MANAGEMENT_API_URL' : 'ACCESS_API_URL')) {
-            $options->setApiBaseURL($baseUrl);
-        }
+        $options->setApiBaseURL($type == self::API_TYPE_MANAGE ? $this->manageApiUrl : $this->accessApiUrl);
     }
 
     /**

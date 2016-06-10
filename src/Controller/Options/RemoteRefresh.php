@@ -7,6 +7,7 @@
 
 namespace iMoneza\WordPress\Controller\Options;
 use iMoneza\WordPress\Controller\ControllerAbstract;
+use iMoneza\WordPress\Model\Options;
 use iMoneza\WordPress\Service;
 
 /**
@@ -47,9 +48,11 @@ class RemoteRefresh extends ControllerAbstract
         $results = $this->getGenericAjaxResultsObject();
 
         $this->iMonezaService
-            ->setManagementApiKey($options->getManagementApiKey())
-            ->setManagementApiSecret($options->getManagementApiSecret());
-
+            ->setManagementApiKey($options->getManageApiKey())
+            ->setManagementApiSecret($options->getManageApiSecret())
+            ->setManageApiUrl($options->getManageApiUrl(Options::GET_DEFAULT))
+            ->setAccessApiUrl($options->getAccessApiUrl(Options::GET_DEFAULT));
+        
         if ($propertyOptions = $this->iMonezaService->getProperty()) {
             $options->setPricingGroupsBubbleDefaultToTop($propertyOptions->getPricingGroups())
                 ->setDynamicallyCreateResources($propertyOptions->isDynamicallyCreateResources())

@@ -27,11 +27,11 @@ $options = $this->options;
                     <h3><span class="dashicons dashicons-shield"></span> <?= __("API Access Credentials", 'iMoneza') ?></h3>
                     <div class="form-row">
                         <label for="management_api_key"><?= __("Resource Management API Key:", 'iMoneza') ?></label>
-                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options->getManagementApiKey()) ?>" required class="large-text" />
+                        <input id="management_api_key" type="text" name="imoneza-options[management-api-key]" value="<?= esc_attr($options->getManageApiKey()) ?>" required class="large-text" />
                     </div>
                     <div class="form-row">
                         <label for="management_api_secret"><?= __("Resource Management API Secret:", 'iMoneza') ?></label>
-                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options->getManagementApiSecret()) ?>"required class="large-text" />
+                        <input id="management_api_secret" type="text" name="imoneza-options[management-api-secret]" value="<?= esc_attr($options->getManageApiSecret()) ?>"required class="large-text" />
                     </div>
                     <hr>
                     <div class="form-row">

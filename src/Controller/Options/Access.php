@@ -56,7 +56,9 @@ class Access extends ControllerAbstract
                 ->setManagementApiKey($postOptions['management-api-key'])
                 ->setManagementApiSecret($postOptions['management-api-secret'])
                 ->setAccessApiKey($postOptions['access-api-key'])
-                ->setAccessApiSecret($postOptions['access-api-secret']);
+                ->setAccessApiSecret($postOptions['access-api-secret'])
+                ->setManageApiUrl($options->getManageApiUrl(Model\Options::GET_DEFAULT))
+                ->setAccessApiUrl($options->getAccessApiUrl(Model\Options::GET_DEFAULT));
 
             if (!($property = $this->iMonezaService->getProperty())) {
                 $errors[] = $this->iMonezaService->getLastError();
@@ -74,8 +76,8 @@ class Access extends ControllerAbstract
                 $options->setAccessControl($postOptions['access-control'])
                     ->setAccessApiKey($postOptions['access-api-key'])
                     ->setAccessApiSecret($postOptions['access-api-secret'])
-                    ->setManagementApiKey($postOptions['management-api-key'])
-                    ->setManagementApiSecret($postOptions['management-api-secret'])
+                    ->setManageApiKey($postOptions['management-api-key'])
+                    ->setManageApiSecret($postOptions['management-api-secret'])
                     ->setPricingGroupsBubbleDefaultToTop($property->getPricingGroups())
                     ->setDynamicallyCreateResources($property->isDynamicallyCreateResources());
                 $this->saveOptions($options);

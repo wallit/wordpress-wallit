@@ -8,6 +8,7 @@
 namespace iMoneza\WordPress;
 use iMoneza\Exception;
 use iMoneza\WordPress\Controller;
+use iMoneza\WordPress\Model\Options;
 use iMoneza\WordPress\Service;
 use iMoneza\WordPress\Filter;
 use Pimple\Container;
@@ -57,6 +58,9 @@ class App
         };
         
         // DI Controllers
+        $di['controller.options.internal'] = function ($di) {
+            return new Controller\Options\Internal($di['view']);
+        };
         $di['controller.options.display'] = function ($di) {
             return new Controller\Options\Display($di['view']);
         };
@@ -115,23 +119,24 @@ class App
     protected function initAdminItems()
     {
         $di = $this->di;
+        $options = $this->getOptions();
 
         add_action('admin_init', function () {
             register_setting(self::$optionsKey, self::$optionsKey);
         });
 
         $settingsControllerString = $this->getOptions()->isInitialized() ? 'controller.options.access' : 'controller.options.first-time';
-        add_action('admin_menu', function () use ($settingsControllerString, $di) {
+        add_action('admin_menu', function () use ($settingsControllerString, $di, $options) {
             add_menu_page('iMoneza Settings', 'iMoneza', 'manage_options', 'imoneza', $di[$settingsControllerString],
                 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjAiIHk9IjAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwLCAwLCAxNTAsIDE1MCI+CiAgPGcgaWQ9IkxheWVyXzEiPgogICAgPGc+CiAgICAgIDxwYXRoIGQ9Ik0yNS44MzEsMTExLjc4NiBMNTQuOTcyLDY0LjcyIEw0OS41NjQsNjQuNzIgTDQ5LjU2NCw1MC41IEw3OC4zMDUsNTAuNSBMNzguMzA1LDEwMS4xNzEgTDEwMS41MzcsNjQuNzIgTDk3LjAzMSw2NC43MiBMOTcuNTMxLDUwLjUgTDEyNS4xNyw1MC41IEwxMjUuMTcsMTExLjc4NiBMMTMyLjE4LDExMS43ODYgTDEzMi4xOCwxMjUuNjA1IEwxMDYuNTQ0LDEyNS42MDUgTDEwNi41NDQsMTExLjc4NiBMMTExLjE1MSwxMTEuNzg2IEwxMTEuMTUxLDc1LjIzNSBMNzkuMjA2LDEyNS42MDUgTDY0LjQ4NSwxMjUuNjA1IEw2NC40ODUsNzUuMjM1IEw0Mi4xNTQsMTExLjc4NiBMNDguMzYzLDExMS43ODYgTDQ4LjM2MywxMjUuNjA1IEwxNy44MiwxMjUuNjA1IEwxNy44MiwxMTEuNzg2IHoiIGZpbGw9IiM0NTQ2NDMiLz4KICAgICAgPHBhdGggZD0iTTc1LjA1MywzNS40MDcgQzc1LjA1Myw0MS40ODcgNzAuMTI2LDQ2LjQxOSA2NC4wNDEsNDYuNDE5IEM1Ny45NjEsNDYuNDE5IDUzLjAzMiw0MS40ODcgNTMuMDMyLDM1LjQwNyBDNTMuMDMyLDI5LjMyNyA1Ny45NjEsMjQuMzk1IDY0LjA0MSwyNC4zOTUgQzcwLjEyNiwyNC4zOTUgNzUuMDUzLDI5LjMyNyA3NS4wNTMsMzUuNDA3IiBmaWxsPSIjNDU0NjQzIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K'
                 , 100);
             add_submenu_page('imoneza', 'iMoneza Settings', 'Access Settings', 'manage_options', 'imoneza');
             add_submenu_page('imoneza', 'iMoneza Settings', 'Display Settings', 'manage_options', 'imoneza-display', $di['controller.options.display']);
+            add_submenu_page(null, 'iMoneza Settings', 'Internal Config', 'manage_options', 'imoneza-config', $di['controller.options.internal']); // this is hidden
             
             // this is necessary because you can't use full URLs in add_submenu_page
             global $submenu;
-            $url = 'https://manageui.imoneza.com';
-            if ($envUrl = getenv('MANAGEMENT_UI_URL')) $url = $envUrl;
+            $url = $options->getManageUiUrl(Options::GET_DEFAULT);
             $submenu['imoneza'][] = ['Manage on iMoneza.com', 'manage_options', $url];
         });
     }
@@ -161,6 +166,11 @@ class App
         add_action('wp_ajax_options_remote_refresh', function () use ($di) {
             /** @var \iMoneza\WordPress\Controller\Options\RemoteRefresh $controller */
             $controller = $di['controller.options.remote-refresh'];
+            $controller();
+        });
+        add_action('wp_ajax_options_internal', function () use ($di) {
+            /** @var \iMoneza\WordPress\Controller\Options\Internal $controller */
+            $controller = $di['controller.options.internal'];
             $controller();
         });
     }
@@ -259,7 +269,11 @@ class App
                 $pricingGroupId = $_POST['pricing-group-id'];
                 /** @var \iMoneza\WordPress\Service\iMoneza $service */
                 $service = $di['service.imoneza'];
-                $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
+                $service
+                    ->setManagementApiKey($options->getManageApiKey())
+                    ->setManagementApiSecret($options->getManageApiSecret())
+                    ->setManageApiUrl($options->getManageApiUrl(Options::GET_DEFAULT))
+                    ->setAccessApiUrl($options->getAccessApiUrl(Options::GET_DEFAULT));
 
                 try {
                     $service->createOrUpdateResource($post, $pricingGroupId);
@@ -415,7 +429,7 @@ class App
 
                 if ($query->have_posts()) {
                     $service = $di['service.imoneza'];
-                    $service->setManagementApiKey($options->getManagementApiKey())->setManagementApiSecret($options->getManagementApiSecret());
+                    $service->setManagementApiKey($options->getManageApiKey())->setManagementApiSecret($options->getManageApiSecret());
 
                     $defaultPricingGroupId = $options->getDefaultPricingGroup()->getPricingGroupID();
 

@@ -15,6 +15,11 @@ use iMoneza\Data\PricingGroup;
 class Options implements \JsonSerializable
 {
     /**
+     * @var boolean a helper to make the functionality of getting default values easier
+     */
+    const GET_DEFAULT = true;
+    
+    /**
      * @var string for client side access control
      */
     const ACCESS_CONTROL_CLIENT = 'C';
@@ -25,20 +30,55 @@ class Options implements \JsonSerializable
     const ACCESS_CONTROL_SERVER = 'S';
 
     /**
+     * @var string the default manage api
+     */
+    const DEFAULT_MANAGE_API_URL = "https://manageapi.imoneza.com";
+
+    /**
+     * @var string the default access api
+     */
+    const DEFAULT_ACCESS_API_URL = "https://accessapi.imoneza.com";
+
+    /**
+     * @var string the default cdn file
+     */
+    const DEFAULT_JAVASCRIPT_CDN_URL = "https://cdn.imoneza.com/paywall.min.js";
+
+    /**
+     * @var string the default ui
+     */
+    const DEFAULT_MANAGE_UI_URL = "https://manageui.imoneza.com";
+
+    /**
      * @var bool
      */
     protected $dynamicallyCreateResources;
 
     /**
+     * @var string the management api URL
+     */
+    protected $manageApiUrl;
+    
+    /**
      * @var string
      */
-    protected $managementApiKey;
+    protected $manageApiKey;
 
     /**
      * @var string
      */
-    protected $managementApiSecret;
+    protected $manageApiSecret;
 
+    /**
+     * @var string the manage UI URL
+     */
+    protected $manageUiUrl;
+
+    /**
+     * @var string the access api url
+     */
+    protected $accessApiUrl;
+    
     /**
      * @var string
      */
@@ -48,6 +88,11 @@ class Options implements \JsonSerializable
      * @var string
      */
     protected $accessApiSecret;
+
+    /**
+     * @var string the javascript CDN
+     */
+    protected $javascriptCdnUrl;
 
     /**
      * @var string
@@ -88,8 +133,10 @@ class Options implements \JsonSerializable
      * @var string
      */
     protected $premiumIndicatorCustomColor = '#444444';
-    
+
     /**
+     * This is used when we refresh our options and we need to communicate this via ajax 
+     * 
      * @return array
      */
     public function jsonSerialize()
@@ -133,40 +180,109 @@ class Options implements \JsonSerializable
         $this->dynamicallyCreateResources = $dynamicallyCreateResources;
         return $this;
     }
-
+    
     /**
+     * @param bool $getDefault
      * @return string
      */
-    public function getManagementApiKey()
+    public function getManageApiUrl($getDefault = false)
     {
-        return $this->managementApiKey;
+        $url = $this->manageApiUrl;
+        if ($getDefault && !$url) {
+            $url = self::DEFAULT_MANAGE_API_URL;
+        }
+        return $url;
     }
 
     /**
-     * @param string $managementApiKey
+     * @param string $manageApiUrl
      * @return Options
      */
-    public function setManagementApiKey($managementApiKey)
+    public function setManageApiUrl($manageApiUrl)
     {
-        $this->managementApiKey = $managementApiKey;
+        $this->manageApiUrl = $manageApiUrl;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getManageApiKey()
+    {
+        return $this->manageApiKey;
+    }
+
+    /**
+     * @param string $manageApiKey
+     * @return Options
+     */
+    public function setManageApiKey($manageApiKey)
+    {
+        $this->manageApiKey = $manageApiKey;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getManagementApiSecret()
+    public function getManageApiSecret()
     {
-        return $this->managementApiSecret;
+        return $this->manageApiSecret;
     }
 
     /**
-     * @param string $managementApiSecret
+     * @param string $manageApiSecret
      * @return Options
      */
-    public function setManagementApiSecret($managementApiSecret)
+    public function setManageApiSecret($manageApiSecret)
     {
-        $this->managementApiSecret = $managementApiSecret;
+        $this->manageApiSecret = $manageApiSecret;
+        return $this;
+    }
+
+    /**
+     * @param bool $getDefault
+     * @return string
+     */
+    public function getManageUiUrl($getDefault = false)
+    {
+        $url = $this->manageUiUrl;
+        if ($getDefault && !$url) {
+            $url = self::DEFAULT_MANAGE_UI_URL;
+        }
+        return $url;
+    }
+
+    /**
+     * @param string $manageUiUrl
+     * @return Options
+     */
+    public function setManageUiUrl($manageUiUrl)
+    {
+        $this->manageUiUrl = $manageUiUrl;
+        return $this;
+    }
+    
+    /**
+     * @param bool $getDefault
+     * @return string
+     */
+    public function getAccessApiUrl($getDefault = false)
+    {
+        $url = $this->accessApiUrl;
+        if ($getDefault && !$url) {
+            $url = self::DEFAULT_ACCESS_API_URL;
+        }
+        return $url;
+    }
+
+    /**
+     * @param string $accessApiUrl
+     * @return Options
+     */
+    public function setAccessApiUrl($accessApiUrl)
+    {
+        $this->accessApiUrl = $accessApiUrl;
         return $this;
     }
 
@@ -203,6 +319,29 @@ class Options implements \JsonSerializable
     public function setAccessApiSecret($accessApiSecret)
     {
         $this->accessApiSecret = $accessApiSecret;
+        return $this;
+    }
+
+    /**
+     * @param bool $getDefault
+     * @return string
+     */
+    public function getJavascriptCdnUrl($getDefault = false)
+    {
+        $url = $this->javascriptCdnUrl;
+        if ($getDefault && !$url) {
+            $url = self::DEFAULT_ACCESS_API_URL;
+        }
+        return $url;
+    }
+
+    /**
+     * @param string $javascriptCdnUrl
+     * @return Options
+     */
+    public function setJavascriptCdnUrl($javascriptCdnUrl)
+    {
+        $this->javascriptCdnUrl = $javascriptCdnUrl;
         return $this;
     }
 
@@ -337,7 +476,7 @@ class Options implements \JsonSerializable
      */
     public function isInitialized()
     {
-        return !empty($this->managementApiKey);
+        return !empty($this->manageApiKey);
     }
 
     /**
