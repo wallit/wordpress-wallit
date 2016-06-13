@@ -299,7 +299,7 @@ class App
         $options = $this->getOptions();
         if ($options->isIndicatePremiumContent()) {
             add_filter('the_title', function($title) use ($options) {
-                if (has_tag('premium') && in_the_loop()) {
+                if (has_tag('premium') && !is_admin()) {
                     $replacement = '<span class="imoneza-premium-indicator ' . $options->getPremiumIndicatorIconClass() . '">';
                     if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') $replacement .= $options->getPremiumIndicatorCustomText();
                     $replacement .= '</span> ' . $title;
