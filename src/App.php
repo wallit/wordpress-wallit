@@ -298,16 +298,17 @@ class App
     {
         $options = $this->getOptions();
         if ($options->isIndicatePremiumContent()) {
-            add_filter('the_title', function($title) use ($options) {
-                if (has_tag('premium') && in_the_loop()) {
-                    $replacement = '<span class="imoneza-premium-indicator ' . $options->getPremiumIndicatorIconClass() . '">';
+            add_filter('the_title', function($title, $id) use ($options) {
+                $post = get_post($id);
+                if (has_tag('premium', $post)) {
+                    $replacement = '<span title="' . __('Premium content', 'iMoneza') . '" class="imoneza-premium-indicator ' . $options->getPremiumIndicatorIconClass() . '">';
                     if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') $replacement .= $options->getPremiumIndicatorCustomText();
                     $replacement .= '</span> ' . $title;
                     $title = $replacement;
                 }
 
                 return $title;
-            });
+            }, 10, 2);
         }
     }
     
