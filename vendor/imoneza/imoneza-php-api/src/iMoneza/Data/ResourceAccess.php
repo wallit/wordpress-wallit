@@ -59,6 +59,11 @@ class ResourceAccess extends DataAbstract
     protected $userToken;
 
     /**
+     * @var null|\DateTime
+     */
+    protected $userTokenExpiration;
+
+    /**
      * @var string
      */
     protected $propertyName;
@@ -166,6 +171,32 @@ class ResourceAccess extends DataAbstract
         return $this;
     }
 
+    /**
+     * @return \DateTime|null
+     */
+    public function getUserTokenExpiration()
+    {
+        return $this->userTokenExpiration;
+    }
+
+    /**
+     * @param string|null $userTokenExpiration
+     * @note overriding the standard \DateTime functionality because this is used for a cookie time - so null means expires at the end of this session
+     * @return ResourceAccess
+     */
+    public function setUserTokenExpiration($userTokenExpiration)
+    {
+        if ($userTokenExpiration) {
+            $userTokenExpiration = new \DateTime($userTokenExpiration);
+        }
+        else {
+            $userTokenExpiration = null;
+        }
+        $this->userTokenExpiration = $userTokenExpiration;
+        return $this;
+    }
+
+    
     /**
      * @return string
      */

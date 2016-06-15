@@ -26,6 +26,16 @@ class ResourceAccessTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('a-token-here', $resourceAccess->getUserToken());
     }
 
+    public function testUserTokenExpiration()
+    {
+        $resourceAccess = new ResourceAccess();
+        $this->assertNull($resourceAccess->getUserTokenExpiration());
+        $this->assertInstanceOf('iMoneza\Data\ResourceAccess', $resourceAccess->setUserTokenExpiration(''));
+        $this->assertNull($resourceAccess->getUserTokenExpiration());
+        $resourceAccess->setUserTokenExpiration('2016-01-01 00:00:00');
+        $this->assertEquals(new \DateTime('2016-01-01 00:00:00'), $resourceAccess->getUserTokenExpiration());
+    }
+
     public function testPropertyName()
     {
         $resourceAccess = new ResourceAccess();

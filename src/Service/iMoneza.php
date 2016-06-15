@@ -192,7 +192,7 @@ class iMoneza
         /** @var \iMoneza\Data\ResourceAccess $data */
         $data = $this->getConnectionInstance()->request($options, $options->getDataObject());
 
-        $this->setUserTokenCookie($data->getUserToken());
+        $this->setUserTokenCookie($data->getUserToken(), $data->getUserTokenExpiration());
 
         if ($data->getAccessAction() != ResourceAccess::ACCESS_ACTION_GRANT) {
             $result = $data->getAccessActionUrl();
@@ -314,10 +314,12 @@ class iMoneza
     /**
      * Sets the user token cookie way in the future and HTTP only
      * @param $userToken
+     * @param \DateTime $userTokenExpiration
      */
-    protected function setUserTokenCookie($userToken)
+    protected function setUserTokenCookie($userToken, \DateTime $userTokenExpiration = null)
     {
-        setcookie('imoneza-user-token', $userToken, 1893456000, '/', null, null, true); // 01/01/2030 0:0:0
+        $expiration = $userTokenExpiration ? $userTokenExpiration->getTimestamp() : null;
+        setcookie('imoneza-user-token', $userToken, $expiration, '/', null, null, true); 
     }
 
     /**
