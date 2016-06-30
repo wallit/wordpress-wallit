@@ -168,18 +168,6 @@
 
     
     $(function() {
-        $('.collapsible-on-off').each(function(key, item) {
-            var $panel = $(item);
-            $($panel.data('on-off-handler')).on('change', function() {
-                if (this.value == 1) {
-                    $panel.slideDown();
-                }
-                else {
-                    $panel.slideUp();
-                }
-            })
-        });
-   
         $('#imoneza-refresh-settings').imonezaAdminAjax({
             data: {
                 action: "options_remote_refresh"
@@ -211,29 +199,6 @@
         });
 
         (new overridePricing).handle();
-
-        $('#edit-custom-indicator').on('click', function(e) {
-            e.preventDefault();
-            var $indicator = $('.imoneza-custom-indicator'),
-                $text = $('span', $indicator),
-                $input = $('input', $indicator),
-                value = $input.val();
-            $input.one('blur', function() {
-                $(this).hide();
-                $text.text($(this).val());
-            });
-            $text.empty();
-            $input.show().focus();
-            //focus
-            $input.val('').val(value);
-        });
-
-        $('.color-picker').wpColorPicker({
-            change: function(event, ui) {
-                $(".radio-container").css('color', ui.color.toString());
-                $('.imoneza-custom-indicator').css('backgroundColor', ui.color.toString());
-            }
-        });
     });
 
 })(jQuery, window.history);

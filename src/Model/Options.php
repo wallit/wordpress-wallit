@@ -113,27 +113,7 @@ class Options implements \JsonSerializable
      * @var \DateTime
      */
     protected $lastUpdated;
-
-    /**
-     * @var bool
-     */
-    protected $indicatePremiumContent;
-
-    /**
-     * @var string the class(es) to indicate on an indicator
-     */
-    protected $premiumIndicatorIconClass;
-
-    /**
-     * @var string when they want to use a custom string
-     */
-    protected $premiumIndicatorCustomText = 'custom'; // default label
-
-    /**
-     * @var string
-     */
-    protected $premiumIndicatorCustomColor = '#444444';
-
+    
     /**
      * This is used when we refresh our options and we need to communicate this via ajax 
      * 
@@ -477,77 +457,5 @@ class Options implements \JsonSerializable
     public function isInitialized()
     {
         return !empty($this->manageApiKey);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isIndicatePremiumContent()
-    {
-        return $this->indicatePremiumContent;
-    }
-
-    /**
-     * @param boolean $indicatePremiumContent
-     * @return Options
-     */
-    public function setIndicatePremiumContent($indicatePremiumContent)
-    {
-        $this->indicatePremiumContent = $indicatePremiumContent;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPremiumIndicatorIconClass()
-    {
-        return $this->premiumIndicatorIconClass;
-    }
-
-    /**
-     * @param string $premiumIndicatorIconClass
-     * @return Options
-     */
-    public function setPremiumIndicatorIconClass($premiumIndicatorIconClass)
-    {
-        $this->premiumIndicatorIconClass = $premiumIndicatorIconClass;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPremiumIndicatorCustomText()
-    {
-        return $this->premiumIndicatorCustomText;
-    }
-
-    /**
-     * @param string $premiumIndicatorCustomText
-     * @return Options
-     */
-    public function setPremiumIndicatorCustomText($premiumIndicatorCustomText)
-    {
-        $this->premiumIndicatorCustomText = $premiumIndicatorCustomText;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPremiumIndicatorCustomColor()
-    {
-        return $this->premiumIndicatorCustomColor;
-    }
-
-    /**
-     * @param string $premiumIndicatorCustomColor
-     * @return Options
-     */
-    public function setPremiumIndicatorCustomColor($premiumIndicatorCustomColor)
-    {
-        $this->premiumIndicatorCustomColor = $premiumIndicatorCustomColor;
-        return $this;
     }
 }

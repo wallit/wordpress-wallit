@@ -146,25 +146,6 @@
     width: 100%;
 }
 
-/** specific to the custom indicator **/
-#edit-custom-indicator {
-    text-decoration: none;
-    vertical-align: super;
-    margin-left: 4px;
-}
-#imoneza-custom-indicator-text {
-    background-color: transparent;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    color: inherit;
-    font-size: 13px;
-    display: none;
-}
-#imoneza-custom-indicator-text:focus {
-    outline: 0;
-}
-
 /** card layouts **/
 .i-card {
     background-color: #ffffff;
@@ -237,14 +218,4 @@ h2.logo-header {
 #imoneza-post-pricing img {
     height: 16px;
     vertical-align: middle;
-}
-
-/** used in user.css but why load this too **/
-.imoneza-custom-indicator {
-    background: #444444;
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 2px 4px;
-    font-weight: normal;
-    display: inline-block;
 }

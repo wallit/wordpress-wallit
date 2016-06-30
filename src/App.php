@@ -56,9 +56,6 @@ class App
         $di['controller.options.internal'] = function ($di) {
             return new Controller\Options\Internal($di['view']);
         };
-        $di['controller.options.display'] = function ($di) {
-            return new Controller\Options\Display($di['view']);
-        };
         $di['controller.options.first-time'] = function ($di) {
             return new Controller\Options\FirstTime($di['view'], $di['service.imoneza']);
         };
@@ -98,8 +95,6 @@ class App
             $this->addPublishPostAction();
         }
         else {
-            $this->addPremiumIndicator();
-            $this->addSupportingUserCSS();
             $this->addClientSideAccessControl();
             $this->addServerSideAccessControl();
         }
@@ -126,7 +121,6 @@ class App
                 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjAiIHk9IjAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwLCAwLCAxNTAsIDE1MCI+CiAgPGcgaWQ9IkxheWVyXzEiPgogICAgPGc+CiAgICAgIDxwYXRoIGQ9Ik0yNS44MzEsMTExLjc4NiBMNTQuOTcyLDY0LjcyIEw0OS41NjQsNjQuNzIgTDQ5LjU2NCw1MC41IEw3OC4zMDUsNTAuNSBMNzguMzA1LDEwMS4xNzEgTDEwMS41MzcsNjQuNzIgTDk3LjAzMSw2NC43MiBMOTcuNTMxLDUwLjUgTDEyNS4xNyw1MC41IEwxMjUuMTcsMTExLjc4NiBMMTMyLjE4LDExMS43ODYgTDEzMi4xOCwxMjUuNjA1IEwxMDYuNTQ0LDEyNS42MDUgTDEwNi41NDQsMTExLjc4NiBMMTExLjE1MSwxMTEuNzg2IEwxMTEuMTUxLDc1LjIzNSBMNzkuMjA2LDEyNS42MDUgTDY0LjQ4NSwxMjUuNjA1IEw2NC40ODUsNzUuMjM1IEw0Mi4xNTQsMTExLjc4NiBMNDguMzYzLDExMS43ODYgTDQ4LjM2MywxMjUuNjA1IEwxNy44MiwxMjUuNjA1IEwxNy44MiwxMTEuNzg2IHoiIGZpbGw9IiM0NTQ2NDMiLz4KICAgICAgPHBhdGggZD0iTTc1LjA1MywzNS40MDcgQzc1LjA1Myw0MS40ODcgNzAuMTI2LDQ2LjQxOSA2NC4wNDEsNDYuNDE5IEM1Ny45NjEsNDYuNDE5IDUzLjAzMiw0MS40ODcgNTMuMDMyLDM1LjQwNyBDNTMuMDMyLDI5LjMyNyA1Ny45NjEsMjQuMzk1IDY0LjA0MSwyNC4zOTUgQzcwLjEyNiwyNC4zOTUgNzUuMDUzLDI5LjMyNyA3NS4wNTMsMzUuNDA3IiBmaWxsPSIjNDU0NjQzIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K'
                 , 100);
             add_submenu_page('imoneza', 'iMoneza Settings', 'Access Settings', 'manage_options', 'imoneza');
-            add_submenu_page('imoneza', 'iMoneza Settings', 'Display Settings', 'manage_options', 'imoneza-display', $di['controller.options.display']);
             add_submenu_page(null, 'iMoneza Settings', 'Internal Config', 'manage_options', 'imoneza-config', $di['controller.options.internal']); // this is hidden
             
             // this is necessary because you can't use full URLs in add_submenu_page
@@ -142,12 +136,7 @@ class App
     protected function registerAdminAjax()
     {
         $di = $this->di;
-
-        add_action('wp_ajax_options_display', function () use ($di) {
-            /** @var \iMoneza\WordPress\Controller\Options\Display $controller */
-            $controller = $di['controller.options.display'];
-            $controller();
-        });
+        
         add_action('wp_ajax_options_first_time', function () use ($di) {
             /** @var \iMoneza\WordPress\Controller\Options\FirstTime $controller */
             $controller = $di['controller.options.first-time'];
@@ -183,11 +172,6 @@ class App
             wp_enqueue_script('jquery');
             wp_enqueue_script('jquery-form');
             wp_enqueue_script('imoneza-admin-js', $di['filter.asset-url']('js/admin.js'), [], false, true);
-        });
-        
-        add_action('admin_enqueue_scripts', function () {
-            wp_enqueue_style('wp-color-picker');
-            wp_enqueue_script('wp-color-picker');
         });
     }
 
@@ -289,50 +273,6 @@ class App
                 }
             }
         });
-    }
-    
-    /**
-     * Adds the premium indicator filter if need be
-     */
-    protected function addPremiumIndicator()
-    {
-        $options = $this->getOptions();
-        if ($options->isIndicatePremiumContent()) {
-            add_filter('the_title', function($title, $id) use ($options) {
-                $post = get_post($id);
-                if (has_tag('premium', $post)) {
-                    $replacement = '<span title="' . __('Premium content', 'iMoneza') . '" class="imoneza-premium-indicator ' . $options->getPremiumIndicatorIconClass() . '">';
-                    if ($options->getPremiumIndicatorIconClass() == 'imoneza-custom-indicator') $replacement .= $options->getPremiumIndicatorCustomText();
-                    $replacement .= '</span> ' . $title;
-                    $title = $replacement;
-                }
-
-                return $title;
-            }, 10, 2);
-        }
-    }
-    
-    /**
-     * add premium colors and all the rest of the css
-     */
-    protected function addSupportingUserCSS()
-    {
-        $options = $this->getOptions();
-        $di = $this->di;
-
-        if ($options->isIndicatePremiumContent()) {
-            add_action('wp_enqueue_scripts', function() use ($di, $options) {
-                $dependencies = $options->isIndicatePremiumContent() ? ['dashicons'] : [];
-                wp_register_style('imoneza-user-css', $di['filter.asset-url']('css/user.css'), $dependencies);
-                wp_enqueue_style('imoneza-user-css');
-            });
-            add_action('wp_head', function() use ($di, $options) {
-                $view = $di['view'];
-                $view->setView('custom-premium-indicator-color-css');
-                $view->setData(['color'=>$options->getPremiumIndicatorCustomColor()]);
-                echo $view();
-            });
-        }
     }
 
     /**
