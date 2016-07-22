@@ -5,7 +5,7 @@
  * Description: Integrate your WordPress site with iMoneza.
  * Author: iMoneza
  * Author URI: http://imoneza.com
- * Version: 2.3.0
+ * Version: 2.3.1
  * License: GPLv3
  * Text Domain: iMoneza
  */
