@@ -96,7 +96,7 @@ $options = $this->options;
                         echo '<p>';
                         echo __('Your resources are being added to iMoneza.', 'iMoneza');
                         echo ' ';
-                        printf(_n('There is %s remaining.', 'There are %s remaining.', $this->postQueuedForProcessing, 'iMoneza'), $this->postQueuedForProcessing);
+                        printf(_n('There is %s remaining.', 'There are %s remaining.', $this->postQueuedForProcessing, 'iMoneza'), $this->postsQueuedForProcessing);
                         echo ' ';
                         echo $this->remainingTimeIndication;
                         echo '</p>';
