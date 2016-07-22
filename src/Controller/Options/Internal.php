@@ -25,7 +25,7 @@ class Internal extends ControllerAbstract
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
 
-            $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
+            $postOptions = array_map('trim', $this->getPost('imoneza-options', []));
             $options->setManageApiUrl($postOptions['manage-api-url'])
                 ->setAccessApiUrl($postOptions['access-api-url'])
                 ->setJavascriptCdnUrl($postOptions['javascript-cdn-url'])

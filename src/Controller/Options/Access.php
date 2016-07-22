@@ -49,7 +49,7 @@ class Access extends ControllerAbstract
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
 
-            $postOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
+            $postOptions = array_map('trim', $this->getPost('imoneza-options', []));
 
             $errors = [];
             $this->iMonezaService

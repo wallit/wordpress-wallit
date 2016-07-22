@@ -43,7 +43,7 @@ class FirstTime extends ControllerAbstract
         if ($this->isPost()) {
             check_ajax_referer('imoneza-options');
 
-            $postedOptions = array_filter($this->getPost('imoneza-options', []), 'trim');
+            $postedOptions = array_map('trim', $this->getPost('imoneza-options', []));
             $results = $this->getGenericAjaxResultsObject();
 
             $this->iMonezaService
