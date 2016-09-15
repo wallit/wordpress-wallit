@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/iMoneza/wordpress-imoneza/blob/master/assets/images/logo-rectangle.jpg?raw=true" alt="iMoneza"/>
+</p>
+
 # iMoneza WordPress Plugin
 
 Integrate your site with your iMoneza account and begin monetizing your content.
