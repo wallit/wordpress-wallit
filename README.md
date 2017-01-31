@@ -2,22 +2,22 @@
   <img src="https://github.com/iMoneza/wordpress-imoneza/blob/master/assets/images/logo-rectangle.jpg?raw=true" alt="iMoneza"/>
 </p>
 
-# iMoneza WordPress Plugin
+# Wallit WordPress Plugin
 
-Integrate your site with your iMoneza account and begin monetizing your content.
+Integrate your site with your Wallit account and begin monetizing your content.
 
 ## Description
 
-iMoneza is a digital micro-transaction paywall service. This WordPress plugin allows you to quickly and easily integrate
-iMoneza with your site. It will add iMoneza's paywall to your site and allow you to manage your iMoneza resources from
-within WordPress.  Please note - an iMoneza account is **required**.
+Wallit is the subscription management solution. This WordPress plugin allows you to quickly and easily integrate
+Wallit with your site. It will add Wallit's paywall to your site and allow you to manage your Wallit resources from
+within WordPress.  Please note - a Wallit account is **required**.
 
-Visit [www.imoneza.com](https://www.imoneza.com) for more information about iMoneza.
+Visit [wallit.io](https://wallit.io) for more information about Wallit.
 
 ## Installation
 
-1. Set up an iMoneza account, create an iMoneza property, and generate a set of API keys.
-2. Visit the [latest release link](https://github.com/iMoneza/wordpress-imoneza/releases/latest) and download `imoneza.zip` 
+1. Set up a Wallit account, create an Wallit property, and generate a set of API keys.
+2. Visit the [latest release link](https://github.com/wallit/wordpress-wallit/releases/latest) and download `imoneza.zip` 
 3. Upload imoneza.zip through the plugins installer in WordPress
 4. Activate the plugin through the 'Plugins' menu in WordPress.
 5. Follow setup wizard.
