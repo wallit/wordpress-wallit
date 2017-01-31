@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://github.com/iMoneza/wordpress-imoneza/blob/master/assets/images/logo-rectangle.jpg?raw=true" alt="iMoneza"/>
-</p>
-
 # Wallit WordPress Plugin
 
 Integrate your site with your Wallit account and begin monetizing your content.
