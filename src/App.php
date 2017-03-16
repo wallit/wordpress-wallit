@@ -126,7 +126,7 @@ class App
             // this is necessary because you can't use full URLs in add_submenu_page
             global $submenu;
             $url = $options->getManageUiUrl(Options::GET_DEFAULT);
-            $submenu['imoneza'][] = ['Manage on iMoneza.com', 'manage_options', $url];
+            $submenu['imoneza'][] = ['Manage on iMoneza.com', 'edit_posts', $url];
         });
     }
 
@@ -187,9 +187,11 @@ class App
         if (!$options->isInitialized()) {
             if (!($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'imoneza')) { // so if any page BUT the imoneza config page
                 add_action('admin_notices', function() use ($di) {
-                    $view = $di['view'];
-                    $view->setView('admin/notify-config-needed');
-                    echo $view();
+                    if (current_user_can('manage_options')) {
+                        $view = $di['view'];
+                        $view->setView('admin/notify-config-needed');
+                        echo $view();
+                    }
                 });
             }
         }

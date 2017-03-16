@@ -31,11 +31,17 @@ abstract class ControllerAbstract
      */
     public function __construct(View $view)
     {
+        $this->view = $view;
+    }
+    /**
+     * Verifies that the current user has manage_options capabilities and, if not, throws a 403
+     */
+    protected function verifyCapabilities()
+    {
         if (!current_user_can('manage_options') && !defined('DOING_CRON')) {
             wp_die(__( 'You do not have sufficient permissions to access this page.', 'iMoneza'), 403);
         }
 
-        $this->view = $view;
     }
 
     /**
