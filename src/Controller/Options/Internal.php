@@ -15,10 +15,20 @@ use iMoneza\WordPress\Controller\ControllerAbstract;
 class Internal extends ControllerAbstract
 {
     /**
+     * Internal constructor.
+     * 
+     * @param \Aura\View\View $view
+     */
+    public function __construct(\Aura\View\View $view)
+    {
+        parent::__construct($view);
+    }
+    /**
      * Show Options items
      */
     public function __invoke()
     {
+        $this->verifyCapabilities();
         $view = $this->view;
         $options = $this->getOptions();
         

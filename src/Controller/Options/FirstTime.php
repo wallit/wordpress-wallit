@@ -37,6 +37,7 @@ class FirstTime extends ControllerAbstract
      */
     public function __invoke()
     {
+        $this->verifyCapabilities();
         $view = $this->view;
         $options = $this->getOptions();
 

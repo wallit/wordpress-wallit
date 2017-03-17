@@ -43,6 +43,7 @@ class Access extends ControllerAbstract
      */
     public function __invoke()
     {
+        $this->verifyCapabilities();
         $view = $this->view;
         $options = $this->getOptions();
 
